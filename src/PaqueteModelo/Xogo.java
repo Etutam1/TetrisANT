@@ -144,7 +144,6 @@ public class Xogo {
             fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
-        fichaActual = new FichaBarra(this);
         this.pintarFicha();
     }
 
