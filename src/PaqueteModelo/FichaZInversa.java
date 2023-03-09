@@ -48,9 +48,9 @@ public class FichaZInversa extends Ficha{
                 eValido++;
             }
             if (eValido == 3) {
-                cadrado1.getLblCadrado().setLocation(cadrado2.getX() - Xogo.LADO_CADRADO, cadrado2.getY());
+                cadrado1.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO, cadrado2.getY());
                 cadrado3.getLblCadrado().setLocation(cadrado2.getX(), cadrado2.getY() + Xogo.LADO_CADRADO);
-                cadrado4.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO, cadrado2.getY() + Xogo.LADO_CADRADO);
+                cadrado4.getLblCadrado().setLocation(cadrado2.getX() - Xogo.LADO_CADRADO, cadrado2.getY() + Xogo.LADO_CADRADO);
             }
         }
         if (posicion == 1) {

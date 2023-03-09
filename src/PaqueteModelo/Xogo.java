@@ -174,6 +174,9 @@ public class Xogo {
     }
 
     public void engadirFichaAoChan() {
+
+        String musicPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
+        playSound(musicPath);
         cadradosChan.addAll(fichaActual.cadrados);
 
     }
@@ -206,10 +209,14 @@ public class Xogo {
                     }
                 }
             }
+
         }
     }
 
     public void borrarLina(int linea) {
+
+        String musicPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
+        playSound(musicPath);
 
         Iterator<Cadrado> iteratorChan2 = cadradosChan.listIterator();
 
@@ -322,6 +329,22 @@ public class Xogo {
     }
 
     public static void playGameOverMusic(String musicLocation) {
+        try {
+            File musicPath = new File(musicLocation);
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                cliper = AudioSystem.getClip();
+                cliper.open(audioInput);
+                cliper.start();
+            } else {
+                System.out.println("No se encontró el archivo");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void playSound(String musicLocation) {
         try {
             File musicPath = new File(musicLocation);
             if (musicPath.exists()) {
