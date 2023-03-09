@@ -5,10 +5,15 @@
 package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
+import static PaqueteIU.VentanaPrincipal.cliper;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.Timer;
 
 /**
@@ -316,15 +321,34 @@ public class Xogo {
         this.timerComprobarLineas.stop();
     }
 
+    public static void playGameOverMusic(String musicLocation) {
+        try {
+            File musicPath = new File(musicLocation);
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                cliper = AudioSystem.getClip();
+                cliper.open(audioInput);
+                cliper.start();
+            } else {
+                System.out.println("No se encontró el archivo");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void actualizarDelays(int delay) {
         ventanaPrincipal.timerScore.setDelay(delay);
         this.timerComprobarLineas.setDelay(delay);
         ventanaPrincipal.timer.setDelay(delay);
     }
-    
-    public void gameOver(){
+
+    public void gameOver() {
         ventanaPrincipal.getPanelGameOver().setVisible(true);
-        
+        ventanaPrincipal.cliper.stop();
+        String musicPath = "src\\Resources\\Musica\\gameover.wav";
+        playGameOverMusic(musicPath);
+
     }
 
     //SETTERs AND GETTERs 

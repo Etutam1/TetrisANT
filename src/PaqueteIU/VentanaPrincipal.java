@@ -94,7 +94,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         settingsButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        botonSonido = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         labelTituloLevel.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
@@ -316,13 +316,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 277, 151, 107));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botonSonido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
+        botonSonido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonSonidoActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 60, 60));
+        jPanel1.add(botonSonido, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 60, 60));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/fondo.jpg"))); // NOI18N
         jLabel1.setToolTipText("");
@@ -428,20 +428,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonSonidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSonidoActionPerformed
         contadorMusica++;
         if (contadorMusica == 1) {
-            jButton1.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+            botonSonido.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
             clipTimePosition = cliper.getMicrosecondPosition();
             cliper.stop();
             System.out.println(clipTimePosition);
         } else {
             contadorMusica = 0;
             cliper.setMicrosecondPosition(clipTimePosition);
-            jButton1.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+            botonSonido.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
             cliper.start();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botonSonidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -580,6 +580,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void mostrarLevel() {
         this.getLevelTextLabel().setText(String.valueOf(xogo.level));
     }
+    
+    
 
     public JPanel getPanelJuego() {
         return panelJuego;
@@ -587,7 +589,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void setPanelJuego(JPanel panelJuego) {
         this.panelJuego = panelJuego;
+    }
 
+    public static Clip getCliper() {
+        return cliper;
+    }
+
+    public static void setCliper(Clip cliper) {
+        VentanaPrincipal.cliper = cliper;
     }
 
     public JLabel getLineasTextLabel() {
@@ -809,6 +818,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
+    private javax.swing.JButton botonSonido;
     private javax.swing.JButton easyButton;
     private javax.swing.JButton exitButton;
     private javax.swing.JFrame frameJuego;
@@ -816,7 +826,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel gameOverLabel;
     private javax.swing.JButton gameOverOKButton;
     private javax.swing.JButton hardButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
