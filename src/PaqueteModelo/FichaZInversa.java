@@ -29,19 +29,48 @@ public class FichaZInversa extends Ficha{
     //METODOS
     @Override
     public boolean rotar() {
-            if(xogo.fichaActual.posicion > 1){
-                xogo.fichaActual.posicion = 0;
-            }
-            if(posicion == 0){
-                cadrado1.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO , cadrado2.getY());
-                cadrado3.getLblCadrado().setLocation(cadrado2.getX() , cadrado2.getY() + Xogo.LADO_CADRADO);
-                cadrado4.getLblCadrado().setLocation(cadrado2.getX() - Xogo.LADO_CADRADO , cadrado2.getY() + Xogo.LADO_CADRADO);
-                }
-            if(posicion == 1){
-                cadrado1.getLblCadrado().setLocation(cadrado2.getX(), cadrado2.getY() - Xogo.LADO_CADRADO);
-                cadrado3.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO , cadrado2.getY());
-                cadrado4.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO , cadrado2.getY() + Xogo.LADO_CADRADO);
-                }
-            return true;
+
+        int cadradoFixo_X = cadrado2.getX();
+        int cadradoFixo_Y = cadrado2.getY();
+        int eValido = 0;
+
+        if (posicion > 1) {
+            posicion = 0;
         }
+        if (posicion == 0) {
+            if (xogo.ePosicionValida(cadradoFixo_X - Xogo.LADO_CADRADO, cadradoFixo_Y)) {
+                eValido++;
+            }
+            if (xogo.ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.LADO_CADRADO)) {
+                eValido++;
+            }
+            if (xogo.ePosicionValida(cadradoFixo_X + 2 * Xogo.LADO_CADRADO, cadradoFixo_Y)) {
+                eValido++;
+            }
+            if (eValido == 3) {
+                cadrado1.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO, cadrado2.getY());
+                cadrado3.getLblCadrado().setLocation(cadrado2.getX(), cadrado2.getY() + Xogo.LADO_CADRADO);
+                cadrado4.getLblCadrado().setLocation(cadrado2.getX() - Xogo.LADO_CADRADO, cadrado2.getY() + Xogo.LADO_CADRADO);
+            }
+        }
+        if (posicion == 1) {
+            if (xogo.ePosicionValida(cadradoFixo_X, cadradoFixo_Y - Xogo.LADO_CADRADO)) {
+                eValido++;
+            }
+            if (xogo.ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.LADO_CADRADO)) {
+                eValido++;
+            }
+            if (xogo.ePosicionValida(cadradoFixo_X + Xogo.LADO_CADRADO, cadradoFixo_Y + Xogo.LADO_CADRADO)) {
+                eValido++;
+            }
+
+            if (eValido == 3) {
+                cadrado1.getLblCadrado().setLocation(cadrado2.getX(), cadrado2.getY() - Xogo.LADO_CADRADO);
+                cadrado3.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO, cadrado2.getY());
+                cadrado4.getLblCadrado().setLocation(cadrado2.getX() + Xogo.LADO_CADRADO, cadrado2.getY() + Xogo.LADO_CADRADO);
+            }
+
+        }
+        return true;
     }
+}
