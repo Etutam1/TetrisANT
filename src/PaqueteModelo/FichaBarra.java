@@ -13,9 +13,9 @@ import java.awt.Color;
 public class FichaBarra extends Ficha {
 
     public Cadrado cadrado1 = new Cadrado(xogo.MAX_X / 2, xogo.MIN_Y, Color.CYAN);
-    public Cadrado cadrado2 = new Cadrado(cadrado1.getX() + xogo.LADO_CADRADO, cadrado1.getY(), Color.CYAN);
-    public Cadrado cadrado3 = new Cadrado(cadrado2.getX() + xogo.LADO_CADRADO, cadrado2.getY(), Color.CYAN);
-    public Cadrado cadrado4 = new Cadrado(cadrado3.getX() + xogo.LADO_CADRADO, cadrado3.getY(), Color.CYAN);
+    public Cadrado cadrado2 = new Cadrado(cadrado1.getX() + Xogo.LADO_CADRADO, cadrado1.getY(), Color.CYAN);
+    public Cadrado cadrado3 = new Cadrado(cadrado2.getX() + Xogo.LADO_CADRADO, cadrado2.getY(), Color.CYAN);
+    public Cadrado cadrado4 = new Cadrado(cadrado3.getX() + Xogo.LADO_CADRADO, cadrado3.getY(), Color.CYAN);
 
     //CONSTRUCTOR
     public FichaBarra(Xogo xogo) {
