@@ -33,12 +33,11 @@ public class Xogo {
     public VentanaPrincipal ventanaPrincipal;
     public Ficha fichaActual;
     public ArrayList<Cadrado> cadradosChan = new ArrayList<>();
-    public ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
+
     public Timer timerComprobarLineas;
     public int level = 0;
     public int contadorScore = 0;
     public int numeroLineas = 0;
-    public ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
     //CONSTRUCTOR
     public Xogo(boolean pausa, VentanaPrincipal ventanaPrincipal) {
@@ -71,8 +70,7 @@ public class Xogo {
 
         if (chocaFichaCoChan()) {
             this.engadirFichaAoChan();
-            
-            borrarLinasCompletas();    
+
             if (!comprobarFinalPartida()) {
                 this.xenerarNovaFicha();
             }
@@ -152,7 +150,7 @@ public class Xogo {
             fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
-         fichaActual = new FichaCadrada(this);
+
         this.pintarFicha();
     }
 
@@ -188,6 +186,7 @@ public class Xogo {
     public void borrarLinasCompletas() throws ConcurrentModificationException {
         int ultimaLinea = this.MAX_Y - Xogo.LADO_CADRADO;
         int primeraLinea = this.MIN_Y;
+        ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
         for (int y = ultimaLinea; y >= primeraLinea; y -= LADO_CADRADO) {
             Iterator<Cadrado> iteratorChan = cadradosChan.listIterator();
@@ -202,18 +201,16 @@ public class Xogo {
                     System.out.println("contadorCadrados: " + contadorCadrados);
 
                     if (contadorCadrados == 10) {
-                        this.coordsYLineas.add(y);
+                        coordsYLineas.add(y);
 
                     }
                 }
             }
-            Iterator iteratorYs = this.coordsYLineas.iterator();
-            while (iteratorYs.hasNext()) {
-                int linea = (int) iteratorYs.next();
-                this.borrarLina(linea);
-                
-            }
-            coordsYLineas.removeAll(coordsYLineas);
+        }
+        Iterator iteratorYs = coordsYLineas.iterator();
+        while (iteratorYs.hasNext()) {
+            int linea = (int) iteratorYs.next();
+            this.borrarLina(linea);
         }
     }
 
@@ -221,24 +218,28 @@ public class Xogo {
 
         String musicPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
         playSound(musicPath);
-
+        ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
         Iterator<Cadrado> iteratorChan2 = cadradosChan.listIterator();
 
         while (iteratorChan2.hasNext()) {
             Cadrado cadradoABorrar = iteratorChan2.next();
             if (cadradoABorrar.getLblCadrado().getY() == linea) {
-                this.agregarCadradosBorrar(cadradoABorrar);
-                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.lblCadrado);
+                cadradosBorrar.add(cadradoABorrar);
+                ventanaPrincipal.borrarCadrado(cadradoABorrar.lblCadrado);
             }
         }
-        this.eliminarCadradosBorradosDoChan();
-        this.eliminarCadradosBorradosDeBorrados();
+        cadradosChan.removeAll(cadradosBorrar);
         this.sumarNumeroLineas();
         this.moverCadradosChan(linea);
         ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
         sumarScorePorLineaCompleta();
         comprobarLevel();
     }
+
+   
+   
+
+   
 
     public void aumentarLevel() {
         this.level++;
@@ -279,19 +280,6 @@ public class Xogo {
             contadorScore += 1500;
         }
 
-    }
-
-    public void agregarCadradosBorrar(Cadrado cadrado) {
-        cadradosBorrar.add(cadrado);
-
-    }
-
-    public void eliminarCadradosBorradosDoChan() {
-        cadradosChan.removeAll(cadradosBorrar);
-    }
-
-    public void eliminarCadradosBorradosDeBorrados() {
-        cadradosBorrar.removeAll(cadradosBorrar);
     }
 
     public void moverCadradosChan(int linea) {
