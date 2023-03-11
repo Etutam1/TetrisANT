@@ -118,7 +118,7 @@ public class Xogo {
     public void xenerarNovaFicha() {
 
         int numAleatorio = (int) (Math.random() * 7 + 1);
-//        System.out.println("NUMERO RANDOM " + numAleatorio);
+        
         if (comprobante == numAleatorio) {
             numAleatorio = (int) (Math.random() * 7 + 1);
         }
