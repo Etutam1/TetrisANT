@@ -459,44 +459,56 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         leerResultados();
         xogo.ordenarJugadoresPorScore();
         xogo.agregarDatosTabla();
-        panelScores.setVisible(true);      
+        panelScores.setVisible(true);
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
     private void guardarResultados() {
         PrintWriter salida = null;
-        
+
         String jugadorScore = this.getNombreJugadorLabel().getText() + "-" + xogo.contadorScore + "\n";
         try {
-            salida = new PrintWriter(new FileWriter("PlayerScore.txt",true));
+            salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
             salida.write(jugadorScore);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            
+
             if (salida != null) {
-                salida.close(); 
+                salida.close();
             }
         }
     }
-    private void leerResultados(){
+
+    private void leerResultados() {
+        FileReader entrada = null;
+        Scanner scanner= null;
         try {
-    FileReader entrada = new FileReader("PlayerScore.txt");
-    Scanner scanner = new Scanner(entrada);
+            entrada = new FileReader("PlayerScore.txt");
+            scanner = new Scanner(entrada);
 
-    while (scanner.hasNextLine()) {
-        String linea = scanner.nextLine();
-        Jugador jugador = new Jugador(linea);
-        xogo.agregarJugador(jugador);     
-    }
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                Jugador jugador = new Jugador(linea);
+                xogo.agregarJugador(jugador);
+            }
 
-    scanner.close(); 
-    entrada.close();
-} catch (IOException e) {
-    e.printStackTrace();
-}
-        
-        
+            scanner.close();
+            entrada.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(entrada != null){
+                scanner.close(); 
+                try {
+                    entrada.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+
     }
 
     private void botonSonidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSonidoActionPerformed
@@ -927,9 +939,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.scoresTituloLabel = scoresTituloLabel;
     }
 
-   
 
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
     private javax.swing.JButton botonSonido;
