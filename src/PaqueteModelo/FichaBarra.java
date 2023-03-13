@@ -5,6 +5,7 @@
 package PaqueteModelo;
 
 import java.awt.Color;
+import java.io.FileWriter;
 
 /**
  *
@@ -21,7 +22,8 @@ public class FichaBarra extends Ficha {
     public FichaBarra(Xogo xogo) {
         super(xogo);
         
-        agregarArrayCadrados();    
+        agregarArrayCadrados();
+        
     }
 
     //METODOS

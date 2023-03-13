@@ -4,13 +4,16 @@
  */
 package PaqueteIU;
 
+import PaqueteModelo.Jugador;
 import PaqueteModelo.Xogo;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
@@ -21,10 +24,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -66,6 +72,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         hardButton = new javax.swing.JButton();
         normalButton = new javax.swing.JButton();
         frameJuego = new javax.swing.JFrame();
+        panelScores = new javax.swing.JPanel();
+        scoresTituloLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        scoresTable = new javax.swing.JTable();
         panelGameOver = new javax.swing.JPanel();
         gameOverLabel = new javax.swing.JLabel();
         nombreJugadorLabel = new javax.swing.JTextField();
@@ -163,6 +173,34 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         frameJuego.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelScores.setBackground(new java.awt.Color(0, 0, 0));
+        panelScores.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        scoresTituloLabel.setBackground(new java.awt.Color(255, 255, 255));
+        scoresTituloLabel.setFont(new java.awt.Font("Monospaced", 0, 48)); // NOI18N
+        scoresTituloLabel.setForeground(new java.awt.Color(255, 255, 255));
+        scoresTituloLabel.setText("TOTAL SCORES");
+        panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 350, 91));
+
+        scoresTable.setBackground(new java.awt.Color(0, 0, 0));
+        scoresTable.setForeground(new java.awt.Color(255, 255, 255));
+        scoresTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(scoresTable);
+
+        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, -1));
+
+        frameJuego.getContentPane().add(panelScores, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 810));
 
         panelGameOver.setBackground(new java.awt.Color(0, 0, 0));
         panelGameOver.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -402,25 +440,49 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void gameOverOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameOverOKButtonActionPerformed
 
+        guardarResultados();
+
+
+    }//GEN-LAST:event_gameOverOKButtonActionPerformed
+
+    private void guardarResultados() {
         PrintWriter salida = null;
-        File archivotxt = new File("PlayerScore.txt");
+        
         String jugadorScore = this.getNombreJugadorLabel().getText() + "-" + xogo.contadorScore + "\n";
         try {
-            salida = new PrintWriter(new FileWriter(archivotxt));
-            if (archivotxt.exists()) {
-                salida.write(jugadorScore);
-            }
+            salida = new PrintWriter(new FileWriter("PlayerScore.txt",true));
+            salida.write(jugadorScore);
+            
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-
+            
             if (salida != null) {
                 salida.close();
             }
         }
+    }
+    private void leerResultados(){
+        try {
+    FileReader entrada = new FileReader("PlayerScore.txt");
+    Scanner scanner = new Scanner(entrada);
 
+    while (scanner.hasNextLine()) {
+        String linea = scanner.nextLine();
+        Jugador jugador = new Jugador(linea);
+        xogo.agregarJugador(jugador);
+        xogo.ordenarPorScore();
+  
+    }
 
-    }//GEN-LAST:event_gameOverOKButtonActionPerformed
+    scanner.close();
+    entrada.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+        
+        
+    }
 
     private void botonSonidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSonidoActionPerformed
         contadorMusica++;
@@ -478,17 +540,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                String musicPath = "src\\Resources\\Musica\\menu.wav";
+
                 new VentanaPrincipal().setVisible(true);
-                playMenuMusic(musicPath);
+                reproducirMusicaMenu();
             }
         });
 
     }
 
-    public static void playMenuMusic(String musicLocation) {
+    private static void reproducirMusicaMenu() {
+        String sonidoMenuPath = "src\\Resources\\Musica\\menu.wav";
         try {
-            File musicPath = new File(musicLocation);
+            File musicPath = new File(sonidoMenuPath);
             if (musicPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
                 cliper = AudioSystem.getClip();
@@ -506,11 +569,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void iniciarPartida() {
 
         cliper.stop();
-        String musicPath = "src\\Resources\\Musica\\juego.wav";
-        playMenuMusic(musicPath);
+
         ocultarVentanaPrincipal();
         mostrarVentanaJuego();
         xogo = new Xogo(false, this);
+        xogo.reproducirMusicaPartida();
         this.mostrarLevel();
         xogo.xenerarNovaFicha();
         this.movimientoCaida();
@@ -524,7 +587,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void ocultarVentanaPrincipal() {
         this.setVisible(false);
-
     }
 
     public void mostrarVentanaJuego() {
@@ -533,9 +595,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelJuego.setFocusable(true);
         frameJuego.setLocationRelativeTo(this.rootPane);
     }
-    
+
     public void mostrarPanelGameOver() {
-       getPanelGameOver().setVisible(true);
+        getPanelGameOver().setVisible(true);
     }
 
     public void movimientoCaida() {
@@ -577,8 +639,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void mostrarLevel() {
         this.getLevelTextLabel().setText(String.valueOf(xogo.level));
     }
-    
-    
 
     public JPanel getPanelJuego() {
         return panelJuego;
@@ -812,7 +872,49 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.settingsButton = settingsButton;
     }
 
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
 
+    public void setjScrollPane1(JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    public JPanel getPanelScores() {
+        return panelScores;
+    }
+
+    public void setPanelScores(JPanel panelScores) {
+        this.panelScores = panelScores;
+    }
+
+    public JPanel getPanelfondo() {
+        return panelfondo;
+    }
+
+    public void setPanelfondo(JPanel panelfondo) {
+        this.panelfondo = panelfondo;
+    }
+
+    public JTable getScoresTable() {
+        return scoresTable;
+    }
+
+    public void setScoresTable(JTable scoresTable) {
+        this.scoresTable = scoresTable;
+    }
+
+    public JLabel getScoresTituloLabel() {
+        return scoresTituloLabel;
+    }
+
+    public void setScoresTituloLabel(JLabel scoresTituloLabel) {
+        this.scoresTituloLabel = scoresTituloLabel;
+    }
+
+   
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
     private javax.swing.JButton botonSonido;
@@ -826,6 +928,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel jugadorLabel;
@@ -838,11 +941,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton normalButton;
     private javax.swing.JPanel panelGameOver;
     private javax.swing.JPanel panelJuego;
+    private javax.swing.JPanel panelScores;
     private javax.swing.JPanel panelfondo;
     private javax.swing.JToggleButton pauseButton;
     private javax.swing.JButton playButton;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreTextLabel;
+    private javax.swing.JTable scoresTable;
+    private javax.swing.JLabel scoresTituloLabel;
     private javax.swing.JButton settingsButton;
     // End of variables declaration//GEN-END:variables
 }
