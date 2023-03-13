@@ -54,6 +54,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.panelGameOver.setVisible(false);
+        this.panelScores.setVisible(false);
 
     }
 
@@ -89,8 +90,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pauseButton = new javax.swing.JToggleButton();
         levelLabel = new javax.swing.JLabel();
         levelTextLabel = new javax.swing.JLabel();
-        panelfondo = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        panelFondo = new javax.swing.JPanel();
+        labelFondo = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         exitButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
@@ -166,7 +167,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         frameJuego.setTitle("Tetris");
         frameJuego.setBackground(new java.awt.Color(204, 204, 204));
         frameJuego.setForeground(java.awt.Color.gray);
-        frameJuego.setMinimumSize(new java.awt.Dimension(700, 850));
+        frameJuego.setMinimumSize(new java.awt.Dimension(630, 849));
+        frameJuego.setPreferredSize(new java.awt.Dimension(873, 1080));
+        frameJuego.setSize(new java.awt.Dimension(630, 849));
         frameJuego.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 frameJuegoKeyPressed(evt);
@@ -181,24 +184,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         scoresTituloLabel.setFont(new java.awt.Font("Monospaced", 0, 48)); // NOI18N
         scoresTituloLabel.setForeground(new java.awt.Color(255, 255, 255));
         scoresTituloLabel.setText("TOTAL SCORES");
-        panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 350, 91));
+        panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
 
+        scoresTable.setAutoCreateRowSorter(true);
         scoresTable.setBackground(new java.awt.Color(0, 0, 0));
+        scoresTable.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         scoresTable.setForeground(new java.awt.Color(255, 255, 255));
         scoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Jugador", "Score"
             }
         ));
+        scoresTable.setOpaque(false);
+        scoresTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        scoresTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(scoresTable);
 
-        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, -1));
+        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 370, 330));
 
         frameJuego.getContentPane().add(panelScores, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 810));
 
@@ -232,7 +240,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelJuego.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelJuego.setNextFocusableComponent(playButton);
         panelJuego.setLayout(null);
-        frameJuego.getContentPane().add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 400, 800));
+        frameJuego.getContentPane().add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 400, 800));
 
         scoreLabel.setBackground(new java.awt.Color(255, 255, 255));
         scoreLabel.setFont(new java.awt.Font("Monospaced", 1, 48)); // NOI18N
@@ -279,22 +287,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         levelTextLabel.setForeground(new java.awt.Color(255, 255, 255));
         frameJuego.getContentPane().add(levelTextLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 420, 130, 80));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/fondo.jpg"))); // NOI18N
+        panelFondo.setPreferredSize(new java.awt.Dimension(630, 850));
 
-        javax.swing.GroupLayout panelfondoLayout = new javax.swing.GroupLayout(panelfondo);
-        panelfondo.setLayout(panelfondoLayout);
-        panelfondoLayout.setHorizontalGroup(
-            panelfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 630, Short.MAX_VALUE)
+        labelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/fondo.jpg"))); // NOI18N
+        labelFondo.setToolTipText("");
+        labelFondo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        labelFondo.setMinimumSize(new java.awt.Dimension(873, 800));
+
+        javax.swing.GroupLayout panelFondoLayout = new javax.swing.GroupLayout(panelFondo);
+        panelFondo.setLayout(panelFondoLayout);
+        panelFondoLayout.setHorizontalGroup(
+            panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFondoLayout.createSequentialGroup()
+                .addComponent(labelFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        panelfondoLayout.setVerticalGroup(
-            panelfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelfondoLayout.createSequentialGroup()
-                .addComponent(jLabel2)
+        panelFondoLayout.setVerticalGroup(
+            panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFondoLayout.createSequentialGroup()
+                .addComponent(labelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        frameJuego.getContentPane().add(panelfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 810));
+        frameJuego.getContentPane().add(panelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tetris");
@@ -439,10 +454,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_frameJuegoKeyPressed
 
     private void gameOverOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameOverOKButtonActionPerformed
-
+        panelGameOver.setVisible(false);
         guardarResultados();
-
-
+        leerResultados();
+        xogo.ordenarJugadoresPorScore();
+        xogo.agregarDatosTabla();
+        panelScores.setVisible(true);      
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
     private void guardarResultados() {
@@ -458,7 +475,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } finally {
             
             if (salida != null) {
-                salida.close();
+                salida.close(); 
             }
         }
     }
@@ -470,12 +487,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     while (scanner.hasNextLine()) {
         String linea = scanner.nextLine();
         Jugador jugador = new Jugador(linea);
-        xogo.agregarJugador(jugador);
-        xogo.ordenarPorScore();
-  
+        xogo.agregarJugador(jugador);     
     }
 
-    scanner.close();
+    scanner.close(); 
     entrada.close();
 } catch (IOException e) {
     e.printStackTrace();
@@ -888,12 +903,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.panelScores = panelScores;
     }
 
-    public JPanel getPanelfondo() {
-        return panelfondo;
+    public JPanel getPanelFondo() {
+        return panelFondo;
     }
 
-    public void setPanelfondo(JPanel panelfondo) {
-        this.panelfondo = panelfondo;
+    public void setPanelFondo(JPanel panelfondo) {
+        this.panelFondo = panelfondo;
     }
 
     public JTable getScoresTable() {
@@ -926,12 +941,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton gameOverOKButton;
     private javax.swing.JButton hardButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel jugadorLabel;
+    private javax.swing.JLabel labelFondo;
     private javax.swing.JLabel labelTituloLevel;
     private javax.swing.JLabel labelTituloTetris;
     private javax.swing.JLabel levelLabel;
@@ -939,10 +954,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lineasTextLabel;
     private javax.swing.JTextField nombreJugadorLabel;
     private javax.swing.JButton normalButton;
+    private javax.swing.JPanel panelFondo;
     private javax.swing.JPanel panelGameOver;
     private javax.swing.JPanel panelJuego;
     private javax.swing.JPanel panelScores;
-    private javax.swing.JPanel panelfondo;
     private javax.swing.JToggleButton pauseButton;
     private javax.swing.JButton playButton;
     private javax.swing.JLabel scoreLabel;

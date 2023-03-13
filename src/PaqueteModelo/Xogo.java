@@ -6,6 +6,7 @@ package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
 import static PaqueteIU.VentanaPrincipal.cliper;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -254,7 +255,7 @@ public class Xogo {
         if (this.numeroLineas % 5 == 0) {
             aumentarLevel();
             ventanaPrincipal.mostrarLevel();
-            actualizarDelays(ventanaPrincipal.timer.getDelay() / 2);
+            actualizarDelays((int) (ventanaPrincipal.timer.getDelay() * 0.75));
         }
     }
 
@@ -311,6 +312,8 @@ public class Xogo {
 
     public void finalDePartida() {
         pararTimers();
+        ventanaPrincipal.getPanelJuego().setVisible(false);
+        ventanaPrincipal.getPanelFondo().setVisible(false);
         ventanaPrincipal.mostrarPanelGameOver();
         reproducirMusicaGameOver();
     }
@@ -367,7 +370,7 @@ public class Xogo {
         getJugadores().add(player);
     }
 
-    public void ordenarPorScore() {
+    public void ordenarJugadoresPorScore() {
         Collections.sort(jugadores, new Comparator<Jugador>() {
             @Override
             public int compare(Jugador j1, Jugador j2) {
@@ -375,19 +378,29 @@ public class Xogo {
             }
         });
     }
-    
-    public void agregarDatosTabla(){
-        Iterator<Jugador> iteratorJugadores = getJugadores().listIterator();
-        while(iteratorJugadores.hasNext()){
-            Jugador jugadorActual = iteratorJugadores.next();
-            Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
-//            DefaultTableModel model = (DefaultTableModel) .getModel();
-            model.addRow(row);
-        }
-            
-    }
-    //SETTERs AND GETTERs 
 
+    public void agregarDatosTabla() {
+        Iterator<Jugador> iteratorJugadores = getJugadores().listIterator();
+        DefaultTableModel model = (DefaultTableModel) ventanaPrincipal.getScoresTable().getModel();
+        model.setRowCount(0);
+        while (iteratorJugadores.hasNext()) {
+            Jugador jugadorActual = iteratorJugadores.next();
+
+            Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
+            model.addRow(row);
+            ajustarTamañoTabla();
+        }
+    }
+
+    private void ajustarTamañoTabla() {
+        Dimension dim = ventanaPrincipal.getScoresTable().getPreferredSize();
+        int alturaFilas = ventanaPrincipal.getScoresTable().getRowHeight();
+        int totalFilas = ventanaPrincipal.getScoresTable().getRowCount();
+        dim.height = alturaFilas * (totalFilas + 1);
+        ventanaPrincipal.getScoresTable().setPreferredScrollableViewportSize(dim);
+    }
+
+    //SETTERs AND GETTERs 
     public boolean isPausa() {
         return pausa;
     }
