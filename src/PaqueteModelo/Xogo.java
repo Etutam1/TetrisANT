@@ -339,6 +339,7 @@ public class Xogo {
     }
 
     public static void playGameOverMusic(String musicLocation) {
+        cliper.stop();
         try {
             File musicPath = new File(musicLocation);
             if (musicPath.exists()) {
@@ -378,7 +379,7 @@ public class Xogo {
 
     public void gameOver() {
         ventanaPrincipal.getPanelGameOver().setVisible(true);
-        ventanaPrincipal.cliper.stop();
+        
         String musicPath = "src\\Resources\\Musica\\gameover.wav";
         playGameOverMusic(musicPath);
 
