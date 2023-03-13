@@ -38,6 +38,7 @@ public class Xogo {
     public int level = 0;
     public int contadorScore = 0;
     public int numeroLineas = 0;
+    public ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
     //CONSTRUCTOR
     public Xogo(boolean pausa, VentanaPrincipal ventanaPrincipal) {
@@ -70,6 +71,8 @@ public class Xogo {
 
         if (chocaFichaCoChan()) {
             this.engadirFichaAoChan();
+            
+            borrarLinasCompletas();    
             if (!comprobarFinalPartida()) {
                 this.xenerarNovaFicha();
             }
@@ -198,18 +201,18 @@ public class Xogo {
                     System.out.println("contadorCadrados: " + contadorCadrados);
 
                     if (contadorCadrados == 10) {
-                        this.borrarLina(y);
-                        this.eliminarCadradosBorradosDoChan();
-                        this.eliminarCadradosBorradosDeBorrados();
-                        this.sumarNumeroLineas();
-                        this.moverCadradosChan(y);
-                        ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
-                        sumarScorePorLineaCompleta();
-                        comprobarLevel();
+                        this.coordsYLineas.add(y);
+
                     }
                 }
             }
-
+            Iterator iteratorYs = this.coordsYLineas.iterator();
+            while (iteratorYs.hasNext()) {
+                int linea = (int) iteratorYs.next();
+                this.borrarLina(linea);
+                
+            }
+            coordsYLineas.removeAll(coordsYLineas);
         }
     }
 
@@ -227,6 +230,13 @@ public class Xogo {
                 this.ventanaPrincipal.borrarCadrado(cadradoABorrar.lblCadrado);
             }
         }
+        this.eliminarCadradosBorradosDoChan();
+        this.eliminarCadradosBorradosDeBorrados();
+        this.sumarNumeroLineas();
+        this.moverCadradosChan(linea);
+        ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
+        sumarScorePorLineaCompleta();
+        comprobarLevel();
     }
 
     public void aumentarLevel() {
@@ -325,7 +335,7 @@ public class Xogo {
     public void pararTimers() {
         ventanaPrincipal.timerScore.stop();
         ventanaPrincipal.timer.stop();
-        this.timerComprobarLineas.stop();
+//        this.timerComprobarLineas.stop();
     }
 
     public static void playGameOverMusic(String musicLocation) {
@@ -362,7 +372,7 @@ public class Xogo {
 
     public void actualizarDelays(int delay) {
         ventanaPrincipal.timerScore.setDelay(delay);
-        this.timerComprobarLineas.setDelay(delay);
+//        this.timerComprobarLineas.setDelay(delay);
         ventanaPrincipal.timer.setDelay(delay);
     }
 
