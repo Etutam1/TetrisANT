@@ -20,11 +20,8 @@ public class FichaBarra extends Ficha {
     //CONSTRUCTOR
     public FichaBarra(Xogo xogo) {
         super(xogo);
-
-        cadrados.add(cadrado1);
-        cadrados.add(cadrado2);
-        cadrados.add(cadrado3);
-        cadrados.add(cadrado4);
+        
+        agregarArrayCadrados();    
     }
 
     //METODOS
@@ -76,5 +73,12 @@ public class FichaBarra extends Ficha {
 
         }
         return true;
+    }
+
+    private void agregarArrayCadrados() {
+        cadrados.add(cadrado1);
+        cadrados.add(cadrado2);
+        cadrados.add(cadrado3);
+        cadrados.add(cadrado4);
     }
 }

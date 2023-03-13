@@ -5,14 +5,9 @@
 package PaqueteIU;
 
 import PaqueteModelo.Xogo;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -537,7 +532,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         frameJuego.setFocusable(true);
         panelJuego.setFocusable(true);
         frameJuego.setLocationRelativeTo(this.rootPane);
-
+    }
+    
+    public void mostrarPanelGameOver() {
+       getPanelGameOver().setVisible(true);
     }
 
     public void movimientoCaida() {
