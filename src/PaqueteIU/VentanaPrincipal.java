@@ -79,6 +79,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pauseButton = new javax.swing.JToggleButton();
         levelLabel = new javax.swing.JLabel();
         levelTextLabel = new javax.swing.JLabel();
+        botonSonido1 = new javax.swing.JButton();
         panelfondo = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -240,6 +241,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         levelTextLabel.setBackground(new java.awt.Color(255, 255, 255));
         levelTextLabel.setForeground(new java.awt.Color(255, 255, 255));
         frameJuego.getContentPane().add(levelTextLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 420, 130, 80));
+
+        botonSonido1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
+        botonSonido1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSonido1ActionPerformed(evt);
+            }
+        });
+        frameJuego.getContentPane().add(botonSonido1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 750, 60, 60));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/fondo.jpg"))); // NOI18N
 
@@ -437,6 +446,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonSonidoActionPerformed
 
+    private void botonSonido1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSonido1ActionPerformed
+        contadorMusica++;
+        if (contadorMusica == 1) {
+            botonSonido.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+            clipTimePosition = cliper.getMicrosecondPosition();
+            cliper.stop();
+            System.out.println(clipTimePosition);
+        } else {
+            contadorMusica = 0;
+            cliper.setMicrosecondPosition(clipTimePosition);
+            botonSonido.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+            cliper.start();
+        }
+    }//GEN-LAST:event_botonSonido1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -504,7 +528,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void iniciarPartida() {
-
         cliper.stop();
         String musicPath = "src\\Resources\\Musica\\juego.wav";
         playMenuMusic(musicPath);
@@ -533,9 +556,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelJuego.setFocusable(true);
         frameJuego.setLocationRelativeTo(this.rootPane);
     }
-    
+
     public void mostrarPanelGameOver() {
-       getPanelGameOver().setVisible(true);
+        getPanelGameOver().setVisible(true);
     }
 
     public void movimientoCaida() {
@@ -577,8 +600,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void mostrarLevel() {
         this.getLevelTextLabel().setText(String.valueOf(xogo.level));
     }
-    
-    
 
     public JPanel getPanelJuego() {
         return panelJuego;
@@ -586,14 +607,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void setPanelJuego(JPanel panelJuego) {
         this.panelJuego = panelJuego;
-    }
-
-    public static Clip getCliper() {
-        return cliper;
-    }
-
-    public static void setCliper(Clip cliper) {
-        VentanaPrincipal.cliper = cliper;
     }
 
     public JLabel getLineasTextLabel() {
@@ -816,6 +829,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
     private javax.swing.JButton botonSonido;
+    private javax.swing.JButton botonSonido1;
     private javax.swing.JButton easyButton;
     private javax.swing.JButton exitButton;
     private javax.swing.JFrame frameJuego;

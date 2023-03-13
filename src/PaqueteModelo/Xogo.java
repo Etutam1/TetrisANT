@@ -343,6 +343,7 @@ public class Xogo {
     }
 
     public void reproducirMusicaGameOver() {
+        VentanaPrincipal.cliper.stop();
         String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
         reproducirSonido(sonidoGameOverPath);
     }
