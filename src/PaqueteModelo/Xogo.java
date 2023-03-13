@@ -13,7 +13,6 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.Timer;
 
 /**
@@ -33,12 +32,11 @@ public class Xogo {
     public VentanaPrincipal ventanaPrincipal;
     public Ficha fichaActual;
     public ArrayList<Cadrado> cadradosChan = new ArrayList<>();
-    public ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
+
     public Timer timerComprobarLineas;
     public int level = 0;
     public int contadorScore = 0;
     public int numeroLineas = 0;
-    public ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
     //CONSTRUCTOR
     public Xogo(boolean pausa, VentanaPrincipal ventanaPrincipal) {
@@ -68,16 +66,15 @@ public class Xogo {
     }
 
     public void moverFichaAbaixo() {
-
-        if (chocaFichaCoChan()) {
-            this.engadirFichaAoChan();
-            
-            borrarLinasCompletas();    
-            if (!comprobarFinalPartida()) {
+        if (!comprobarFinalPartida()) {
+            if (chocaFichaCoChan()) {
+                this.engadirFichaAoChan();
+                reproducirSonidoChocaChan();
                 this.xenerarNovaFicha();
+
+            } else {
+                fichaActual.moverAbaixo();
             }
-        } else {
-            fichaActual.moverAbaixo();
         }
     }
 
@@ -120,7 +117,7 @@ public class Xogo {
     public void xenerarNovaFicha() {
 
         int numAleatorio = (int) (Math.random() * 7 + 1);
-//        System.out.println("NUMERO RANDOM " + numAleatorio);
+
         if (comprobante == numAleatorio) {
             numAleatorio = (int) (Math.random() * 7 + 1);
         }
@@ -152,6 +149,7 @@ public class Xogo {
             fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
+
         this.pintarFicha();
     }
 
@@ -177,16 +175,13 @@ public class Xogo {
     }
 
     public void engadirFichaAoChan() {
-
-        String musicPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
-        playSound(musicPath);
         cadradosChan.addAll(fichaActual.cadrados);
-
     }
 
     public void borrarLinasCompletas() throws ConcurrentModificationException {
         int ultimaLinea = this.MAX_Y - Xogo.LADO_CADRADO;
         int primeraLinea = this.MIN_Y;
+        ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
         for (int y = ultimaLinea; y >= primeraLinea; y -= LADO_CADRADO) {
             Iterator<Cadrado> iteratorChan = cadradosChan.listIterator();
@@ -201,42 +196,51 @@ public class Xogo {
                     System.out.println("contadorCadrados: " + contadorCadrados);
 
                     if (contadorCadrados == 10) {
-                        this.coordsYLineas.add(y);
-
+                        coordsYLineas.add(y);
                     }
                 }
             }
-            Iterator iteratorYs = this.coordsYLineas.iterator();
-            while (iteratorYs.hasNext()) {
-                int linea = (int) iteratorYs.next();
-                this.borrarLina(linea);
-                
-            }
-            coordsYLineas.removeAll(coordsYLineas);
         }
+        Iterator iteratorYs = coordsYLineas.iterator();
+        while (iteratorYs.hasNext()) {
+            int linea = (int) iteratorYs.next();
+            this.borrarLina(linea);  
+            this.moverCadradosChan(linea);
+        }
+        
     }
 
     public void borrarLina(int linea) {
 
-        String musicPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
-        playSound(musicPath);
-
+        ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
         Iterator<Cadrado> iteratorChan2 = cadradosChan.listIterator();
 
         while (iteratorChan2.hasNext()) {
             Cadrado cadradoABorrar = iteratorChan2.next();
             if (cadradoABorrar.getLblCadrado().getY() == linea) {
-                this.agregarCadradosBorrar(cadradoABorrar);
-                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.lblCadrado);
+                cadradosBorrar.add(cadradoABorrar);
+                ventanaPrincipal.borrarCadrado(cadradoABorrar.lblCadrado);
             }
         }
-        this.eliminarCadradosBorradosDoChan();
-        this.eliminarCadradosBorradosDeBorrados();
+        cadradosChan.removeAll(cadradosBorrar);
         this.sumarNumeroLineas();
-        this.moverCadradosChan(linea);
+        
         ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
         sumarScorePorLineaCompleta();
         comprobarLevel();
+        reproducirSonidoBorrarLinea();
+    }
+    
+    public void moverCadradosChan(int linea) {
+
+        Iterator<Cadrado> iteratorChan3 = cadradosChan.iterator();
+        while (iteratorChan3.hasNext()) {
+
+            Cadrado cadradoABaixar = iteratorChan3.next();
+            if (cadradoABaixar.getY() < linea) {
+                cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
+            }
+        }
     }
 
     public void aumentarLevel() {
@@ -245,11 +249,9 @@ public class Xogo {
 
     public void comprobarLevel() {
         if (this.numeroLineas % 5 == 0) {
-            aumentarLevel();
-            if (this.level > 0) {
-                ventanaPrincipal.mostrarLevel();
-                actualizarDelays(ventanaPrincipal.timer.getDelay() / 2);
-            }
+            aumentarLevel();           
+            ventanaPrincipal.mostrarLevel();
+            actualizarDelays(ventanaPrincipal.timer.getDelay() / 2);
         }
     }
 
@@ -280,40 +282,15 @@ public class Xogo {
 
     }
 
-    public void agregarCadradosBorrar(Cadrado cadrado) {
-        cadradosBorrar.add(cadrado);
-
-    }
-
-    public void eliminarCadradosBorradosDoChan() {
-        cadradosChan.removeAll(cadradosBorrar);
-    }
-
-    public void eliminarCadradosBorradosDeBorrados() {
-        cadradosBorrar.removeAll(cadradosBorrar);
-    }
-
-    public void moverCadradosChan(int linea) {
-
-        Iterator<Cadrado> iteratorChan3 = cadradosChan.iterator();
-        while (iteratorChan3.hasNext()) {
-
-            Cadrado cadradoABaixar = iteratorChan3.next();
-            if (cadradoABaixar.getY() < linea) {
-                cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
-            }
-        }
-    }
+    
 
     public void comprobarLineasCompletas() {
         this.timerComprobarLineas = new Timer(1000, (ActionEvent e) -> {
             try {
                 this.borrarLinasCompletas();
-
             } catch (ConcurrentModificationException ex) {
                 System.out.println("SE ESTÁ MODIFICANDO EL ARRAYLIST MIENTRAS SE ITERA ");
             }
-
         });
     }
 
@@ -325,11 +302,16 @@ public class Xogo {
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-                pararTimers();
-                gameOver();
+                finalDePartida();
             }
         }
         return gameOver;
+    }
+
+    public void finalDePartida() {
+        pararTimers();
+        ventanaPrincipal.mostrarPanelGameOver();
+        reproducirMusicaGameOver();
     }
 
     public void pararTimers() {
@@ -338,51 +320,41 @@ public class Xogo {
 //        this.timerComprobarLineas.stop();
     }
 
-    public static void playGameOverMusic(String musicLocation) {
-        cliper.stop();
-        try {
-            File musicPath = new File(musicLocation);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                cliper = AudioSystem.getClip();
-                cliper.open(audioInput);
-                cliper.start();
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void playSound(String musicLocation) {
-        try {
-            File musicPath = new File(musicLocation);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                cliper = AudioSystem.getClip();
-                cliper.open(audioInput);
-                cliper.start();
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public void actualizarDelays(int delay) {
         ventanaPrincipal.timerScore.setDelay(delay);
 //        this.timerComprobarLineas.setDelay(delay);
         ventanaPrincipal.timer.setDelay(delay);
     }
 
-    public void gameOver() {
-        ventanaPrincipal.getPanelGameOver().setVisible(true);
-        
-        String musicPath = "src\\Resources\\Musica\\gameover.wav";
-        playGameOverMusic(musicPath);
+    public static void reproducirSonido(String musicLocation) {
+        try {
+            File musicPath = new File(musicLocation);
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                cliper = AudioSystem.getClip();
+                cliper.open(audioInput);
+                cliper.start();
+            } else {
+                System.out.println("No se encontró el archivo");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    public void reproducirMusicaGameOver() {
+        String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
+        reproducirSonido(sonidoGameOverPath);
+    }
+
+    private void reproducirSonidoBorrarLinea() {
+        String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
+        reproducirSonido(sonidoLineaPath);
+    }
+
+    private void reproducirSonidoChocaChan() {
+        String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
+        reproducirSonido(sonidoChanPath);
     }
 
     //SETTERs AND GETTERs 

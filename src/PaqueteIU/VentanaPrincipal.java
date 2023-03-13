@@ -5,14 +5,9 @@
 package PaqueteIU;
 
 import PaqueteModelo.Xogo;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +20,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -371,7 +365,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             cliper.stop();
             timer.stop();
             timerScore.stop();
-//            xogo.timerComprobarLineas.stop();
+            xogo.timerComprobarLineas.stop();
             xogo.pausa = true;
         } else {
             cliper.setMicrosecondPosition(clipTimePosition);
@@ -379,7 +373,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pauseButton.setFocusable(false);
             timer.start();
             timerScore.start();
-//            xogo.timerComprobarLineas.start();
+            xogo.timerComprobarLineas.start();
             xogo.pausa = false;
         }
 
@@ -521,8 +515,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         xogo.xenerarNovaFicha();
         this.movimientoCaida();
         timer.start();
-//        xogo.comprobarLineasCompletas();
-//        xogo.timerComprobarLineas.start();
+        xogo.comprobarLineasCompletas();
+        xogo.timerComprobarLineas.start();
         this.aumentarScore();
         timerScore.start();
 
@@ -538,7 +532,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         frameJuego.setFocusable(true);
         panelJuego.setFocusable(true);
         frameJuego.setLocationRelativeTo(this.rootPane);
-
+    }
+    
+    public void mostrarPanelGameOver() {
+       getPanelGameOver().setVisible(true);
     }
 
     public void movimientoCaida() {

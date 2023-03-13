@@ -57,8 +57,7 @@ public abstract class Ficha {
         while (iterator5.hasNext()) {
             Cadrado cadrado3 = iterator5.next();
             cadrado3.getLblCadrado().setLocation(cadrado3.getLblCadrado().getX() + Xogo.LADO_CADRADO, cadrado3.getLblCadrado().getY());
-            cadrado3.setX(cadrado3.getLblCadrado().getX());
-            cadrado3.setY(cadrado3.getLblCadrado().getY());
+            actualizarCoordsCadrado(cadrado3, cadrado3.getLblCadrado().getX(), cadrado3.getLblCadrado().getY());
            
         }
         return true;
@@ -71,8 +70,7 @@ public abstract class Ficha {
 
             Cadrado cadrado2 = iterator6.next();
             cadrado2.getLblCadrado().setLocation(cadrado2.getLblCadrado().getX() - Xogo.LADO_CADRADO, cadrado2.getLblCadrado().getY());
-            cadrado2.setX(cadrado2.getLblCadrado().getX());
-            cadrado2.setY(cadrado2.getLblCadrado().getY());   
+            actualizarCoordsCadrado(cadrado2, cadrado2.getLblCadrado().getX(), cadrado2.getLblCadrado().getY());  
         }
 
         return true;
@@ -84,8 +82,7 @@ public abstract class Ficha {
         while (iterator7.hasNext()) {
             Cadrado cadrado4 = iterator7.next();
             cadrado4.getLblCadrado().setLocation(cadrado4.getLblCadrado().getX(), cadrado4.getLblCadrado().getY() + Xogo.LADO_CADRADO);
-            cadrado4.setX(cadrado4.getLblCadrado().getX());
-            cadrado4.setY(cadrado4.getLblCadrado().getY());      
+            actualizarCoordsCadrado(cadrado4, cadrado4.getLblCadrado().getX(), cadrado4.getLblCadrado().getY());   
         }
         return true;
 
@@ -97,16 +94,18 @@ public abstract class Ficha {
         while (iterator8.hasNext()) {
             Cadrado cadrado1 = iterator8.next();
             cadrado1.getLblCadrado().setLocation(cadrado1.getLblCadrado().getX(), cadrado1.getLblCadrado().getY() + Xogo.LADO_CADRADO);
-            cadrado1.setX(cadrado1.getLblCadrado().getX());
-            cadrado1.setY(cadrado1.getLblCadrado().getY());
+            actualizarCoordsCadrado(cadrado1, cadrado1.getLblCadrado().getX(), cadrado1.getLblCadrado().getY());
         }
         return true;
+    }
+    
+    private void actualizarCoordsCadrado(Cadrado cadrado , int x, int y){
+            cadrado.setX(x);
+            cadrado.setY(y);
     }
 
     public abstract boolean rotar();
     
     
-    public void actualizarXYCadrado(int x , int y){
-        
-    }
+    
 }

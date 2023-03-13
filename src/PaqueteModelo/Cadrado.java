@@ -25,6 +25,10 @@ public class Cadrado {
         this.y = y;
         this.corRecheo = corRecheo;
         lblCadrado = new JLabel();
+        setPropertiesLblCadrado(x,y,corRecheo);
+    }
+    
+    private void setPropertiesLblCadrado(int x , int y , Color color){
         lblCadrado.setBackground(corRecheo);
         lblCadrado.setForeground(new java.awt.Color(204, 0, 0));
         lblCadrado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -72,11 +76,8 @@ public class Cadrado {
     public String getCoordenadas() {
         int coorX = this.getX();
         int coorY = this.getY();
-        String coordenadas = String.valueOf(coorX) +" " +String.valueOf(coorY);
-        
-               
-                
-        
+        String coordenadas = String.valueOf(coorX) + " " + String.valueOf(coorY);
+
         return coordenadas;
     }
 
