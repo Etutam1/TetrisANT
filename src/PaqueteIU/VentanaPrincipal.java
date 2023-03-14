@@ -7,7 +7,6 @@ package PaqueteIU;
 import PaqueteModelo.Jugador;
 import PaqueteModelo.Xogo;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
