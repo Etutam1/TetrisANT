@@ -34,7 +34,7 @@ public class FichaLInversa extends Ficha {
         int cadradoFixo_X = cadrado2.getX();
         int cadradoFixo_Y = cadrado2.getY();
         int eValido = 0;
-        System.out.println("ROTAR");
+        
 
         if (posicion > 3) {
             posicion = 0;

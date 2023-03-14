@@ -6,14 +6,18 @@ package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
 import static PaqueteIU.VentanaPrincipal.cliper;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,7 +36,7 @@ public class Xogo {
     public VentanaPrincipal ventanaPrincipal;
     public Ficha fichaActual;
     public ArrayList<Cadrado> cadradosChan = new ArrayList<>();
-
+    private ArrayList<Jugador> jugadores = new ArrayList<>();
     public Timer timerComprobarLineas;
     public int level = 0;
     public int contadorScore = 0;
@@ -204,10 +208,10 @@ public class Xogo {
         Iterator iteratorYs = coordsYLineas.iterator();
         while (iteratorYs.hasNext()) {
             int linea = (int) iteratorYs.next();
-            this.borrarLina(linea);  
+            this.borrarLina(linea);
             this.moverCadradosChan(linea);
         }
-        
+
     }
 
     public void borrarLina(int linea) {
@@ -224,13 +228,13 @@ public class Xogo {
         }
         cadradosChan.removeAll(cadradosBorrar);
         this.sumarNumeroLineas();
-        
+
         ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
         sumarScorePorLineaCompleta();
         comprobarLevel();
         reproducirSonidoBorrarLinea();
     }
-    
+
     public void moverCadradosChan(int linea) {
 
         Iterator<Cadrado> iteratorChan3 = cadradosChan.iterator();
@@ -249,9 +253,9 @@ public class Xogo {
 
     public void comprobarLevel() {
         if (this.numeroLineas % 5 == 0) {
-            aumentarLevel();           
+            aumentarLevel();
             ventanaPrincipal.mostrarLevel();
-            actualizarDelays(ventanaPrincipal.timer.getDelay() / 2);
+            actualizarDelays((int) (ventanaPrincipal.timer.getDelay() * 0.75));
         }
     }
 
@@ -282,8 +286,6 @@ public class Xogo {
 
     }
 
-    
-
     public void comprobarLineasCompletas() {
         this.timerComprobarLineas = new Timer(1000, (ActionEvent e) -> {
             try {
@@ -310,6 +312,8 @@ public class Xogo {
 
     public void finalDePartida() {
         pararTimers();
+        ventanaPrincipal.getPanelJuego().setVisible(false);
+        ventanaPrincipal.getPanelFondo().setVisible(false);
         ventanaPrincipal.mostrarPanelGameOver();
         reproducirMusicaGameOver();
     }
@@ -317,16 +321,16 @@ public class Xogo {
     public void pararTimers() {
         ventanaPrincipal.timerScore.stop();
         ventanaPrincipal.timer.stop();
-//        this.timerComprobarLineas.stop();
+        this.timerComprobarLineas.stop();
     }
 
     public void actualizarDelays(int delay) {
         ventanaPrincipal.timerScore.setDelay(delay);
-//        this.timerComprobarLineas.setDelay(delay);
+        this.timerComprobarLineas.setDelay(delay);
         ventanaPrincipal.timer.setDelay(delay);
     }
 
-    public static void reproducirSonido(String musicLocation) {
+    private static void reproducirSonido(String musicLocation) {
         try {
             File musicPath = new File(musicLocation);
             if (musicPath.exists()) {
@@ -357,6 +361,47 @@ public class Xogo {
         String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
         reproducirSonido(sonidoChanPath);
     }
+
+    public void reproducirMusicaPartida() {
+        String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
+        reproducirSonido(sonidoPartidaPath);
+    }
+
+    public void agregarJugador(Jugador player) {
+        getJugadores().add(player);
+    }
+
+    public void ordenarJugadoresPorScore() {
+        Collections.sort(jugadores, new Comparator<Jugador>() {
+            @Override
+            public int compare(Jugador j1, Jugador j2) {
+                return j2.getScore() - j1.getScore();
+            }
+        });
+    }
+
+    public void agregarDatosTabla() {
+        Iterator<Jugador> iteratorJugadores = getJugadores().listIterator();
+        DefaultTableModel model = (DefaultTableModel) ventanaPrincipal.getScoresTable().getModel();
+        model.setRowCount(1);
+        while (iteratorJugadores.hasNext()) {
+            Jugador jugadorActual = iteratorJugadores.next();
+
+            Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
+            model.addRow(row);
+            ajustarTamañoTabla();
+        }
+    }
+
+    private void ajustarTamañoTabla() {
+        Dimension dim = ventanaPrincipal.getScoresTable().getPreferredSize();
+        int alturaFilas = ventanaPrincipal.getScoresTable().getRowHeight();
+        int totalFilas = ventanaPrincipal.getScoresTable().getRowCount();
+        dim.height = alturaFilas * (totalFilas + 1);
+        ventanaPrincipal.getScoresTable().setPreferredScrollableViewportSize(dim);
+        
+    }
+
 
     //SETTERs AND GETTERs 
     public boolean isPausa() {
@@ -389,6 +434,14 @@ public class Xogo {
 
     public void setFichaActual(Ficha fichaActual) {
         this.fichaActual = fichaActual;
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(ArrayList<Jugador> jugadores) {
+        this.jugadores = jugadores;
     }
 
 }
