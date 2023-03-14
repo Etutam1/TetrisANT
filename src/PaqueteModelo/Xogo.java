@@ -6,6 +6,7 @@ package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
 import static PaqueteIU.VentanaPrincipal.cliper;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.Iterator;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -382,7 +384,7 @@ public class Xogo {
     public void agregarDatosTabla() {
         Iterator<Jugador> iteratorJugadores = getJugadores().listIterator();
         DefaultTableModel model = (DefaultTableModel) ventanaPrincipal.getScoresTable().getModel();
-        model.setRowCount(0);
+        model.setRowCount(1);
         while (iteratorJugadores.hasNext()) {
             Jugador jugadorActual = iteratorJugadores.next();
 
@@ -398,7 +400,9 @@ public class Xogo {
         int totalFilas = ventanaPrincipal.getScoresTable().getRowCount();
         dim.height = alturaFilas * (totalFilas + 1);
         ventanaPrincipal.getScoresTable().setPreferredScrollableViewportSize(dim);
+        
     }
+
 
     //SETTERs AND GETTERs 
     public boolean isPausa() {

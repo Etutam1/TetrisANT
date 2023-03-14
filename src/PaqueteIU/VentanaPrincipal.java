@@ -7,6 +7,7 @@ package PaqueteIU;
 import PaqueteModelo.Jugador;
 import PaqueteModelo.Xogo;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -54,9 +57,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         initComponents();
         this.setLocationRelativeTo(null);
-        this.panelGameOver.setVisible(false);
-        this.panelScores.setVisible(false);
-       this.getScoresTable().getParent().setBackground(Color.black);
+        ocultarPanelesFinal();
+        this.getScoresTable().getParent().setBackground(Color.black);
 
     }
 
@@ -75,14 +77,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         hardButton = new javax.swing.JButton();
         normalButton = new javax.swing.JButton();
         frameJuego = new javax.swing.JFrame();
-        panelFondo = new javax.swing.JPanel();
-        scoreLabel = new javax.swing.JLabel();
-        scoreTextLabel = new javax.swing.JLabel();
-        LineasLabel = new javax.swing.JLabel();
-        lineasTextLabel = new javax.swing.JLabel();
-        levelLabel = new javax.swing.JLabel();
-        levelTextLabel = new javax.swing.JLabel();
-        labelFondo = new javax.swing.JLabel();
         panelScores = new javax.swing.JPanel();
         scoresTituloLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -94,6 +88,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         gameOverOKButton = new javax.swing.JButton();
         pauseButton = new javax.swing.JToggleButton();
         panelJuego = new javax.swing.JPanel();
+        panelFondo = new javax.swing.JPanel();
+        scoreLabel = new javax.swing.JLabel();
+        scoreTextLabel = new javax.swing.JLabel();
+        LineasLabel = new javax.swing.JLabel();
+        lineasTextLabel = new javax.swing.JLabel();
+        levelLabel = new javax.swing.JLabel();
+        levelTextLabel = new javax.swing.JLabel();
+        labelFondo = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         exitButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
@@ -180,6 +182,90 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         frameJuego.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelScores.setBackground(new java.awt.Color(0, 0, 0));
+        panelScores.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        scoresTituloLabel.setBackground(new java.awt.Color(255, 255, 255));
+        scoresTituloLabel.setFont(new java.awt.Font("Monospaced", 0, 48)); // NOI18N
+        scoresTituloLabel.setForeground(new java.awt.Color(255, 255, 255));
+        scoresTituloLabel.setText("TOTAL SCORES");
+        panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
+
+        jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setOpaque(false);
+
+        scoresTable.setAutoCreateRowSorter(true);
+        scoresTable.setBackground(new java.awt.Color(0, 0, 0));
+        scoresTable.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        scoresTable.setForeground(new java.awt.Color(255, 255, 255));
+        scoresTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Jugador", "Score"
+            }
+        ));
+        scoresTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        scoresTable.setOpaque(false);
+        scoresTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        scoresTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        scoresTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                scoresTablePropertyChange(evt);
+            }
+        });
+        jScrollPane1.setViewportView(scoresTable);
+
+        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 370, 500));
+
+        frameJuego.getContentPane().add(panelScores, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
+
+        panelGameOver.setBackground(new java.awt.Color(0, 0, 0));
+        panelGameOver.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        gameOverLabel.setBackground(new java.awt.Color(255, 255, 255));
+        gameOverLabel.setFont(new java.awt.Font("Monospaced", 0, 48)); // NOI18N
+        gameOverLabel.setForeground(new java.awt.Color(255, 255, 255));
+        gameOverLabel.setText("GAME OVER");
+        panelGameOver.add(gameOverLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 60, 290, 91));
+        panelGameOver.add(nombreJugadorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 180, 30));
+
+        jugadorLabel.setBackground(new java.awt.Color(255, 255, 255));
+        jugadorLabel.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        jugadorLabel.setForeground(new java.awt.Color(255, 255, 255));
+        jugadorLabel.setText("JUGADOR ->");
+        panelGameOver.add(jugadorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 120, 30));
+
+        gameOverOKButton.setText("OK");
+        gameOverOKButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gameOverOKButtonActionPerformed(evt);
+            }
+        });
+        panelGameOver.add(gameOverOKButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, -1, 30));
+
+        frameJuego.getContentPane().add(panelGameOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
+
+        pauseButton.setFont(new java.awt.Font("Monospaced", 1, 48)); // NOI18N
+        pauseButton.setText("||");
+        pauseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pauseButtonActionPerformed(evt);
+            }
+        });
+        frameJuego.getContentPane().add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 660, 90, 90));
+
+        panelJuego.setBackground(new java.awt.Color(0, 0, 0));
+        panelJuego.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelJuego.setNextFocusableComponent(playButton);
+        panelJuego.setLayout(null);
+        frameJuego.getContentPane().add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 400, 800));
+
         panelFondo.setPreferredSize(new java.awt.Dimension(630, 850));
         panelFondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -229,84 +315,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelFondo.add(labelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 625, 849));
 
         frameJuego.getContentPane().add(panelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
-
-        panelScores.setBackground(new java.awt.Color(0, 0, 0));
-        panelScores.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        scoresTituloLabel.setBackground(new java.awt.Color(255, 255, 255));
-        scoresTituloLabel.setFont(new java.awt.Font("Monospaced", 0, 48)); // NOI18N
-        scoresTituloLabel.setForeground(new java.awt.Color(255, 255, 255));
-        scoresTituloLabel.setText("TOTAL SCORES");
-        panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
-
-        jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setForeground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setOpaque(false);
-
-        scoresTable.setAutoCreateRowSorter(true);
-        scoresTable.setBackground(new java.awt.Color(0, 0, 0));
-        scoresTable.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        scoresTable.setForeground(new java.awt.Color(255, 255, 255));
-        scoresTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Jugador", "Score"
-            }
-        ));
-        scoresTable.setOpaque(false);
-        scoresTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        scoresTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setViewportView(scoresTable);
-
-        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 370, 330));
-
-        frameJuego.getContentPane().add(panelScores, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
-
-        panelGameOver.setBackground(new java.awt.Color(0, 0, 0));
-        panelGameOver.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        gameOverLabel.setBackground(new java.awt.Color(255, 255, 255));
-        gameOverLabel.setFont(new java.awt.Font("Monospaced", 0, 48)); // NOI18N
-        gameOverLabel.setForeground(new java.awt.Color(255, 255, 255));
-        gameOverLabel.setText("GAME OVER");
-        panelGameOver.add(gameOverLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 60, 290, 91));
-        panelGameOver.add(nombreJugadorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 180, 30));
-
-        jugadorLabel.setBackground(new java.awt.Color(255, 255, 255));
-        jugadorLabel.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        jugadorLabel.setForeground(new java.awt.Color(255, 255, 255));
-        jugadorLabel.setText("JUGADOR ->");
-        panelGameOver.add(jugadorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 120, 30));
-
-        gameOverOKButton.setText("OK");
-        gameOverOKButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gameOverOKButtonActionPerformed(evt);
-            }
-        });
-        panelGameOver.add(gameOverOKButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, -1, 30));
-
-        frameJuego.getContentPane().add(panelGameOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
-
-        pauseButton.setFont(new java.awt.Font("Monospaced", 1, 48)); // NOI18N
-        pauseButton.setText("||");
-        pauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pauseButtonActionPerformed(evt);
-            }
-        });
-        frameJuego.getContentPane().add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 660, 90, 90));
-
-        panelJuego.setBackground(new java.awt.Color(0, 0, 0));
-        panelJuego.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panelJuego.setNextFocusableComponent(playButton);
-        panelJuego.setLayout(null);
-        frameJuego.getContentPane().add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 400, 800));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tetris");
@@ -479,7 +487,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void leerResultados() {
         FileReader entrada = null;
-        Scanner scanner= null;
+        Scanner scanner = null;
         try {
             entrada = new FileReader("PlayerScore.txt");
             scanner = new Scanner(entrada);
@@ -495,8 +503,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(entrada != null){
-                scanner.close(); 
+            if (entrada != null) {
+                scanner.close();
                 try {
                     entrada.close();
                 } catch (IOException ex) {
@@ -522,6 +530,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             cliper.start();
         }
     }//GEN-LAST:event_botonSonidoActionPerformed
+
+    private void scoresTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_scoresTablePropertyChange
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(Color.BLACK);
+        headerRenderer.setForeground(Color.WHITE);
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        this.getScoresTable().getTableHeader().setDefaultRenderer(headerRenderer);
+        this.getScoresTable().setDefaultRenderer(Object.class, headerRenderer);
+        this.getScoresTable().setBorder(BorderFactory.createEmptyBorder());
+
+
+    }//GEN-LAST:event_scoresTablePropertyChange
 
     /**
      * @param args the command line arguments
@@ -593,7 +613,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void iniciarPartida() {
 
         cliper.stop();
-
+        ocultarPanelesFinal();
         ocultarVentanaPrincipal();
         mostrarVentanaJuego();
         xogo = new Xogo(false, this);
@@ -607,6 +627,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.aumentarScore();
         timerScore.start();
 
+    }
+
+    private void ocultarPanelesFinal() {
+        this.panelGameOver.setVisible(false);
+        this.panelScores.setVisible(false);
     }
 
     public void ocultarVentanaPrincipal() {
