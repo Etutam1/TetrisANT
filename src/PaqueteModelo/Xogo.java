@@ -316,6 +316,7 @@ public class Xogo {
         ventanaPrincipal.getPanelFondo().setVisible(false);
         ventanaPrincipal.mostrarPanelGameOver();
         reproducirMusicaGameOver();
+        cliper.stop();
     }
 
     public void pararTimers() {
