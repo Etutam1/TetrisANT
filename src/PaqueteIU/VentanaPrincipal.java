@@ -4,7 +4,7 @@
  */
 package PaqueteIU;
 
-import PaqueteModelo.Jugador;
+import PaqueteModelo.Xogador;
 import PaqueteModelo.Xogo;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -491,8 +491,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
-                Jugador jugador = new Jugador(linea);
-                xogo.agregarJugador(jugador);
+                Xogador xogador = new Xogador(linea);
+                xogo.agregarJugador(xogador);
             }
 
             scanner.close();

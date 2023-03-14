@@ -36,7 +36,7 @@ public class Xogo {
     public VentanaPrincipal ventanaPrincipal;
     public Ficha fichaActual;
     public ArrayList<Cadrado> cadradosChan = new ArrayList<>();
-    private ArrayList<Jugador> jugadores = new ArrayList<>();
+    private ArrayList<Xogador> jugadores = new ArrayList<>();
     public Timer timerComprobarLineas;
     public int level = 0;
     public int contadorScore = 0;
@@ -366,25 +366,25 @@ public class Xogo {
         reproducirSonido(sonidoPartidaPath);
     }
 
-    public void agregarJugador(Jugador player) {
+    public void agregarJugador(Xogador player) {
         getJugadores().add(player);
     }
 
     public void ordenarJugadoresPorScore() {
-        Collections.sort(jugadores, new Comparator<Jugador>() {
+        Collections.sort(jugadores, new Comparator<Xogador>() {
             @Override
-            public int compare(Jugador j1, Jugador j2) {
+            public int compare(Xogador j1, Xogador j2) {
                 return j2.getScore() - j1.getScore();
             }
         });
     }
 
     public void agregarDatosTabla() {
-        Iterator<Jugador> iteratorJugadores = getJugadores().listIterator();
+        Iterator<Xogador> iteratorJugadores = getJugadores().listIterator();
         DefaultTableModel model = (DefaultTableModel) ventanaPrincipal.getScoresTable().getModel();
         model.setRowCount(1);
         while (iteratorJugadores.hasNext()) {
-            Jugador jugadorActual = iteratorJugadores.next();
+            Xogador jugadorActual = iteratorJugadores.next();
 
             Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
             model.addRow(row);
@@ -435,11 +435,11 @@ public class Xogo {
         this.fichaActual = fichaActual;
     }
 
-    public ArrayList<Jugador> getJugadores() {
+    public ArrayList<Xogador> getJugadores() {
         return jugadores;
     }
 
-    public void setJugadores(ArrayList<Jugador> jugadores) {
+    public void setJugadores(ArrayList<Xogador> jugadores) {
         this.jugadores = jugadores;
     }
 

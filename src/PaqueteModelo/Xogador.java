@@ -9,12 +9,12 @@ package PaqueteModelo;
  *
  * @author matut
  */
-public class Jugador {
+public class Xogador {
     
     private String nombre;
     private int score;
 
-    public Jugador(String linea) {
+    public Xogador(String linea) {
         String[] datos = linea.split("-");
         this.nombre = datos[0];
         this.score = Integer.parseInt(datos[1]);
