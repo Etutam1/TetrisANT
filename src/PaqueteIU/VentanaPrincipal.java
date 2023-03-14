@@ -4,6 +4,7 @@
  */
 package PaqueteIU;
 
+import PaqueteModelo.Cadrado;
 import PaqueteModelo.Jugador;
 import PaqueteModelo.Xogo;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +79,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         frameJuego = new javax.swing.JFrame();
         panelScores = new javax.swing.JPanel();
         scoresTituloLabel = new javax.swing.JLabel();
+        retryButton = new javax.swing.JButton();
+        exitJuegoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         scoresTable = new javax.swing.JTable();
         panelGameOver = new javax.swing.JPanel();
@@ -189,6 +193,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         scoresTituloLabel.setText("TOTAL SCORES");
         panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
 
+        retryButton.setText("RETRY");
+        retryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                retryButtonActionPerformed(evt);
+            }
+        });
+        panelScores.add(retryButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 690, 100, 40));
+
+        exitJuegoButton.setText("EXIT");
+        exitJuegoButton.setFocusable(false);
+        exitJuegoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitJuegoButtonActionPerformed(evt);
+            }
+        });
+        panelScores.add(exitJuegoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 690, 100, 40));
+
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setOpaque(false);
 
@@ -217,7 +238,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(scoresTable);
 
-        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 370, 500));
+        panelScores.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 370, 500));
 
         frameJuego.getContentPane().add(panelScores, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
 
@@ -543,6 +564,36 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         muteyDesmuteMusica();
     }//GEN-LAST:event_botonSonidoJuegoActionPerformed
 
+    private void retryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryButtonActionPerformed
+        reiniciarPartida();
+        panelJuego.setVisible(true);
+        panelFondo.setVisible(true);
+        this.iniciarPartida();
+    }//GEN-LAST:event_retryButtonActionPerformed
+
+    private void exitJuegoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitJuegoButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_exitJuegoButtonActionPerformed
+
+    private void reiniciarPartida() {
+        borrarCadradosPanel();
+    }
+
+    private void borrarCadradosPanel() {
+        Iterator<Cadrado> iteratorChan2 = xogo.cadradosChan.listIterator();
+        Iterator<Cadrado> iteratorFichaActual = xogo.fichaActual.cadrados.listIterator();
+
+        while (iteratorChan2.hasNext()) {
+            Cadrado cadradoABorrar = iteratorChan2.next();
+            this.borrarCadrado(cadradoABorrar.lblCadrado);
+        }
+
+        while (iteratorFichaActual.hasNext()) {
+            Cadrado cadradoABorrar = iteratorFichaActual.next();
+            this.borrarCadrado(cadradoABorrar.lblCadrado);
+        }
+    }
+
     private void muteyDesmuteMusica() {
         contadorMusica++;
         if (contadorMusica == 1) {
@@ -637,6 +688,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         xogo = new Xogo(false, this);
         xogo.reproducirMusicaPartida();
         this.mostrarLevel();
+        mostrarNumeroLineas();
         xogo.xenerarNovaFicha();
         this.movimientoCaida();
         timer.start();
@@ -645,6 +697,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.aumentarScore();
         timerScore.start();
 
+    }
+
+    private void mostrarNumeroLineas() {
+        lineasTextLabel.setText(String.valueOf(xogo.numeroLineas));
     }
 
     private void ocultarPanelesFinal() {
@@ -962,6 +1018,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonSonidoMenu;
     private javax.swing.JButton easyButton;
     private javax.swing.JButton exitButton;
+    private javax.swing.JButton exitJuegoButton;
     private javax.swing.JLabel fondoLabel;
     private javax.swing.JFrame frameJuego;
     private javax.swing.JFrame frameLevels;
@@ -985,6 +1042,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelScores;
     private javax.swing.JToggleButton pauseButton;
     private javax.swing.JButton playButton;
+    private javax.swing.JButton retryButton;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreTextLabel;
     private javax.swing.JTable scoresTable;
