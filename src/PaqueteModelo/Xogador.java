@@ -11,18 +11,16 @@ package PaqueteModelo;
  */
 public class Xogador {
     
+    //ATRIBUTOS
     private String nombre;
     private int score;
-
+    
+    //CONSTRUCTOR
     public Xogador(String linea) {
         String[] datos = linea.split("-");
         this.nombre = datos[0];
         this.score = Integer.parseInt(datos[1]);
     }
-
-    
-    
-    
     
     public String getNombre() {
         return nombre;
