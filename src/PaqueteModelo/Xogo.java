@@ -36,7 +36,7 @@ public class Xogo {
     public VentanaPrincipal ventanaPrincipal;
     public Ficha fichaActual;
     public ArrayList<Cadrado> cadradosChan = new ArrayList<>();
-    private ArrayList<Xogador> jugadores = new ArrayList<>();
+    private ArrayList<Xogador> xogadores = new ArrayList<>();
     public Timer timerComprobarLineas;
     public int level = 0;
     public int contadorScore = 0;
@@ -371,7 +371,7 @@ public class Xogo {
     }
 
     public void ordenarJugadoresPorScore() {
-        Collections.sort(jugadores, new Comparator<Xogador>() {
+        Collections.sort(xogadores, new Comparator<Xogador>() {
             @Override
             public int compare(Xogador j1, Xogador j2) {
                 return j2.getScore() - j1.getScore();
@@ -436,11 +436,11 @@ public class Xogo {
     }
 
     public ArrayList<Xogador> getJugadores() {
-        return jugadores;
+        return xogadores;
     }
 
     public void setJugadores(ArrayList<Xogador> jugadores) {
-        this.jugadores = jugadores;
+        this.xogadores = jugadores;
     }
 
 }
