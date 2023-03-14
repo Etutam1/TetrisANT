@@ -6,7 +6,6 @@ package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
 import static PaqueteIU.VentanaPrincipal.cliper;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -18,7 +17,6 @@ import java.util.Iterator;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
