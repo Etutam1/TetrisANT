@@ -47,9 +47,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public int contadorMusica = 0;
     long clipTimePosition;
 
-    /**
-     * Creates new form VentanaPrincipalFrame
-     */
+    //CONSTRUCTOR
     public VentanaPrincipal() {
 
         initComponents();
