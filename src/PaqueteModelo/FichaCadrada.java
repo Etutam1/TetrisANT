@@ -12,19 +12,16 @@ import java.awt.Color;
  */
 public class FichaCadrada extends Ficha {
 
-    public Cadrado cadrado1 = new Cadrado(xogo.MAX_X/2, xogo.MIN_Y, Color.YELLOW);
-    public Cadrado cadrado2 = new Cadrado(cadrado1.getX() + xogo.LADO_CADRADO, cadrado1.getY(), Color.YELLOW);
-    public Cadrado cadrado3 = new Cadrado(cadrado1.getX(), cadrado1.getY() + xogo.LADO_CADRADO, Color.YELLOW);
-    public Cadrado cadrado4 = new Cadrado(cadrado3.getX() + xogo.LADO_CADRADO, cadrado2.getY() + xogo.LADO_CADRADO, Color.YELLOW);
+    private Cadrado cadrado1 = new Cadrado(getXogo().getMAX_X()/2, getXogo().getMIN_Y(), Color.YELLOW);
+    private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.YELLOW);
+    private Cadrado cadrado3 = new Cadrado(cadrado1.getX(), cadrado1.getY() + getXogo().getLADO_CADRADO(), Color.YELLOW);
+    private Cadrado cadrado4 = new Cadrado(cadrado3.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY() + getXogo().getLADO_CADRADO(), Color.YELLOW);
 
     //CONSTRUCTOR
     public FichaCadrada(Xogo xogo) {
         super(xogo);
       
-        cadrados.add(cadrado1);
-        cadrados.add(cadrado2);
-        cadrados.add(cadrado3);
-        cadrados.add(cadrado4);
+       agregarArrayCadrados();
     }
 
     //METODOS
@@ -32,5 +29,70 @@ public class FichaCadrada extends Ficha {
     public boolean rotar() {
         return false;
     }
+    
+    private void agregarArrayCadrados() {
+        getCadrados().add(getCadrado1());
+        getCadrados().add(getCadrado2());
+        getCadrados().add(getCadrado3());
+        getCadrados().add(getCadrado4());
+    }
+
+    /**
+     * @return the cadrado1
+     */
+    public Cadrado getCadrado1() {
+        return cadrado1;
+    }
+
+    /**
+     * @param cadrado1 the cadrado1 to set
+     */
+    public void setCadrado1(Cadrado cadrado1) {
+        this.cadrado1 = cadrado1;
+    }
+
+    /**
+     * @return the cadrado2
+     */
+    public Cadrado getCadrado2() {
+        return cadrado2;
+    }
+
+    /**
+     * @param cadrado2 the cadrado2 to set
+     */
+    public void setCadrado2(Cadrado cadrado2) {
+        this.cadrado2 = cadrado2;
+    }
+
+    /**
+     * @return the cadrado3
+     */
+    public Cadrado getCadrado3() {
+        return cadrado3;
+    }
+
+    /**
+     * @param cadrado3 the cadrado3 to set
+     */
+    public void setCadrado3(Cadrado cadrado3) {
+        this.cadrado3 = cadrado3;
+    }
+
+    /**
+     * @return the cadrado4
+     */
+    public Cadrado getCadrado4() {
+        return cadrado4;
+    }
+
+    /**
+     * @param cadrado4 the cadrado4 to set
+     */
+    public void setCadrado4(Cadrado cadrado4) {
+        this.cadrado4 = cadrado4;
+    }
+    
+    
 
 }

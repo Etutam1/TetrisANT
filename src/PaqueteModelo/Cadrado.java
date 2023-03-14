@@ -14,10 +14,10 @@ import javax.swing.JLabel;
 public class Cadrado {
 
     //ATRIBUTOS 
-    public int x;
-    public int y;
-    public Color corRecheo;
-    public JLabel lblCadrado;
+    private int x;
+    private int y;
+    private Color corRecheo;
+    private JLabel lblCadrado;
 
     //CONSTRUCTOR
     public Cadrado(int x, int y, Color corRecheo) {
@@ -29,14 +29,14 @@ public class Cadrado {
     }
     
     private void setPropertiesLblCadrado(int x , int y , Color color){
-        lblCadrado.setBackground(corRecheo);
-        lblCadrado.setForeground(new java.awt.Color(204, 0, 0));
-        lblCadrado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        lblCadrado.setMaximumSize(new java.awt.Dimension(Xogo.LADO_CADRADO, Xogo.LADO_CADRADO));
-        lblCadrado.setMinimumSize(new java.awt.Dimension(Xogo.LADO_CADRADO, Xogo.LADO_CADRADO));
-        lblCadrado.setOpaque(true);
-        lblCadrado.setPreferredSize(new java.awt.Dimension(Xogo.LADO_CADRADO, Xogo.LADO_CADRADO));
-        lblCadrado.setBounds(x, y, Xogo.LADO_CADRADO, Xogo.LADO_CADRADO);
+        getLblCadrado().setBackground(getCorRecheo());
+        getLblCadrado().setForeground(new java.awt.Color(204, 0, 0));
+        getLblCadrado().setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getLblCadrado().setMaximumSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
+        getLblCadrado().setMinimumSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
+        getLblCadrado().setOpaque(true);
+        getLblCadrado().setPreferredSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
+        getLblCadrado().setBounds(x, y, Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO());
     }
 
     //SETTERs AND GETTERs
