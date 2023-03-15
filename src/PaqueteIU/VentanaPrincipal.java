@@ -606,12 +606,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void iniciarPartida() {
         this.cliper.stop();
-        this.ocultarPanelesFinal();
+        this.ocultarPanelesFinalPartida();
         this.cambiarVisibilidadFrame(this, false);
         this.cambiarVisibilidadFrame(this.frameJuego, true);
         this.frameJuego.setLocationRelativeTo(this.rootPane);
         this.xogo = new Xogo(comprobarLevelInicial(), false, this);
-        this.mostrarLevel(this.xogo.getContadorScore());
+        this.mostrarLevel(this.xogo.getLevel());
         this.mostrarNumeroLineas(this.xogo.getNumeroLineas());
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
@@ -635,7 +635,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         xogo.getTimerComprobarLineas().stop();
     }
 
-    private void ocultarPanelesFinal() {
+    private void ocultarPanelesFinalPartida() {
         this.cambiarVisibilidadPanel(this.panelGameOver, false);
         this.cambiarVisibilidadPanel(this.panelScores, false);
     }
