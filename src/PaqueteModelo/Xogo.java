@@ -9,11 +9,18 @@ import PaqueteIU.VentanaPrincipal;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.Timer;
@@ -54,6 +61,7 @@ public class Xogo {
         this.pausa = pausa;
         this.ventanaPrincipal = ventanaPrincipal;
         this.level=level;
+        reproducirMusicaPartida();
 
     }
 
@@ -231,9 +239,9 @@ public class Xogo {
         getCadradosChan().removeAll(cadradosBorrar);
         this.sumarNumeroLineas();
 
-        getVentanaPrincipal().mostrarNumeroLineas(this.getNumeroLineas());
+        this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
         sumarScorePorLineaCompleta();
-        comprobarLevel();
+        comprobarCambioLevel();
         reproducirSonidoBorrarLinea();
     }
 
@@ -253,10 +261,10 @@ public class Xogo {
         this.setLevel(this.getLevel() + 1);
     }
 
-    private void comprobarLevel() {
+    private void comprobarCambioLevel() {
         if (this.getNumeroLineas() % 5 == 0) {
             aumentarLevel();
-            getVentanaPrincipal().mostrarLevel();
+            this.ventanaPrincipal.mostrarLevel(this.level);
             actualizarDelays((int) (getVentanaPrincipal().getTimer().getDelay() * 0.75));
         }
     }
@@ -310,40 +318,121 @@ public class Xogo {
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-                finalDePartida();
+                ventanaPrincipal.mostrarFinDoXogo();
+                reproducirMusicaGameOver();
             }
         }
         return gameOver;
     }
 
-    private void finalDePartida() {
-        pararTimers();
-        getVentanaPrincipal().getPanelJuego().setVisible(false);
-        getVentanaPrincipal().getPanelFondo().setVisible(false);
-        getVentanaPrincipal().mostrarPanelGameOver();
-        reproducirMusicaGameOver();
-    }
+    
 
-    private void pararTimers() {
-        
-        getVentanaPrincipal().getTimer().stop();
-        this.getTimerComprobarLineas().stop();
-    }
+    
 
     private void actualizarDelays(int delay) {
         
         this.getTimerComprobarLineas().setDelay(delay);
         getVentanaPrincipal().getTimer().setDelay(delay);
     }
+    
+    public void gestionarResultados() {
+        this.guardarResultados();
+        this.leerResultados();
+        this.ordenarJugadoresPorScore();
+        this.agregarDatosTabla();
+        this.ajustarTamañoTabla();
+    }
+     private void guardarResultados() {
+        PrintWriter salida = null;
 
-    private static void reproducirSonido(String musicLocation) {
+        String jugadorScore = ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.getContadorScore() + "\n";
+        try {
+            salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
+            salida.write(jugadorScore);
+
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            if (salida != null) {
+                salida.close();
+            }
+        }
+    }
+
+    private void leerResultados() {
+        FileReader entrada = null;
+        Scanner scanner = null;
+        try {
+            entrada = new FileReader("PlayerScore.txt");
+            scanner = new Scanner(entrada);
+
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                Xogador xogador = new Xogador(linea);
+                this.agregarJugador(xogador);
+            }
+
+            scanner.close();
+            entrada.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (entrada != null) {
+                scanner.close();
+                try {
+                    entrada.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }
+    private void agregarJugador(Xogador player) {
+        getJugadores().add(player);
+    }
+
+    private void ordenarJugadoresPorScore() {
+        Collections.sort(getXogadores(), new Comparator<Xogador>() {
+            @Override
+            public int compare(Xogador j1, Xogador j2) {
+                return j2.getScore() - j1.getScore();
+            }
+        });
+    }
+
+    private void agregarDatosTabla() {
+        Iterator<Xogador> iteratorJugadores = getJugadores().listIterator();
+        DefaultTableModel model = (DefaultTableModel) getVentanaPrincipal().getScoresTable().getModel();
+        model.setRowCount(1);
+        while (iteratorJugadores.hasNext()) {
+            Xogador jugadorActual = iteratorJugadores.next();
+
+            Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
+            model.addRow(row);
+            
+        }
+        
+    }
+
+    private void ajustarTamañoTabla() {
+        Dimension dim = getVentanaPrincipal().getScoresTable().getPreferredSize();
+        int alturaFilas = getVentanaPrincipal().getScoresTable().getRowHeight();
+        int totalFilas = getVentanaPrincipal().getScoresTable().getRowCount();
+        dim.height = alturaFilas * (totalFilas + 1);
+        getVentanaPrincipal().getScoresTable().setPreferredScrollableViewportSize(dim);
+        
+    }
+    
+    private  void reproducirSonido(String musicLocation) {
         try {
             File musicPath = new File(musicLocation);
             if (musicPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                VentanaPrincipal.setCliper(AudioSystem.getClip());
-                VentanaPrincipal.getCliper().open(audioInput);
-                VentanaPrincipal.getCliper().start();
+                ventanaPrincipal.setCliper(AudioSystem.getClip());
+                ventanaPrincipal.getCliper().open(audioInput);
+                ventanaPrincipal.getCliper().start();
             } else {
                 System.out.println("No se encontró el archivo");
             }
@@ -351,6 +440,7 @@ public class Xogo {
             ex.printStackTrace();
         }
     }
+    
 
     private void reproducirMusicaGameOver() {
         String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
@@ -367,45 +457,12 @@ public class Xogo {
         reproducirSonido(sonidoChanPath);
     }
 
-    public void reproducirMusicaPartida() {
+    private void reproducirMusicaPartida() {
         String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
         reproducirSonido(sonidoPartidaPath);
     }
 
-    public void agregarJugador(Xogador player) {
-        getJugadores().add(player);
-    }
-
-    public void ordenarJugadoresPorScore() {
-        Collections.sort(getXogadores(), new Comparator<Xogador>() {
-            @Override
-            public int compare(Xogador j1, Xogador j2) {
-                return j2.getScore() - j1.getScore();
-            }
-        });
-    }
-
-    public void agregarDatosTabla() {
-        Iterator<Xogador> iteratorJugadores = getJugadores().listIterator();
-        DefaultTableModel model = (DefaultTableModel) getVentanaPrincipal().getScoresTable().getModel();
-        model.setRowCount(1);
-        while (iteratorJugadores.hasNext()) {
-            Xogador jugadorActual = iteratorJugadores.next();
-
-            Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
-            model.addRow(row);
-            ajustarTamañoTabla();
-        }
-    }
-
-    private void ajustarTamañoTabla() {
-        Dimension dim = getVentanaPrincipal().getScoresTable().getPreferredSize();
-        int alturaFilas = getVentanaPrincipal().getScoresTable().getRowHeight();
-        int totalFilas = getVentanaPrincipal().getScoresTable().getRowCount();
-        dim.height = alturaFilas * (totalFilas + 1);
-        getVentanaPrincipal().getScoresTable().setPreferredScrollableViewportSize(dim);
-        
-    }
+    
 
 
     //SETTERs AND GETTERs 
