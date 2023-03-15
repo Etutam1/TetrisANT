@@ -67,10 +67,10 @@ public class Xogo {
 
     public boolean ePosicionValida(int x, int y) {
         boolean posicionValida = false;
-        if (x < this.MAX_X && x >= this.MIN_X && y < this.MAX_Y && y >= this.MIN_Y) {
+        if (x < getMAX_X() && x >= getMIN_X() && y < getMAX_Y() && y >= getMIN_Y()) {
             posicionValida = true;
         }
-        Iterator<Cadrado> iteratorChan5 = this.cadradosChan.iterator();
+        Iterator<Cadrado> iteratorChan5 = getCadradosChan().iterator();
         while (iteratorChan5.hasNext()) {
             Cadrado cadradoComprobado = iteratorChan5.next();
             if (cadradoComprobado.getLblCadrado().getX() == x && cadradoComprobado.getLblCadrado().getY() == y) {
@@ -81,51 +81,51 @@ public class Xogo {
     }
 
     public void moverFichaAbaixo() {
-        if (!this.comprobarFinalPartida()) {
-            if (this.chocaFichaCoChan()) {
+        if (!comprobarFinalPartida()) {
+            if (chocaFichaCoChan()) {
                 this.engadirFichaAoChan();
-                this.reproducirSonidoChocaChan();
+                reproducirSonidoChocaChan();
                 this.xenerarNovaFicha();
             } else {
-                this.fichaActual.moverAbaixo();
+                getFichaActual().moverAbaixo();
             }
         }
     }
 
     public void moverFichaDereita() {
-        Iterator<Cadrado> iterator = this.fichaActual.getCadrados().iterator();
+        Iterator<Cadrado> iterator = getFichaActual().getCadrados().iterator();
         boolean podeMover = true;
 
         while (iterator.hasNext()) {
             Cadrado actual = iterator.next();
 
-            if (!this.ePosicionValida(actual.getLblCadrado().getX() + Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
+            if (!ePosicionValida(actual.getLblCadrado().getX() + Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
                 podeMover = false;
             }
         }
         if (podeMover) {
-            this.fichaActual.moverDereita();
+            getFichaActual().moverDereita();
         }
     }
 
     public void moverFichaEsquerda() {
-        Iterator<Cadrado> iterator2 = this.fichaActual.getCadrados().iterator();
+        Iterator<Cadrado> iterator2 = getFichaActual().getCadrados().iterator();
         boolean podeMover = true;
 
         while (iterator2.hasNext()) {
             Cadrado actual = iterator2.next();
 
-            if (!this.ePosicionValida(actual.getLblCadrado().getX() - Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
+            if (!ePosicionValida(actual.getLblCadrado().getX() - Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
                 podeMover = false;
             }
         }
         if (podeMover) {
-            this.fichaActual.moverEsquerda();
+            getFichaActual().moverEsquerda();
         }
     }
 
     public void RotarFicha() {
-        this.fichaActual.rotar();
+        getFichaActual().rotar();
     }
 
     public void xenerarNovaFicha() {
@@ -168,7 +168,7 @@ public class Xogo {
     }
 
     public void pintarFicha() {
-        Iterator<Cadrado> iterator3 = this.fichaActual.getCadrados().iterator();
+        Iterator<Cadrado> iterator3 = getFichaActual().getCadrados().iterator();
 
         while (iterator3.hasNext()) {
             getVentanaPrincipal().pintarCadrado(iterator3.next().getLblCadrado());
@@ -177,11 +177,11 @@ public class Xogo {
 
     public boolean chocaFichaCoChan() {
         boolean tocaChan = false;
-        Iterator<Cadrado> iterator4 = this.fichaActual.getCadrados().iterator();
+        Iterator<Cadrado> iterator4 = getFichaActual().getCadrados().iterator();
 
         while (iterator4.hasNext()) {
             Cadrado cadradoActual = iterator4.next();
-            if (!this.ePosicionValida(cadradoActual.getLblCadrado().getX(), cadradoActual.getLblCadrado().getY() + LADO_CADRADO)) {
+            if (!ePosicionValida(cadradoActual.getLblCadrado().getX(), cadradoActual.getLblCadrado().getY() + LADO_CADRADO)) {
                 tocaChan = true;
             }
         }
@@ -189,16 +189,16 @@ public class Xogo {
     }
 
     public void engadirFichaAoChan() {
-        this.cadradosChan.addAll(this.fichaActual.getCadrados());
+        getCadradosChan().addAll(getFichaActual().getCadrados());
     }
 
     public void borrarLinasCompletas() throws ConcurrentModificationException {
-        int ultimaLinea = this.MAX_Y - Xogo.getLADO_CADRADO();
-        int primeraLinea = this.MIN_Y;
+        int ultimaLinea = this.getMAX_Y() - Xogo.getLADO_CADRADO();
+        int primeraLinea = this.getMIN_Y();
         ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
         for (int y = ultimaLinea; y >= primeraLinea; y -= getLADO_CADRADO()) {
-            Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
+            Iterator<Cadrado> iteratorChan = getCadradosChan().listIterator();
             int contadorCadrados = 0;
             System.out.println("y: " + y);
 
@@ -227,7 +227,7 @@ public class Xogo {
     public void borrarLina(int linea) {
 
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
+        Iterator<Cadrado> iteratorChan2 = getCadradosChan().listIterator();
 
         while (iteratorChan2.hasNext()) {
             Cadrado cadradoABorrar = iteratorChan2.next();
@@ -236,7 +236,7 @@ public class Xogo {
                 getVentanaPrincipal().borrarCadrado(cadradoABorrar.getLblCadrado());
             }
         }
-        this.cadradosChan.removeAll(cadradosBorrar);
+        getCadradosChan().removeAll(cadradosBorrar);
         this.sumarNumeroLineas();
 
         this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
@@ -247,7 +247,7 @@ public class Xogo {
 
     public void moverCadradosChan(int linea) {
 
-        Iterator<Cadrado> iteratorChan3 = this.cadradosChan.iterator();
+        Iterator<Cadrado> iteratorChan3 = getCadradosChan().iterator();
         while (iteratorChan3.hasNext()) {
 
             Cadrado cadradoABaixar = iteratorChan3.next();
@@ -312,7 +312,7 @@ public class Xogo {
 
     private boolean comprobarFinalPartida() {
         boolean gameOver = false;
-        Iterator<Cadrado> iteratorChan4 = this.cadradosChan.listIterator();
+        Iterator<Cadrado> iteratorChan4 = getCadradosChan().listIterator();
         while (iteratorChan4.hasNext()) {
             Cadrado cadradoChan = iteratorChan4.next();
 

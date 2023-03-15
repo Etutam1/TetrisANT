@@ -4,11 +4,21 @@
  */
 package PaqueteIU;
 
+import PaqueteModelo.Cadrado;
+import PaqueteModelo.Xogador;
 import PaqueteModelo.Xogo;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -98,6 +108,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         fondoLabel = new javax.swing.JLabel();
 
         frameLevels.setUndecorated(true);
+        frameLevels.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                frameLevelsPropertyChange(evt);
+            }
+        });
         frameLevels.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelFondoLevels.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -504,6 +519,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed
         this.frameLevels.setVisible(false);
     }//GEN-LAST:event_okButtonLevelActionPerformed
+
+    private void frameLevelsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_frameLevelsPropertyChange
+
+    }//GEN-LAST:event_frameLevelsPropertyChange
 
     private void exitJuegoGameOverButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitJuegoGameOverButtonMouseClicked
         System.exit(0);
