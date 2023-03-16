@@ -610,7 +610,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.cambiarVisibilidadFrame(this, false);
         this.cambiarVisibilidadFrame(this.frameJuego, true);
         this.frameJuego.setLocationRelativeTo(this.rootPane);
-        this.xogo = new Xogo(comprobarLevelInicial(), false, this);
+        this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
         this.mostrarLevel(this.xogo.getLevel());
         this.mostrarNumeroLineas(this.xogo.getNumeroLineas());
         this.xogo.xenerarNovaFicha();
@@ -692,21 +692,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }
 
-    private int comprobarLevelInicial() {
+    private int comprobarLevelInicialElegido() {
 
-        if (getNoobRadioB().isSelected()) {
-            return 0;
-        }
-        if (getEasyRadioB().isSelected()) {
+        if (this.easyRadioB.isSelected()) {
             return 2;
         }
-        if (getMediumRadioB().isSelected()) {
+        if (this.mediumRadioB.isSelected()) {
             return 4;
         }
-        if (getHardRadioB().isSelected()) {
+        if (this.hardRadioB.isSelected()) {
             return 6;
         }
-        if (getExtremeRadioB().isSelected()) {
+        if (this.extremeRadioB.isSelected()) {
             return 8;
         } else {
             return 0;
@@ -1188,7 +1185,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * @return the mediumRadioB
      */
-    public javax.swing.JRadioButton getMediumRadioB() {
+    public javax.swing.JRadioButton getmediumRadioB() {
         return mediumRadioB;
     }
 

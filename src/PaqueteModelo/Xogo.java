@@ -32,15 +32,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Xogo {
 
-    
-
     //ATRIBUTOS
     private static int LADO_CADRADO = 40;
     private int MAX_X;
     private int MIN_Y;
     private int MAX_Y;
     private int MIN_X;
-    private int comprobante = 0;
     private boolean pausa;
     private VentanaPrincipal ventanaPrincipal;
     private Ficha fichaActual;
@@ -48,8 +45,8 @@ public class Xogo {
     private ArrayList<Xogador> xogadores = new ArrayList<>();
     private Timer timerComprobarLineas;
     private int level;
-    private int contadorScore = 0;
-    private int numeroLineas = 0;
+    private int contadorScore;
+    private int numeroLineas;
 
     //CONSTRUCTOR
     public Xogo(int level, boolean pausa, VentanaPrincipal ventanaPrincipal) {
@@ -59,18 +56,20 @@ public class Xogo {
         this.MAX_Y = 800;
         this.MIN_Y = 0;
         this.pausa = pausa;
+        this.contadorScore = 0;
+        this.numeroLineas = 0;
         this.ventanaPrincipal = ventanaPrincipal;
-        this.level=level;
+        this.level = level;
         reproducirMusicaPartida();
 
     }
 
     public boolean ePosicionValida(int x, int y) {
         boolean posicionValida = false;
-        if (x < getMAX_X() && x >= getMIN_X() && y < getMAX_Y() && y >= getMIN_Y()) {
+        if (x < this.MAX_X && x >= this.MIN_X && y < this.MAX_Y && y >= this.MIN_Y) {
             posicionValida = true;
         }
-        Iterator<Cadrado> iteratorChan5 = getCadradosChan().iterator();
+        Iterator<Cadrado> iteratorChan5 = this.cadradosChan.iterator();
         while (iteratorChan5.hasNext()) {
             Cadrado cadradoComprobado = iteratorChan5.next();
             if (cadradoComprobado.getLblCadrado().getX() == x && cadradoComprobado.getLblCadrado().getY() == y) {
@@ -81,107 +80,107 @@ public class Xogo {
     }
 
     public void moverFichaAbaixo() {
-        if (!comprobarFinalPartida()) {
-            if (chocaFichaCoChan()) {
+        if (!this.comprobarFinalPartida()) {
+            if (this.chocaFichaCoChan()) {
                 this.engadirFichaAoChan();
-                reproducirSonidoChocaChan();
+                this.reproducirSonidoChocaChan();
                 this.xenerarNovaFicha();
             } else {
-                getFichaActual().moverAbaixo();
+                this.fichaActual.moverAbaixo();
             }
         }
     }
 
     public void moverFichaDereita() {
-        Iterator<Cadrado> iterator = getFichaActual().getCadrados().iterator();
+        Iterator<Cadrado> iterator = this.fichaActual.getCadrados().iterator();
         boolean podeMover = true;
 
         while (iterator.hasNext()) {
             Cadrado actual = iterator.next();
 
-            if (!ePosicionValida(actual.getLblCadrado().getX() + Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
+            if (!this.ePosicionValida(actual.getLblCadrado().getX() + Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
                 podeMover = false;
             }
         }
         if (podeMover) {
-            getFichaActual().moverDereita();
+            this.fichaActual.moverDereita();
         }
     }
 
     public void moverFichaEsquerda() {
-        Iterator<Cadrado> iterator2 = getFichaActual().getCadrados().iterator();
+        Iterator<Cadrado> iterator2 = this.fichaActual.getCadrados().iterator();
         boolean podeMover = true;
 
         while (iterator2.hasNext()) {
             Cadrado actual = iterator2.next();
 
-            if (!ePosicionValida(actual.getLblCadrado().getX() - Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
+            if (!this.ePosicionValida(actual.getLblCadrado().getX() - Xogo.LADO_CADRADO, actual.getLblCadrado().getY())) {
                 podeMover = false;
             }
         }
         if (podeMover) {
-            getFichaActual().moverEsquerda();
+            this.fichaActual.moverEsquerda();
         }
     }
 
     public void RotarFicha() {
-        getFichaActual().rotar();
+        this.fichaActual.rotar();
     }
 
     public void xenerarNovaFicha() {
-
+        int comprobante = 0;
         int numAleatorio = (int) (Math.random() * 7 + 1);
 
-        if (getComprobante() == numAleatorio) {
+        if (comprobante == numAleatorio) {
             numAleatorio = (int) (Math.random() * 7 + 1);
         }
         if (numAleatorio == 1) {
-            setFichaActual(new FichaCadrada(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaCadrada(this);
+            comprobante = numAleatorio;
         }
         if (numAleatorio == 2) {
-            setFichaActual(new FichaBarra(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaBarra(this);
+            comprobante = numAleatorio;
         }
         if (numAleatorio == 3) {
-            setFichaActual(new FichaZ(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaZ(this);
+            comprobante = numAleatorio;
         }
         if (numAleatorio == 4) {
-            setFichaActual(new FichaZInversa(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaZInversa(this);
+            comprobante = numAleatorio;
         }
         if (numAleatorio == 5) {
-            setFichaActual(new FichaT(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaT(this);
+            comprobante = numAleatorio;
         }
         if (numAleatorio == 6) {
-            setFichaActual(new FichaL(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaL(this);
+            comprobante = numAleatorio;
         }
         if (numAleatorio == 7) {
-            setFichaActual(new FichaLInversa(this));
-            setComprobante(numAleatorio);
+            this.fichaActual = new FichaLInversa(this);
+            comprobante = numAleatorio;
         }
 
         this.pintarFicha();
     }
 
     public void pintarFicha() {
-        Iterator<Cadrado> iterator3 = getFichaActual().getCadrados().iterator();
+        Iterator<Cadrado> iterator3 = this.fichaActual.getCadrados().iterator();
 
         while (iterator3.hasNext()) {
-            getVentanaPrincipal().pintarCadrado(iterator3.next().getLblCadrado());
+            this.ventanaPrincipal.pintarCadrado(iterator3.next().getLblCadrado());
         }
     }
 
     public boolean chocaFichaCoChan() {
         boolean tocaChan = false;
-        Iterator<Cadrado> iterator4 = getFichaActual().getCadrados().iterator();
+        Iterator<Cadrado> iterator4 = this.fichaActual.getCadrados().iterator();
 
         while (iterator4.hasNext()) {
             Cadrado cadradoActual = iterator4.next();
-            if (!ePosicionValida(cadradoActual.getLblCadrado().getX(), cadradoActual.getLblCadrado().getY() + LADO_CADRADO)) {
+            if (!this.ePosicionValida(cadradoActual.getLblCadrado().getX(), cadradoActual.getLblCadrado().getY() + LADO_CADRADO)) {
                 tocaChan = true;
             }
         }
@@ -189,16 +188,16 @@ public class Xogo {
     }
 
     public void engadirFichaAoChan() {
-        getCadradosChan().addAll(getFichaActual().getCadrados());
+        this.cadradosChan.addAll(this.fichaActual.getCadrados());
     }
 
     public void borrarLinasCompletas() throws ConcurrentModificationException {
-        int ultimaLinea = this.getMAX_Y() - Xogo.getLADO_CADRADO();
-        int primeraLinea = this.getMIN_Y();
+        int ultimaLinea = this.MAX_Y - Xogo.LADO_CADRADO;
+        int primeraLinea = this.MIN_Y;
         ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
-        for (int y = ultimaLinea; y >= primeraLinea; y -= getLADO_CADRADO()) {
-            Iterator<Cadrado> iteratorChan = getCadradosChan().listIterator();
+        for (int y = ultimaLinea; y >= primeraLinea; y -= Xogo.LADO_CADRADO) {
+            Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
             int contadorCadrados = 0;
             System.out.println("y: " + y);
 
@@ -225,116 +224,116 @@ public class Xogo {
     }
 
     public void borrarLina(int linea) {
-
+                                                                                               // PENDIENTE DE REVISAR Y LIMPIAR 
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-        Iterator<Cadrado> iteratorChan2 = getCadradosChan().listIterator();
+        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
 
         while (iteratorChan2.hasNext()) {
             Cadrado cadradoABorrar = iteratorChan2.next();
             if (cadradoABorrar.getLblCadrado().getY() == linea) {
                 cadradosBorrar.add(cadradoABorrar);
-                getVentanaPrincipal().borrarCadrado(cadradoABorrar.getLblCadrado());
+                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
             }
         }
-        getCadradosChan().removeAll(cadradosBorrar);
+        this.cadradosChan.removeAll(cadradosBorrar);
         this.sumarNumeroLineas();
-
         this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
-        sumarScorePorLineaCompleta();
-        comprobarCambioLevel();
-        reproducirSonidoBorrarLinea();
+        this.sumarScorePorLineaCompleta();
+        this.comprobarCambioLevel();
+        this.reproducirSonidoBorrarLinea();
     }
 
-    public void moverCadradosChan(int linea) {
+    private void moverCadradosChan(int linea) {
 
         Iterator<Cadrado> iteratorChan3 = getCadradosChan().iterator();
         while (iteratorChan3.hasNext()) {
 
             Cadrado cadradoABaixar = iteratorChan3.next();
             if (cadradoABaixar.getY() < linea) {
-                cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.getLADO_CADRADO());
+                cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
             }
         }
     }
 
     private void aumentarLevel() {
-        this.setLevel(this.getLevel() + 1);
+        this.level++;
     }
 
     private void comprobarCambioLevel() {
+        int delayActual= this.ventanaPrincipal.getTimer().getDelay();
+        double incrementoDelay=0.75;
+        
         if (this.getNumeroLineas() % 5 == 0) {
-            aumentarLevel();
+            this.aumentarLevel();
             this.ventanaPrincipal.mostrarLevel(this.level);
-            actualizarDelays((int) (getVentanaPrincipal().getTimer().getDelay() * 0.75));
+            this.actualizarDelays((int) (delayActual * incrementoDelay));
         }
     }
 
     private void sumarNumeroLineas() {
-        setNumeroLineas(getNumeroLineas() + 1);
+        this.numeroLineas++;
 
     }
-   public void incrementarContadorScore(){
-       contadorScore++;
-   }
+
+    public void incrementarContadorScore() {
+        this.contadorScore++;
+    }
 
     private void sumarScorePorLineaCompleta() {
-        if (this.getLevel() == 0) {
-            setContadorScore(getContadorScore() + 100);
+        
+        if (this.level == 0 || this.level == 1  ) {
+            contadorScore += 100;
         }
-        if (this.getLevel() == 1) {
-            setContadorScore(getContadorScore() + 200);
+        if (this.level == 2 || this.level == 3  ) {
+            contadorScore += 300;
         }
-        if (this.getLevel() == 2) {
-            setContadorScore(getContadorScore() + 400);
+        if (this.level == 4 || this.level == 5) {
+           contadorScore += 500;
         }
-        if (this.getLevel() == 3) {
-            setContadorScore(getContadorScore() + 800);
+        if (this.level == 6 || this.level == 7) {
+            contadorScore +=700;
         }
-        if (this.getLevel() == 4) {
-            setContadorScore(getContadorScore() + 1000);
+        if (this.level == 8 || this.level == 9 ||this.level == 10) {
+            contadorScore += 1000;
         }
-        if (this.getLevel() > 4) {
-            setContadorScore(getContadorScore() + 1500);
+        if(this.level > 10) {
+            contadorScore += 2000;
         }
 
     }
 
     public void comprobarLineasCompletas() {
-        this.setTimerComprobarLineas(new Timer(1000, (ActionEvent e) -> {
+        this.timerComprobarLineas=new Timer(1000, (ActionEvent e) -> {
             try {
                 this.borrarLinasCompletas();
             } catch (ConcurrentModificationException ex) {
                 System.out.println("SE ESTÁ MODIFICANDO EL ARRAYLIST MIENTRAS SE ITERA ");
             }
-        }));
-        getTimerComprobarLineas().start();
+        });
+        this.timerComprobarLineas.start();
     }
 
     private boolean comprobarFinalPartida() {
         boolean gameOver = false;
-        Iterator<Cadrado> iteratorChan4 = getCadradosChan().listIterator();
+        Iterator<Cadrado> iteratorChan4 = this.cadradosChan.listIterator();
         while (iteratorChan4.hasNext()) {
             Cadrado cadradoChan = iteratorChan4.next();
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-                ventanaPrincipal.mostrarFinDoXogo();
-                reproducirMusicaGameOver();
+                this.ventanaPrincipal.mostrarFinDoXogo();
+                this.reproducirMusicaGameOver();
             }
         }
         return gameOver;
     }
 
-    
-
-    
-
     private void actualizarDelays(int delay) {
-        
-        this.getTimerComprobarLineas().setDelay(delay);
-        getVentanaPrincipal().getTimer().setDelay(delay);
+
+        this.timerComprobarLineas.setDelay(delay);
+        this.ventanaPrincipal.getTimer().setDelay(delay);
     }
-    
+
     public void gestionarResultados() {
         this.guardarResultados();
         this.leerResultados();
@@ -342,10 +341,11 @@ public class Xogo {
         this.agregarDatosTabla();
         this.ajustarTamañoTabla();
     }
-     private void guardarResultados() {
+
+    private void guardarResultados() {
         PrintWriter salida = null;
 
-        String jugadorScore = ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.getContadorScore() + "\n";
+        String jugadorScore = this.ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.contadorScore + "\n";
         try {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
             salida.write(jugadorScore);
@@ -369,8 +369,8 @@ public class Xogo {
 
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
-                Xogador xogador = new Xogador(linea);
-                this.agregarJugador(xogador);
+                Xogador player = new Xogador(linea);
+                this.agregarJugador(player);
             }
 
             scanner.close();
@@ -389,12 +389,13 @@ public class Xogo {
 
         }
     }
-    private void agregarJugador(Xogador player) {
-        getJugadores().add(player);
+
+    private void agregarJugador(Xogador jugador) {
+        this.xogadores.add(jugador);
     }
 
     private void ordenarJugadoresPorScore() {
-        Collections.sort(getXogadores(), new Comparator<Xogador>() {
+        Collections.sort(this.xogadores, new Comparator<Xogador>() {
             @Override
             public int compare(Xogador j1, Xogador j2) {
                 return j2.getScore() - j1.getScore();
@@ -403,36 +404,36 @@ public class Xogo {
     }
 
     private void agregarDatosTabla() {
-        Iterator<Xogador> iteratorJugadores = getJugadores().listIterator();
-        DefaultTableModel model = (DefaultTableModel) getVentanaPrincipal().getScoresTable().getModel();
+        Iterator<Xogador> iteratorJugadores = this.xogadores.listIterator();
+        DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
         model.setRowCount(1);
         while (iteratorJugadores.hasNext()) {
             Xogador jugadorActual = iteratorJugadores.next();
 
             Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
             model.addRow(row);
-            
+
         }
-        
+
     }
 
     private void ajustarTamañoTabla() {
-        Dimension dim = getVentanaPrincipal().getScoresTable().getPreferredSize();
-        int alturaFilas = getVentanaPrincipal().getScoresTable().getRowHeight();
-        int totalFilas = getVentanaPrincipal().getScoresTable().getRowCount();
+        Dimension dim = this.ventanaPrincipal.getScoresTable().getPreferredSize();
+        int alturaFilas = this.ventanaPrincipal.getScoresTable().getRowHeight();
+        int totalFilas = this.ventanaPrincipal.getScoresTable().getRowCount();
         dim.height = alturaFilas * (totalFilas + 1);
-        getVentanaPrincipal().getScoresTable().setPreferredScrollableViewportSize(dim);
-        
+        this.ventanaPrincipal.getScoresTable().setPreferredScrollableViewportSize(dim);
+
     }
-    
-    private  void reproducirSonido(String musicLocation) {
+
+    private void reproducirSonido(String musicLocation) {
         try {
             File musicPath = new File(musicLocation);
             if (musicPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                ventanaPrincipal.setCliper(AudioSystem.getClip());
-                ventanaPrincipal.getCliper().open(audioInput);
-                ventanaPrincipal.getCliper().start();
+                this.ventanaPrincipal.setCliper(AudioSystem.getClip());
+                this.ventanaPrincipal.getCliper().open(audioInput);
+                this.ventanaPrincipal.getCliper().start();
             } else {
                 System.out.println("No se encontró el archivo");
             }
@@ -440,30 +441,26 @@ public class Xogo {
             ex.printStackTrace();
         }
     }
-    
 
     private void reproducirMusicaGameOver() {
         String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
-        reproducirSonido(sonidoGameOverPath);
+        this.reproducirSonido(sonidoGameOverPath);
     }
 
     private void reproducirSonidoBorrarLinea() {
         String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
-        reproducirSonido(sonidoLineaPath);
+        this.reproducirSonido(sonidoLineaPath);
     }
 
     private void reproducirSonidoChocaChan() {
         String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
-        reproducirSonido(sonidoChanPath);
+        this.reproducirSonido(sonidoChanPath);
     }
 
     private void reproducirMusicaPartida() {
         String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
-        reproducirSonido(sonidoPartidaPath);
+        this.reproducirSonido(sonidoPartidaPath);
     }
-
-    
-
 
     //SETTERs AND GETTERs 
     public boolean isPausa() {
@@ -494,18 +491,9 @@ public class Xogo {
         return fichaActual;
     }
 
-    public void setFichaActual(Ficha fichaActual) {
+    public void setfichaActual(Ficha fichaActual) {
         this.fichaActual = fichaActual;
     }
-
-    public ArrayList<Xogador> getJugadores() {
-        return getXogadores();
-    }
-
-    public void setJugadores(ArrayList<Xogador> jugadores) {
-        this.setXogadores(jugadores);
-    }
-    
     /**
      * @return the LADO_CADRADO
      */
@@ -579,17 +567,6 @@ public class Xogo {
     /**
      * @return the comprobante
      */
-    public int getComprobante() {
-        return comprobante;
-    }
-
-    /**
-     * @param comprobante the comprobante to set
-     */
-    public void setComprobante(int comprobante) {
-        this.comprobante = comprobante;
-    }
-
     /**
      * @return the cadradosChan
      */
