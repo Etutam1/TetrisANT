@@ -6,6 +6,8 @@ package PaqueteIU;
 
 import PaqueteModelo.Xogo;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -25,6 +27,9 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -159,16 +164,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         frameJuego.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         frameJuego.setTitle("Tetris");
         frameJuego.setBackground(new java.awt.Color(204, 204, 204));
-        frameJuego.setFocusable(false);
         frameJuego.setForeground(java.awt.Color.gray);
         frameJuego.setMinimumSize(new java.awt.Dimension(625, 820));
         frameJuego.setUndecorated(true);
         frameJuego.setSize(new java.awt.Dimension(625, 820));
-        frameJuego.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                frameJuegoPropertyChange(evt);
-            }
-        });
         frameJuego.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 frameJuegoKeyPressed(evt);
@@ -178,7 +177,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         panelJuego.setBackground(new java.awt.Color(0, 0, 0));
         panelJuego.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panelJuego.setFocusable(false);
         panelJuego.setNextFocusableComponent(playButtonMenu);
         panelJuego.setLayout(null);
         frameJuego.getContentPane().add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 400, 800));
@@ -325,15 +323,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         scoresTable.setForeground(new java.awt.Color(255, 255, 255));
         scoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Jugador", "Score"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         scoresTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         scoresTable.setOpaque(false);
         scoresTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
@@ -436,14 +439,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             setClipTimePosition(getCliper().getMicrosecondPosition());
             getCliper().stop();
             getTimer().stop();
-            this.xogo.getTimerComprobarLineas().stop();
             xogo.setPausa(true);
         } else {
             getCliper().setMicrosecondPosition(getClipTimePosition());
             getCliper().start();
             getPauseButton().setFocusable(false);
             getTimer().start();
-            this.xogo.getTimerComprobarLineas().start();
             xogo.setPausa(false);
         }
     }//GEN-LAST:event_pauseButtonActionPerformed
@@ -452,35 +453,75 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         if (!this.xogo.isPausa()) {
 
-            if (KeyEvent.getKeyText(evt.getKeyCode()).equals("A")) {
+            if (comprobarPulsacionTeclaA(evt)) {
                 this.xogo.moverFichaEsquerda();
             }
-            if (KeyEvent.getKeyText(evt.getKeyCode()).equals("D")) {
+            if (comprobarPulsacionTeclaD(evt)) {
                 this.xogo.moverFichaDereita();
             }
-            if (KeyEvent.getKeyText(evt.getKeyCode()).equals("S")) {
+            if (comprobarPulsacionTeclaS(evt)) {
                 this.xogo.moverFichaAbaixo();
-                this.actualizarPanel();
             }
-            if (KeyEvent.getKeyText(evt.getKeyCode()).equals("W")) {
-                this.xogo.getFichaActual().setPosicion(this.xogo.getFichaActual().getPosicion() + 1);
+            if (comprobarPulsacionTeclaW(evt)) {
                 this.xogo.RotarFicha();
+                this.cambiarPosicionFicha();
             }
         }
     }//GEN-LAST:event_frameJuegoKeyPressed
 
+    private void cambiarPosicionFicha() {
+        this.xogo.getFichaActual().setPosicion(this.xogo.getFichaActual().getPosicion() + 1);
+    }
+
+    private boolean comprobarPulsacionTeclaD(KeyEvent evt) {
+        boolean teclaPulsada = false;
+        if (KeyEvent.getKeyText(evt.getKeyCode()).equals("D")) {
+            teclaPulsada = true;
+        }
+        return teclaPulsada;
+    }
+
+    private boolean comprobarPulsacionTeclaA(KeyEvent evt) {
+        boolean teclaPulsada = false;
+        if (KeyEvent.getKeyText(evt.getKeyCode()).equals("A")) {
+            teclaPulsada = true;
+        }
+        return teclaPulsada;
+    }
+
+    private boolean comprobarPulsacionTeclaS(KeyEvent evt) {
+        boolean teclaPulsada = false;
+        if (KeyEvent.getKeyText(evt.getKeyCode()).equals("S")) {
+            teclaPulsada = true;
+        }
+        return teclaPulsada;
+    }
+
+    private boolean comprobarPulsacionTeclaW(KeyEvent evt) {
+        boolean teclaPulsada = false;
+        if (KeyEvent.getKeyText(evt.getKeyCode()).equals("W")) {
+            teclaPulsada = true;
+        }
+        return teclaPulsada;
+    }
+
+
     private void gameOverOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameOverOKButtonActionPerformed
-        if (this.comprobarFieldTextNombreJugador()) {
-            JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE PORFAVOR");
+        if (this.comprobarFieldTextEBaleiro()) {
+            this.mostrarJDialogIntroducirNombre();
         } else {
             this.cambiarVisibilidadPanel(panelGameOver, false);
             xogo.gestionarResultados();
             this.cambiarVisibilidadPanel(panelScores, true);
-            vaciarFieldTextNombreJugador();
+            this.resetFieldTextNombreJugador();
         }
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
-    private void vaciarFieldTextNombreJugador() {
+    private void mostrarJDialogIntroducirNombre() throws HeadlessException {
+        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE PORFAVOR");
+    }
+
+    private void resetFieldTextNombreJugador() {
         getNombreJugadorLabel().setText("");
     }
 
@@ -498,8 +539,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.getScoresTable().setDefaultRenderer(Object.class, headerRenderer);
         this.getScoresTable().setBorder(BorderFactory.createEmptyBorder());
         this.getScoresTable().getParent().setBackground(Color.black);
-
-
     }//GEN-LAST:event_scoresTablePropertyChange
 
     private void botonSonidoJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSonidoJuegoActionPerformed
@@ -508,28 +547,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void retryGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryGameOverButtonActionPerformed
         reiniciarPartida();
-        
     }//GEN-LAST:event_retryGameOverButtonActionPerformed
 
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed
-
-       this.cambiarVisibilidadFrame(frameLevels, false);
+        this.cambiarVisibilidadFrame(frameLevels, false);
     }//GEN-LAST:event_okButtonLevelActionPerformed
 
     private void exitJuegoTotalScoresButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitJuegoTotalScoresButtonMouseClicked
         System.exit(0);
     }//GEN-LAST:event_exitJuegoTotalScoresButtonMouseClicked
 
-    private void frameJuegoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_frameJuegoPropertyChange
-        getFrameJuego().setFocusable(true);
-        this.panelJuego.setFocusable(true);
-
-    }//GEN-LAST:event_frameJuegoPropertyChange
-
     private void exitJuegoGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitJuegoGameOverButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitJuegoGameOverButtonActionPerformed
-    private boolean comprobarFieldTextNombreJugador() {
+   
+
+    private boolean comprobarFieldTextEBaleiro() {
         boolean eBaleiro = false;
         if (this.getNombreJugadorLabel().getText().isBlank()) {
             eBaleiro = true;
@@ -538,8 +571,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void muteyDesmuteMusica() {
-        setContadorMusica(getContadorMusica() + 1);
-        if (getContadorMusica() == 1) {
+        this.contadorMusica++;
+        if (this.contadorMusica == 1) {
             mutearMusica();
         } else {
             desmutearMusica();
@@ -547,21 +580,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void desmutearMusica() {
-        setContadorMusica(0);
-        System.out.println(getContadorMusica());
-        getCliper().setMicrosecondPosition(getClipTimePosition());
-        getBotonSonidoJuego().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
-        getBotonSonidoMenu().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
-        getCliper().start();
+        this.contadorMusica = 0;
+        this.cliper.setMicrosecondPosition(getClipTimePosition());
+        cambiarImagenBotonesDesmute();
+        this.cliper.start();
+    }
+
+    private void cambiarImagenBotonesDesmute() {
+        this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+        this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
     }
 
     private void mutearMusica() {
-        System.out.println(getContadorMusica());
-        getBotonSonidoJuego().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
-        getBotonSonidoMenu().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+
+        cambiarImagenBotonMute();
         setClipTimePosition(getCliper().getMicrosecondPosition());
-        getCliper().stop();
-        System.out.println(getClipTimePosition());
+        this.cliper.stop();
+    }
+
+    private void cambiarImagenBotonMute() {
+        this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+        this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
     }
 
     /**
@@ -627,12 +666,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void iniciarPartida() {
         this.cliper.stop();
-        gestionarVisivilidadPaneles();
+        this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
-        mostrarContadores();
+        this.mostrarContadores();
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
-        this.xogo.comprobarLineasCompletas();
     }
 
     private void mostrarContadores() {
@@ -648,7 +686,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     public void mostrarFinDoXogo() {
-        pararTimers();
+        this.pararTimer();
         this.cambiarVisibilidadPanel(this.panelJuego, false);
         this.cambiarVisibilidadPanel(this.panelFondo, false);
         this.cambiarVisibilidadPanel(this.panelGameOver, true);
@@ -657,19 +695,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void reiniciarPartida() {
         this.EliminarComponentesPanelJuego();
         this.cliper.stop();
-        mostrarPanelesInicioPartida();
+        this.mostrarPanelesInicioPartida();
         this.iniciarPartida();
     }
 
     private void mostrarPanelesInicioPartida() {
-        
         this.cambiarVisibilidadPanel(this.panelJuego, true);
         this.cambiarVisibilidadPanel(this.panelFondo, true);
     }
 
-    private void pararTimers() {
+    private void pararTimer() {
         this.timer.stop();
-        xogo.getTimerComprobarLineas().stop();
+
     }
 
     private void ocultarPanelesFinalPartida() {
@@ -688,15 +725,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void iniciarTimer() {
         this.timer = new Timer(setDelaySegunLevelInicial(), (ActionEvent e) -> {
             this.xogo.moverFichaAbaixo();
-            aumentarScore();
+            this.aumentarScore();
+            this.xogo.borrarLinasCompletas();
         });
         timer.start();
     }
+//    public void comprobarLineasCompletas() {
+//        this.timerComprobarLineas = new Timer(1000, (ActionEvent e) -> {
+//            try {
+//                this.borrarLinasCompletas();
+//            } catch (ConcurrentModificationException ex) {
+//                System.out.println("SE ESTÁ MODIFICANDO EL ARRAYLIST MIENTRAS SE ITERA ");
+//            }
+//        });
+//        this.timerComprobarLineas.start();
+//    }
 
     private void aumentarScore() {
-        int contadorScore = xogo.getContadorScore();
-        xogo.setContadorScore(++contadorScore);
-        mostrarScore(xogo.getContadorScore());
+        int contadorScore = this.xogo.getContadorScore();
+        this.xogo.setContadorScore(++contadorScore);
+        mostrarScore(this.xogo.getContadorScore());
     }
 
     public void mostrarScore(int score) {

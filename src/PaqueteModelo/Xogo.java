@@ -26,6 +26,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -44,7 +45,6 @@ public class Xogo {
     private Ficha fichaActual;
     private ArrayList<Cadrado> cadradosChan = new ArrayList<>();
     private ArrayList<Xogador> xogadores = new ArrayList<>();
-    private Timer timerComprobarLineas;
     private int level;
     private int contadorScore;
     private int numeroLineas;
@@ -182,7 +182,7 @@ public class Xogo {
             this.fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
-
+         this.fichaActual = new FichaBarra(this);
         this.pintarFicha();
     }
 
@@ -284,14 +284,18 @@ public class Xogo {
     }
 
     private void comprobarCambioLevel() {
+        
+        if (this.getNumeroLineas() % 5 == 0) {
+            cambiarDeLevel();
+        }
+    }
+
+    private void cambiarDeLevel() {
         int delayActual = this.ventanaPrincipal.getTimer().getDelay();
         double incrementoDelay = 0.75;
-
-        if (this.getNumeroLineas() % 5 == 0) {
-            this.aumentarLevel();
-            this.ventanaPrincipal.mostrarLevel(this.level);
-            this.actualizarDelays((int) (delayActual * incrementoDelay));
-        }
+        this.aumentarLevel();
+        this.ventanaPrincipal.mostrarLevel(this.level);
+        this.actualizarDelay((int) (delayActual * incrementoDelay));
     }
 
     private void sumarNumeroLineas() {
@@ -326,38 +330,24 @@ public class Xogo {
 
     }
 
-    public void comprobarLineasCompletas() {
-        this.timerComprobarLineas = new Timer(1000, (ActionEvent e) -> {
-            try {
-                this.borrarLinasCompletas();
-            } catch (ConcurrentModificationException ex) {
-                System.out.println("SE ESTÁ MODIFICANDO EL ARRAYLIST MIENTRAS SE ITERA ");
-            }
-        });
-        this.timerComprobarLineas.start();
-    }
-
     private boolean comprobarFinalPartida() {
         boolean gameOver = false;
         Iterator<Cadrado> iteratorChan4 = this.cadradosChan.listIterator();
-        while (iteratorChan4.hasNext()) {
+        while (iteratorChan4.hasNext() && !gameOver) {
             Cadrado cadradoChan = iteratorChan4.next();
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-
-            }
-            if (gameOver) {
+            }  
+        }
+        if (gameOver) {
                 this.ventanaPrincipal.mostrarFinDoXogo();
                 this.reproducirMusicaGameOver();
             }
-        }
         return gameOver;
     }
 
-    private void actualizarDelays(int delay) {
-
-        this.timerComprobarLineas.setDelay(delay);
+    private void actualizarDelay(int delay) {
         this.ventanaPrincipal.getTimer().setDelay(delay);
     }
 
@@ -367,12 +357,14 @@ public class Xogo {
             this.ordenarJugadoresPorScore();
             this.agregarDatosTabla();
             this.ajustarTamañoTabla();
+            
         }
+
+    
     
     
     private void guardarResultados() {
-        PrintWriter salida = null;
-//        
+        PrintWriter salida = null;      
         String jugadorScore = this.ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.contadorScore + "\n";
         try {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
@@ -400,11 +392,7 @@ public class Xogo {
                 Xogador player = new Xogador(linea);
                 this.agregarJugador(player);
             }
-
-//            scanner.close();
-//            entrada.close();
         } catch (IOException e) {
-//            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO LEER LOS RESULTADOS");
         } finally {
             if (entrada != null) {
@@ -415,7 +403,6 @@ public class Xogo {
                     Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         }
     }
 
@@ -433,21 +420,37 @@ public class Xogo {
     }
 
     private void agregarDatosTabla() {
-        DefaultTableModel model = crearFilaEnBlanco();
-        
+        DefaultTableModel model = this.obtenerTableModel();
+        this.crearFilaEnBlancoPorDefecto(model);
+        this.comprobarJugadoresRegistrados(model);
+    }
+
+    private void comprobarJugadoresRegistrados(DefaultTableModel model) {
         Iterator<Xogador> iteratorJugadores = this.xogadores.listIterator();
         while (iteratorJugadores.hasNext()) {
             Xogador jugadorActual = iteratorJugadores.next();
-            Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
-            model.addRow(row);
-
+            Object[] row = this.crearFilaConDatosJugador(jugadorActual);
+            this.agregarFilaConDatosATabla(model, row);
         }
     }
 
-    private DefaultTableModel crearFilaEnBlanco() {
+    private void agregarFilaConDatosATabla(DefaultTableModel model, Object[] row) {
+        model.addRow(row);
+    }
+
+    private Object[] crearFilaConDatosJugador(Xogador jugadorActual) {
+        Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
+        return row;
+    }
+
+    private DefaultTableModel obtenerTableModel() {
         DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
-        model.setRowCount(1);
+        
         return model;
+    }
+
+    private void crearFilaEnBlancoPorDefecto(DefaultTableModel model) {
+        model.setRowCount(1);
     }
 
     private void ajustarTamañoTabla() {
@@ -495,6 +498,7 @@ public class Xogo {
         this.reproducirSonido(sonidoPartidaPath);
     }
 
+    
     //SETTERs AND GETTERs 
     public boolean isPausa() {
         return pausa;
@@ -632,16 +636,6 @@ public class Xogo {
     /**
      * @return the timerComprobarLineas
      */
-    public Timer getTimerComprobarLineas() {
-        return timerComprobarLineas;
-    }
-
-    /**
-     * @param timerComprobarLineas the timerComprobarLineas to set
-     */
-    public void setTimerComprobarLineas(Timer timerComprobarLineas) {
-        this.timerComprobarLineas = timerComprobarLineas;
-    }
 
     /**
      * @return the level

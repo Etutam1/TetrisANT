@@ -56,6 +56,7 @@ public abstract class Ficha {
 
         while (iterator5.hasNext()) {
             Cadrado cadrado3 = iterator5.next();
+            
             cadrado3.getLblCadrado().setLocation(cadrado3.getLblCadrado().getX() + Xogo.getLADO_CADRADO(), cadrado3.getLblCadrado().getY());
             actualizarCoordsCadrado(cadrado3, cadrado3.getLblCadrado().getX(), cadrado3.getLblCadrado().getY());
            
@@ -69,6 +70,7 @@ public abstract class Ficha {
         while (iterator6.hasNext()) {
 
             Cadrado cadrado2 = iterator6.next();
+            
             cadrado2.getLblCadrado().setLocation(cadrado2.getLblCadrado().getX() - Xogo.getLADO_CADRADO(), cadrado2.getLblCadrado().getY());
             actualizarCoordsCadrado(cadrado2, cadrado2.getLblCadrado().getX(), cadrado2.getLblCadrado().getY());  
         }
@@ -81,6 +83,7 @@ public abstract class Ficha {
 
         while (iterator7.hasNext()) {
             Cadrado cadrado4 = iterator7.next();
+            
             cadrado4.getLblCadrado().setLocation(cadrado4.getLblCadrado().getX(), cadrado4.getLblCadrado().getY() + Xogo.getLADO_CADRADO());
             actualizarCoordsCadrado(cadrado4, cadrado4.getLblCadrado().getX(), cadrado4.getLblCadrado().getY());   
         }
@@ -93,6 +96,7 @@ public abstract class Ficha {
 
         while (iterator8.hasNext()) {
             Cadrado cadrado1 = iterator8.next();
+            
             cadrado1.getLblCadrado().setLocation(cadrado1.getLblCadrado().getX(), cadrado1.getLblCadrado().getY() + Xogo.getLADO_CADRADO());
             actualizarCoordsCadrado(cadrado1, cadrado1.getLblCadrado().getX(), cadrado1.getLblCadrado().getY());
         }
