@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
@@ -66,15 +67,25 @@ public class Xogo {
 
     public boolean ePosicionValida(int x, int y) {
         boolean posicionValida = false;
-        if (x < this.MAX_X && x >= this.MIN_X && y < this.MAX_Y && y >= this.MIN_Y) {
-            posicionValida = true;
-        }
+        posicionValida = comprobarMargenes(x, y, posicionValida);
+        posicionValida = comprobarChocaFicha(x, y, posicionValida);
+        return posicionValida;
+    }
+
+    private boolean comprobarChocaFicha(int x, int y, boolean posicionValida) {
         Iterator<Cadrado> iteratorChan5 = this.cadradosChan.iterator();
         while (iteratorChan5.hasNext()) {
             Cadrado cadradoComprobado = iteratorChan5.next();
             if (cadradoComprobado.getLblCadrado().getX() == x && cadradoComprobado.getLblCadrado().getY() == y) {
                 posicionValida = false;
             }
+        }
+        return posicionValida;
+    }
+
+    private boolean comprobarMargenes(int x, int y, boolean posicionValida) {
+        if (x < this.MAX_X && x >= this.MIN_X && y < this.MAX_Y && y >= this.MIN_Y) {
+            posicionValida = true;
         }
         return posicionValida;
     }
@@ -92,9 +103,15 @@ public class Xogo {
     }
 
     public void moverFichaDereita() {
-        Iterator<Cadrado> iterator = this.fichaActual.getCadrados().iterator();
         boolean podeMover = true;
+        podeMover = comprobarCadradoDereita(podeMover);
+        if (podeMover) {
+            this.fichaActual.moverDereita();
+        }
+    }
 
+    private boolean comprobarCadradoDereita(boolean podeMover) {
+        Iterator<Cadrado> iterator = this.fichaActual.getCadrados().iterator();
         while (iterator.hasNext()) {
             Cadrado actual = iterator.next();
 
@@ -102,15 +119,20 @@ public class Xogo {
                 podeMover = false;
             }
         }
+        return podeMover;
+    }
+
+    public void moverFichaEsquerda() { 
+        boolean podeMover = true;
+        
+        podeMover = comprobarCadradoEsquerda(podeMover);
         if (podeMover) {
-            this.fichaActual.moverDereita();
+            this.fichaActual.moverEsquerda();
         }
     }
 
-    public void moverFichaEsquerda() {
+    private boolean comprobarCadradoEsquerda(boolean podeMover) {
         Iterator<Cadrado> iterator2 = this.fichaActual.getCadrados().iterator();
-        boolean podeMover = true;
-
         while (iterator2.hasNext()) {
             Cadrado actual = iterator2.next();
 
@@ -118,9 +140,7 @@ public class Xogo {
                 podeMover = false;
             }
         }
-        if (podeMover) {
-            this.fichaActual.moverEsquerda();
-        }
+        return podeMover;
     }
 
     public void RotarFicha() {
@@ -176,8 +196,12 @@ public class Xogo {
 
     public boolean chocaFichaCoChan() {
         boolean tocaChan = false;
-        Iterator<Cadrado> iterator4 = this.fichaActual.getCadrados().iterator();
+        tocaChan = comprobarFichaAbaixo(tocaChan);
+        return tocaChan;
+    }
 
+    private boolean comprobarFichaAbaixo(boolean tocaChan) {
+        Iterator<Cadrado> iterator4 = this.fichaActual.getCadrados().iterator();
         while (iterator4.hasNext()) {
             Cadrado cadradoActual = iterator4.next();
             if (!this.ePosicionValida(cadradoActual.getLblCadrado().getX(), cadradoActual.getLblCadrado().getY() + LADO_CADRADO)) {
@@ -224,7 +248,7 @@ public class Xogo {
     }
 
     public void borrarLina(int linea) {
-                                                                                               // PENDIENTE DE REVISAR Y LIMPIAR 
+        // PENDIENTE DE REVISAR Y LIMPIAR 
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
         Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
 
@@ -260,9 +284,9 @@ public class Xogo {
     }
 
     private void comprobarCambioLevel() {
-        int delayActual= this.ventanaPrincipal.getTimer().getDelay();
-        double incrementoDelay=0.75;
-        
+        int delayActual = this.ventanaPrincipal.getTimer().getDelay();
+        double incrementoDelay = 0.75;
+
         if (this.getNumeroLineas() % 5 == 0) {
             this.aumentarLevel();
             this.ventanaPrincipal.mostrarLevel(this.level);
@@ -280,30 +304,30 @@ public class Xogo {
     }
 
     private void sumarScorePorLineaCompleta() {
-        
-        if (this.level == 0 || this.level == 1  ) {
+
+        if (this.level == 0 || this.level == 1) {
             contadorScore += 100;
         }
-        if (this.level == 2 || this.level == 3  ) {
+        if (this.level == 2 || this.level == 3) {
             contadorScore += 300;
         }
         if (this.level == 4 || this.level == 5) {
-           contadorScore += 500;
+            contadorScore += 500;
         }
         if (this.level == 6 || this.level == 7) {
-            contadorScore +=700;
+            contadorScore += 700;
         }
-        if (this.level == 8 || this.level == 9 ||this.level == 10) {
+        if (this.level == 8 || this.level == 9 || this.level == 10) {
             contadorScore += 1000;
         }
-        if(this.level > 10) {
+        if (this.level > 10) {
             contadorScore += 2000;
         }
 
     }
 
     public void comprobarLineasCompletas() {
-        this.timerComprobarLineas=new Timer(1000, (ActionEvent e) -> {
+        this.timerComprobarLineas = new Timer(1000, (ActionEvent e) -> {
             try {
                 this.borrarLinasCompletas();
             } catch (ConcurrentModificationException ex) {
@@ -321,6 +345,9 @@ public class Xogo {
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
+
+            }
+            if (gameOver) {
                 this.ventanaPrincipal.mostrarFinDoXogo();
                 this.reproducirMusicaGameOver();
             }
@@ -335,23 +362,24 @@ public class Xogo {
     }
 
     public void gestionarResultados() {
-        this.guardarResultados();
-        this.leerResultados();
-        this.ordenarJugadoresPorScore();
-        this.agregarDatosTabla();
-        this.ajustarTamañoTabla();
-    }
-
+            this.guardarResultados();
+            this.leerResultados();
+            this.ordenarJugadoresPorScore();
+            this.agregarDatosTabla();
+            this.ajustarTamañoTabla();
+        }
+    
+    
     private void guardarResultados() {
         PrintWriter salida = null;
-
+//        
         String jugadorScore = this.ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.contadorScore + "\n";
         try {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
             salida.write(jugadorScore);
 
         } catch (IOException ex) {
-            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO GUARDAR LOS RESULTADOS");
         } finally {
 
             if (salida != null) {
@@ -373,10 +401,11 @@ public class Xogo {
                 this.agregarJugador(player);
             }
 
-            scanner.close();
-            entrada.close();
+//            scanner.close();
+//            entrada.close();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO LEER LOS RESULTADOS");
         } finally {
             if (entrada != null) {
                 scanner.close();
@@ -404,17 +433,21 @@ public class Xogo {
     }
 
     private void agregarDatosTabla() {
+        DefaultTableModel model = crearFilaEnBlanco();
+        
         Iterator<Xogador> iteratorJugadores = this.xogadores.listIterator();
-        DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
-        model.setRowCount(1);
         while (iteratorJugadores.hasNext()) {
             Xogador jugadorActual = iteratorJugadores.next();
-
             Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
             model.addRow(row);
 
         }
+    }
 
+    private DefaultTableModel crearFilaEnBlanco() {
+        DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
+        model.setRowCount(1);
+        return model;
     }
 
     private void ajustarTamañoTabla() {
@@ -494,6 +527,7 @@ public class Xogo {
     public void setfichaActual(Ficha fichaActual) {
         this.fichaActual = fichaActual;
     }
+
     /**
      * @return the LADO_CADRADO
      */

@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -83,10 +84,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         nombreJugadorLabel = new javax.swing.JTextField();
         jugadorLabel = new javax.swing.JLabel();
         gameOverOKButton = new javax.swing.JButton();
+        exitJuegoGameOverButton = new javax.swing.JButton();
         panelScores = new javax.swing.JPanel();
         scoresTituloLabel = new javax.swing.JLabel();
         retryGameOverButton = new javax.swing.JButton();
-        exitJuegoGameOverButton = new javax.swing.JButton();
+        exitJuegoTotalScoresButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         scoresTable = new javax.swing.JTable();
         panelMenu = new javax.swing.JPanel();
@@ -98,11 +100,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         fondoLabel = new javax.swing.JLabel();
 
         frameLevels.setUndecorated(true);
-        frameLevels.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                frameLevelsPropertyChange(evt);
-            }
-        });
         frameLevels.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelFondoLevels.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -281,6 +278,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelGameOver.add(gameOverOKButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, -1, 30));
 
+        exitJuegoGameOverButton.setText("EXIT");
+        exitJuegoGameOverButton.setFocusable(false);
+        exitJuegoGameOverButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitJuegoGameOverButtonActionPerformed(evt);
+            }
+        });
+        panelGameOver.add(exitJuegoGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, 100, 40));
+
         frameJuego.getContentPane().add(panelGameOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 850));
 
         panelScores.setBackground(new java.awt.Color(0, 0, 0));
@@ -301,14 +307,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelScores.add(retryGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 690, 100, 40));
 
-        exitJuegoGameOverButton.setText("EXIT");
-        exitJuegoGameOverButton.setFocusable(false);
-        exitJuegoGameOverButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        exitJuegoTotalScoresButton.setText("EXIT");
+        exitJuegoTotalScoresButton.setFocusable(false);
+        exitJuegoTotalScoresButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                exitJuegoGameOverButtonMouseClicked(evt);
+                exitJuegoTotalScoresButtonMouseClicked(evt);
             }
         });
-        panelScores.add(exitJuegoGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 690, 100, 40));
+        panelScores.add(exitJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 690, 100, 40));
 
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setOpaque(false);
@@ -430,7 +436,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             setClipTimePosition(getCliper().getMicrosecondPosition());
             getCliper().stop();
             getTimer().stop();
-
             this.xogo.getTimerComprobarLineas().stop();
             xogo.setPausa(true);
         } else {
@@ -438,7 +443,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             getCliper().start();
             getPauseButton().setFocusable(false);
             getTimer().start();
-
             this.xogo.getTimerComprobarLineas().start();
             xogo.setPausa(false);
         }
@@ -466,11 +470,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_frameJuegoKeyPressed
 
     private void gameOverOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameOverOKButtonActionPerformed
-
-        getPanelGameOver().setVisible(false);
-        xogo.gestionarResultados();
-        getPanelScores().setVisible(true);
-        vaciarFieldTextNombreJugador();
+        if (this.comprobarFieldTextNombreJugador()) {
+            JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE PORFAVOR");
+        } else {
+            this.cambiarVisibilidadPanel(panelGameOver, false);
+            xogo.gestionarResultados();
+            this.cambiarVisibilidadPanel(panelScores, true);
+            vaciarFieldTextNombreJugador();
+        }
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
     private void vaciarFieldTextNombreJugador() {
@@ -501,22 +508,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void retryGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryGameOverButtonActionPerformed
         reiniciarPartida();
-        this.panelJuego.setVisible(true);
-        getPanelFondo().setVisible(true);
-        this.iniciarPartida();
+        
     }//GEN-LAST:event_retryGameOverButtonActionPerformed
 
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed
-        this.frameLevels.setVisible(false);
+
+       this.cambiarVisibilidadFrame(frameLevels, false);
     }//GEN-LAST:event_okButtonLevelActionPerformed
 
-    private void frameLevelsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_frameLevelsPropertyChange
-
-    }//GEN-LAST:event_frameLevelsPropertyChange
-
-    private void exitJuegoGameOverButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitJuegoGameOverButtonMouseClicked
+    private void exitJuegoTotalScoresButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitJuegoTotalScoresButtonMouseClicked
         System.exit(0);
-    }//GEN-LAST:event_exitJuegoGameOverButtonMouseClicked
+    }//GEN-LAST:event_exitJuegoTotalScoresButtonMouseClicked
 
     private void frameJuegoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_frameJuegoPropertyChange
         getFrameJuego().setFocusable(true);
@@ -524,23 +526,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_frameJuegoPropertyChange
 
+    private void exitJuegoGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitJuegoGameOverButtonActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitJuegoGameOverButtonActionPerformed
+    private boolean comprobarFieldTextNombreJugador() {
+        boolean eBaleiro = false;
+        if (this.getNombreJugadorLabel().getText().isBlank()) {
+            eBaleiro = true;
+        }
+        return eBaleiro;
+    }
+
     private void muteyDesmuteMusica() {
         setContadorMusica(getContadorMusica() + 1);
         if (getContadorMusica() == 1) {
-            System.out.println(getContadorMusica());
-            getBotonSonidoJuego().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
-            getBotonSonidoMenu().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
-            setClipTimePosition(getCliper().getMicrosecondPosition());
-            getCliper().stop();
-            System.out.println(getClipTimePosition());
+            mutearMusica();
         } else {
-            setContadorMusica(0);
-            System.out.println(getContadorMusica());
-            getCliper().setMicrosecondPosition(getClipTimePosition());
-            getBotonSonidoJuego().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
-            getBotonSonidoMenu().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
-            getCliper().start();
+            desmutearMusica();
         }
+    }
+
+    private void desmutearMusica() {
+        setContadorMusica(0);
+        System.out.println(getContadorMusica());
+        getCliper().setMicrosecondPosition(getClipTimePosition());
+        getBotonSonidoJuego().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+        getBotonSonidoMenu().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+        getCliper().start();
+    }
+
+    private void mutearMusica() {
+        System.out.println(getContadorMusica());
+        getBotonSonidoJuego().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+        getBotonSonidoMenu().setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+        setClipTimePosition(getCliper().getMicrosecondPosition());
+        getCliper().stop();
+        System.out.println(getClipTimePosition());
     }
 
     /**
@@ -606,16 +627,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void iniciarPartida() {
         this.cliper.stop();
+        gestionarVisivilidadPaneles();
+        this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
+        mostrarContadores();
+        this.xogo.xenerarNovaFicha();
+        this.iniciarTimer();
+        this.xogo.comprobarLineasCompletas();
+    }
+
+    private void mostrarContadores() {
+        this.mostrarLevel(this.xogo.getLevel());
+        this.mostrarNumeroLineas(this.xogo.getNumeroLineas());
+    }
+
+    private void gestionarVisivilidadPaneles() {
         this.ocultarPanelesFinalPartida();
         this.cambiarVisibilidadFrame(this, false);
         this.cambiarVisibilidadFrame(this.frameJuego, true);
         this.frameJuego.setLocationRelativeTo(this.rootPane);
-        this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
-        this.mostrarLevel(this.xogo.getLevel());
-        this.mostrarNumeroLineas(this.xogo.getNumeroLineas());
-        this.xogo.xenerarNovaFicha();
-        this.iniciarTimer();
-        this.xogo.comprobarLineasCompletas();
     }
 
     public void mostrarFinDoXogo() {
@@ -628,6 +657,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void reiniciarPartida() {
         this.EliminarComponentesPanelJuego();
         this.cliper.stop();
+        mostrarPanelesInicioPartida();
+        this.iniciarPartida();
+    }
+
+    private void mostrarPanelesInicioPartida() {
+        
+        this.cambiarVisibilidadPanel(this.panelJuego, true);
+        this.cambiarVisibilidadPanel(this.panelFondo, true);
     }
 
     private void pararTimers() {
@@ -671,7 +708,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     public void mostrarLevel(int level) {
-       this.levelTextLabel.setText(String.valueOf(level));
+        this.levelTextLabel.setText(String.valueOf(level));
     }
 
     public void actualizarPanel() {
@@ -686,7 +723,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void borrarCadrado(JLabel lblCadrado) {
         this.panelJuego.remove(lblCadrado);
     }
-    
+
     private void EliminarComponentesPanelJuego() {
         this.panelJuego.removeAll();
 
@@ -1060,14 +1097,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      * @return the exitJuegoGameOverButton
      */
     public javax.swing.JButton getExitJuegoGameOverButton() {
-        return exitJuegoGameOverButton;
+        return exitJuegoTotalScoresButton;
     }
 
     /**
      * @param exitJuegoGameOverButton the exitJuegoGameOverButton to set
      */
     public void setExitJuegoGameOverButton(javax.swing.JButton exitJuegoGameOverButton) {
-        this.exitJuegoGameOverButton = exitJuegoGameOverButton;
+        this.exitJuegoTotalScoresButton = exitJuegoGameOverButton;
     }
 
     /**
@@ -1273,6 +1310,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JRadioButton easyRadioB;
     private javax.swing.JButton exitButtonMenu;
     private javax.swing.JButton exitJuegoGameOverButton;
+    private javax.swing.JButton exitJuegoTotalScoresButton;
     private javax.swing.JRadioButton extremeRadioB;
     private javax.swing.JLabel fondoLabel;
     private javax.swing.JFrame frameJuego;
