@@ -730,16 +730,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         timer.start();
     }
-//    public void comprobarLineasCompletas() {
-//        this.timerComprobarLineas = new Timer(1000, (ActionEvent e) -> {
-//            try {
-//                this.borrarLinasCompletas();
-//            } catch (ConcurrentModificationException ex) {
-//                System.out.println("SE ESTÁ MODIFICANDO EL ARRAYLIST MIENTRAS SE ITERA ");
-//            }
-//        });
-//        this.timerComprobarLineas.start();
-//    }
 
     private void aumentarScore() {
         int contadorScore = this.xogo.getContadorScore();
