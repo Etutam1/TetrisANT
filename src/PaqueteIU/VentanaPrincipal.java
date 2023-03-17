@@ -266,6 +266,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelGameOver.add(jugadorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 120, 30));
 
         gameOverOKButton.setText("OK");
+        gameOverOKButton.setFocusable(false);
         gameOverOKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gameOverOKButtonActionPerformed(evt);
@@ -295,6 +296,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
 
         retryJuegoTotalScoresButton.setText("RETRY");
+        retryJuegoTotalScoresButton.setFocusable(false);
         retryJuegoTotalScoresButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 retryJuegoTotalScoresButtonActionPerformed(evt);
@@ -312,6 +314,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelScores.add(exitJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 690, 100, 40));
 
         menuJuegoTotalScoresButton.setText("MENU");
+        menuJuegoTotalScoresButton.setFocusable(false);
         menuJuegoTotalScoresButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuJuegoTotalScoresButtonActionPerformed(evt);
@@ -343,6 +346,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         scoresTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        scoresTable.setFocusable(false);
         scoresTable.setOpaque(false);
         scoresTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
         scoresTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -365,12 +369,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelMenu.setFocusable(false);
         panelMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         exitButtonMenu.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         exitButtonMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/EXIT_STOPPED.png"))); // NOI18N
         exitButtonMenu.setBorderPainted(false);
         exitButtonMenu.setContentAreaFilled(false);
+        exitButtonMenu.setFocusable(false);
         exitButtonMenu.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/EXIT.gif"))); // NOI18N
         exitButtonMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -382,6 +388,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         playButtonMenu.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         playButtonMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/PLAY_STOPPED.png"))); // NOI18N
         playButtonMenu.setContentAreaFilled(false);
+        playButtonMenu.setFocusable(false);
         playButtonMenu.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/PLAY.gif"))); // NOI18N
         playButtonMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -396,6 +403,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         levelsButton.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         levelsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/Levels-1.png.png"))); // NOI18N
         levelsButton.setContentAreaFilled(false);
+        levelsButton.setFocusable(false);
         levelsButton.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/Levels.gif"))); // NOI18N
         levelsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -448,9 +456,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } else {
             getCliper().setMicrosecondPosition(getClipTimePosition());
             getCliper().start();
-            getPauseButton().setFocusable(false);
+//            getPauseButton().setFocusable(false);
             getTimer().start();
             xogo.setPausa(false);
+            
         }
     }//GEN-LAST:event_pauseButtonActionPerformed
 
