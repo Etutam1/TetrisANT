@@ -16,6 +16,7 @@ public class FichaBarra extends Ficha {
     private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + Xogo.getLADO_CADRADO(), cadrado1.getY(), Color.CYAN);
     private Cadrado cadrado3 = new Cadrado(cadrado2.getX() + Xogo.getLADO_CADRADO(), cadrado2.getY(), Color.CYAN);
     private Cadrado cadrado4 = new Cadrado(cadrado3.getX() + Xogo.getLADO_CADRADO(), cadrado3.getY(), Color.CYAN);
+    private int posicion=0;
 
     //CONSTRUCTOR
     public FichaBarra(Xogo xogo) {
@@ -33,26 +34,26 @@ public class FichaBarra extends Ficha {
         int cadradoFixo_Y = getCadrado2().getY();
         boolean cambioPosicion = false;
 
-        if (getPosicion() > 1) {    //CADA VEZ QUE PULSAMOS LA TECLA W, LLAMA AL METODO ROTAR Y SUMA 1 AL ATRIBUTO POSICION 
-            setPosicion(0); //ENTONCES AQUI COMPROBAMOS SI PASA LA MAXIMA POSICION PARA VOLVER A LA 0
-        }
-        if (getPosicion() == 0) {
-
+        if (this.posicion == 0) {
             if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion1(cadradoFixo_X, cadradoFixo_Y);
                 cambioPosicion = true;
+                posicion = 1;
             }
         }
-        else if (getPosicion() == 1) {
+        else if (this.posicion == 1) {
+
             if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion0(cadradoFixo_X, cadradoFixo_Y);
                 cambioPosicion = true;
+                this.posicion=0;
             }
-        } 
+        }
+         
         return cambioPosicion;
     }
 
-    private boolean comprobarPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
+    private boolean comprobarPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
 
         boolean podeRotar = false;
         if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO()) && getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO()) && getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y + 2 * Xogo.getLADO_CADRADO())) {
@@ -61,13 +62,13 @@ public class FichaBarra extends Ficha {
         return podeRotar;
     }
 
-    private void rotarAPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
+    private void rotarAPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
         getCadrado1().getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO());
         getCadrado3().getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO());
         getCadrado4().getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y + 2 * Xogo.getLADO_CADRADO());
     }
 
-    private boolean comprobarPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
+    private boolean comprobarPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
         boolean podeRotar = false;
         if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y) && getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y) && getXogo().ePosicionValida(cadradoFixo_X + 2 * Xogo.getLADO_CADRADO(), cadradoFixo_Y)) {
             podeRotar = true;
@@ -75,7 +76,7 @@ public class FichaBarra extends Ficha {
         return podeRotar;
     }
 
-    private void rotarAPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
+    private void rotarAPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
         getCadrado1().getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y);
         getCadrado3().getLblCadrado().setLocation(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y);
         getCadrado4().getLblCadrado().setLocation(cadradoFixo_X + 2 * Xogo.getLADO_CADRADO(), cadradoFixo_Y);

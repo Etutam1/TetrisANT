@@ -27,7 +27,6 @@ import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
 /**
  *
  * @author a22lucastf
@@ -89,8 +88,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         exitJuegoGameOverButton = new javax.swing.JButton();
         panelScores = new javax.swing.JPanel();
         scoresTituloLabel = new javax.swing.JLabel();
-        retryGameOverButton = new javax.swing.JButton();
+        retryJuegoTotalScoresButton = new javax.swing.JButton();
         exitJuegoTotalScoresButton = new javax.swing.JButton();
+        menuJuegoTotalScoresButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         scoresTable = new javax.swing.JTable();
         panelMenu = new javax.swing.JPanel();
@@ -294,13 +294,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         scoresTituloLabel.setText("TOTAL SCORES");
         panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
 
-        retryGameOverButton.setText("RETRY");
-        retryGameOverButton.addActionListener(new java.awt.event.ActionListener() {
+        retryJuegoTotalScoresButton.setText("RETRY");
+        retryJuegoTotalScoresButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                retryGameOverButtonActionPerformed(evt);
+                retryJuegoTotalScoresButtonActionPerformed(evt);
             }
         });
-        panelScores.add(retryGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 690, 100, 40));
+        panelScores.add(retryJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 690, 100, 40));
 
         exitJuegoTotalScoresButton.setText("EXIT");
         exitJuegoTotalScoresButton.setFocusable(false);
@@ -310,6 +310,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         panelScores.add(exitJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 690, 100, 40));
+
+        menuJuegoTotalScoresButton.setText("MENU");
+        menuJuegoTotalScoresButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuJuegoTotalScoresButtonActionPerformed(evt);
+            }
+        });
+        panelScores.add(menuJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 690, 100, 40));
 
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setOpaque(false);
@@ -427,7 +435,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_levelsButtonActionPerformed
 
     private void exitButtonMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMenuMouseClicked
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_exitButtonMenuMouseClicked
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
@@ -460,15 +468,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 this.xogo.moverFichaAbaixo();
             }
             if (comprobarPulsacionTeclaW(evt)) {
-                if(this.xogo.RotarFicha())
-                this.cambiarPosicionFicha();
+                this.xogo.RotarFicha();        
             }
         }
     }//GEN-LAST:event_frameJuegoKeyPressed
-
-    private void cambiarPosicionFicha() {
-        this.xogo.getFichaActual().setPosicion(this.xogo.getFichaActual().getPosicion() + 1);
-    }
 
     private boolean comprobarPulsacionTeclaD(KeyEvent evt) {
         boolean teclaPulsada = false;
@@ -515,7 +518,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
     private void mostrarJDialogIntroducirNombre() throws HeadlessException {
-        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE PORFAVOR");
+        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE POR FAVOR");
     }
 
     private void resetFieldTextNombreJugador() {
@@ -542,9 +545,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         muteyDesmuteMusica();
     }//GEN-LAST:event_botonSonidoJuegoActionPerformed
 
-    private void retryGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryGameOverButtonActionPerformed
+    private void retryJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryJuegoTotalScoresButtonActionPerformed
         reiniciarPartida();
-    }//GEN-LAST:event_retryGameOverButtonActionPerformed
+    }//GEN-LAST:event_retryJuegoTotalScoresButtonActionPerformed
 
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed
         this.cambiarVisibilidadFrame(frameLevels, false);
@@ -557,7 +560,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void exitJuegoGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitJuegoGameOverButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitJuegoGameOverButtonActionPerformed
-   
+
+    private void menuJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJuegoTotalScoresButtonActionPerformed
+        this.EliminarComponentesPanelJuego();
+        this.cambiarVisibilidadFrame(this.frameJuego, false);
+        this.cambiarVisibilidadFrame(this, true);
+    }//GEN-LAST:event_menuJuegoTotalScoresButtonActionPerformed
 
     private boolean comprobarFieldTextEBaleiro() {
         boolean eBaleiro = false;
@@ -662,12 +670,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void iniciarPartida() {
+
         this.cliper.stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
         this.mostrarContadores();
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
+
     }
 
     private void mostrarContadores() {
@@ -679,6 +689,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.ocultarPanelesFinalPartida();
         this.cambiarVisibilidadFrame(this, false);
         this.cambiarVisibilidadFrame(this.frameJuego, true);
+        this.cambiarVisibilidadPanel(this.panelFondo, true);
+        this.cambiarVisibilidadPanel(this.panelJuego, true);
         this.frameJuego.setLocationRelativeTo(this.rootPane);
     }
 
@@ -1328,14 +1340,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      * @return the retryGameOverButton
      */
     public javax.swing.JButton getRetryGameOverButton() {
-        return retryGameOverButton;
+        return retryJuegoTotalScoresButton;
     }
 
     /**
      * @param retryGameOverButton the retryGameOverButton to set
      */
     public void setRetryGameOverButton(javax.swing.JButton retryGameOverButton) {
-        this.retryGameOverButton = retryGameOverButton;
+        this.retryJuegoTotalScoresButton = retryGameOverButton;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
@@ -1364,6 +1376,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton levelsButton;
     private javax.swing.JLabel lineasTextLabel;
     private javax.swing.JRadioButton mediumRadioB;
+    private javax.swing.JButton menuJuegoTotalScoresButton;
     private javax.swing.JTextField nombreJugadorLabel;
     private javax.swing.JRadioButton noobRadioB;
     private javax.swing.JButton okButtonLevel;
@@ -1375,7 +1388,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelScores;
     private javax.swing.JToggleButton pauseButton;
     private javax.swing.JButton playButtonMenu;
-    private javax.swing.JButton retryGameOverButton;
+    private javax.swing.JButton retryJuegoTotalScoresButton;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreTextLabel;
     private javax.swing.JTable scoresTable;

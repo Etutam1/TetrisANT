@@ -16,7 +16,7 @@ public class FichaT extends Ficha {
     private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.MAGENTA);
     private Cadrado cadrado3 = new Cadrado(cadrado2.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY(), Color.MAGENTA);
     private Cadrado cadrado4 = new Cadrado(cadrado2.getX(), cadrado2.getY() - getXogo().getLADO_CADRADO(), Color.MAGENTA);
-
+    private int posicion=1;
     //CONSTRUCTOR
     public FichaT(Xogo xogo) {
         super(xogo);
@@ -32,31 +32,33 @@ public class FichaT extends Ficha {
         int cadradoFixo_Y = getCadrado2().getY();
         boolean cambioPosicion = false;
 
-        if (getPosicion() > 3) {
-            setPosicion(0);
-        }
-        if (getPosicion() == 0) {
+       
+        if (this.posicion == 0) {
             if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion1();
                 cambioPosicion = true;
+                this.posicion=1;
             }
 
-        } else if (getPosicion() == 1) {
+        } else if (this.posicion == 1) {
             if (comprobarPosicion2(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion2();
                 cambioPosicion = true;
+                this.posicion=2;
             }
 
-        } else if (getPosicion() == 2) {
+        } else if (this.posicion == 2) {
             if (comprobarPosicion3(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion3();
                 cambioPosicion = true;
+                this.posicion=3;
             }
 
-        } else if (getPosicion() == 3) {
+        } else if (this.posicion == 3) {
             if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion0();
                 cambioPosicion = true;
+                this.posicion=0;
             }
        } 
         return cambioPosicion;
