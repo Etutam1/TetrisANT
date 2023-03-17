@@ -5,14 +5,11 @@
 package PaqueteIU;
 
 import PaqueteModelo.Xogo;
+import PaqueteModelo.Sonido;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,16 +33,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     //ATRIBUTOS
     private Timer timer;
     private Xogo xogo;
-    private Clip cliper;
     private int contadorMusica = 0;
-    private long clipTimePosition;
+    private Sonido sonido = new Sonido();
 
     //CONSTRUCTOR
     public VentanaPrincipal() {
 
         initComponents();
         this.setLocationRelativeTo(null);
-        this.reproducirMusicaMenu();
+        sonido.reproducirMusicaMenu();
     }
 
     /**
@@ -88,7 +84,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         exitJuegoGameOverButton = new javax.swing.JButton();
         panelScores = new javax.swing.JPanel();
         scoresTituloLabel = new javax.swing.JLabel();
-        retryJuegoTotalScoresButton = new javax.swing.JButton();
+        retryGameOverButton = new javax.swing.JButton();
         exitJuegoTotalScoresButton = new javax.swing.JButton();
         menuJuegoTotalScoresButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -295,14 +291,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         scoresTituloLabel.setText("TOTAL SCORES");
         panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
 
-        retryJuegoTotalScoresButton.setText("RETRY");
-        retryJuegoTotalScoresButton.setFocusable(false);
-        retryJuegoTotalScoresButton.addActionListener(new java.awt.event.ActionListener() {
+        retryGameOverButton.setText("RETRY");
+        retryGameOverButton.setFocusable(false);
+        retryGameOverButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                retryJuegoTotalScoresButtonActionPerformed(evt);
+                retryGameOverButtonActionPerformed(evt);
             }
         });
-        panelScores.add(retryJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 690, 100, 40));
+        panelScores.add(retryGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 690, 100, 40));
 
         exitJuegoTotalScoresButton.setText("EXIT");
         exitJuegoTotalScoresButton.setFocusable(false);
@@ -443,26 +439,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_levelsButtonActionPerformed
 
     private void exitButtonMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMenuMouseClicked
-        System.exit(0);
+        this.dispose();
     }//GEN-LAST:event_exitButtonMenuMouseClicked
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
 
         if (getPauseButton().isSelected()) {
-            setClipTimePosition(getCliper().getMicrosecondPosition());
-            getCliper().stop();
+            sonido.muteMusica();
             getTimer().stop();
             xogo.setPausa(true);
         } else {
-            getCliper().setMicrosecondPosition(getClipTimePosition());
-            getCliper().start();
-//            getPauseButton().setFable(false);
+            sonido.unmuteMusica();
+            getPauseButton().setFocusable(false);
             getTimer().start();
             xogo.setPausa(false);
-            
         }
     }//GEN-LAST:event_pauseButtonActionPerformed
 
+    private void menuJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {
+
+        this.EliminarComponentesPanelJuego();
+        this.cambiarVisibilidadFrame(this.frameJuego, false);
+        this.cambiarVisibilidadFrame(this, true);
+        this.cambiarVisibilidadPanel(panelJuego, true);
+        this.cambiarVisibilidadPanel(panelFondo, true);
+        
+
+    }
     private void frameJuegoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameJuegoKeyPressed
 
         if (!this.xogo.isPausa()) {
@@ -470,14 +473,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if (comprobarPulsacionTeclaA(evt)) {
                 this.xogo.moverFichaEsquerda();
             }
-            else if (comprobarPulsacionTeclaD(evt)) {
+            if (comprobarPulsacionTeclaD(evt)) {
                 this.xogo.moverFichaDereita();
             }
-            else if (comprobarPulsacionTeclaS(evt)) {
+            if (comprobarPulsacionTeclaS(evt)) {
                 this.xogo.moverFichaAbaixo();
             }
-            else if (comprobarPulsacionTeclaW(evt)) {
-                this.xogo.RotarFicha();        
+            if (comprobarPulsacionTeclaW(evt)) {
+                this.xogo.RotarFicha();
             }
         }
     }//GEN-LAST:event_frameJuegoKeyPressed
@@ -527,7 +530,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
     private void mostrarJDialogIntroducirNombre() throws HeadlessException {
-        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE POR FAVOR");
+        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE PORFAVOR");
     }
 
     private void resetFieldTextNombreJugador() {
@@ -554,10 +557,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         muteyDesmuteMusica();
     }//GEN-LAST:event_botonSonidoJuegoActionPerformed
 
-    private void retryJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryJuegoTotalScoresButtonActionPerformed
+    private void retryGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryGameOverButtonActionPerformed
         reiniciarPartida();
         this.frameJuego.requestFocus();
-    }//GEN-LAST:event_retryJuegoTotalScoresButtonActionPerformed
+    }//GEN-LAST:event_retryGameOverButtonActionPerformed
 
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed
         this.cambiarVisibilidadFrame(frameLevels, false);
@@ -571,12 +574,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitJuegoGameOverButtonActionPerformed
 
-    private void menuJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJuegoTotalScoresButtonActionPerformed
-        this.EliminarComponentesPanelJuego();
-        this.cambiarVisibilidadFrame(this.frameJuego, false);
-        this.cambiarVisibilidadFrame(this, true);
-    }//GEN-LAST:event_menuJuegoTotalScoresButtonActionPerformed
-
     private boolean comprobarFieldTextEBaleiro() {
         boolean eBaleiro = false;
         if (this.getNombreJugadorLabel().getText().isBlank()) {
@@ -588,17 +585,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void muteyDesmuteMusica() {
         this.contadorMusica++;
         if (this.contadorMusica == 1) {
+            sonido.muteMusica();
             mutearMusica();
         } else {
+            sonido.unmuteMusica();
             desmutearMusica();
         }
     }
 
     private void desmutearMusica() {
         this.contadorMusica = 0;
-        this.cliper.setMicrosecondPosition(getClipTimePosition());
         cambiarImagenBotonesDesmute();
-        this.cliper.start();
+        if (frameJuego.isVisible()) {
+            sonido.unmuteMusica();
+        } else {
+            sonido.unmuteMusica();
+        }
     }
 
     private void cambiarImagenBotonesDesmute() {
@@ -607,10 +609,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void mutearMusica() {
-
         cambiarImagenBotonMute();
-        setClipTimePosition(getCliper().getMicrosecondPosition());
-        this.cliper.stop();
+        if (frameJuego.isVisible()) {
+            sonido.muteMusica();
+        } else {
+            sonido.muteMusica();
+        }
     }
 
     private void cambiarImagenBotonMute() {
@@ -661,33 +665,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
     }
 
-    private void reproducirMusicaMenu() {
-        String sonidoMenuPath = "src\\Resources\\Musica\\menu.wav";
-        try {
-            File musicPath = new File(sonidoMenuPath);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                setCliper(AudioSystem.getClip());
-                getCliper().open(audioInput);
-                getCliper().start();
-                getCliper().loop(Clip.LOOP_CONTINUOUSLY);
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     private void iniciarPartida() {
-
-        this.cliper.stop();
+        sonido.getMusica().stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
+        sonido.reproducirMusicaPartida();
         this.mostrarContadores();
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
-
     }
 
     private void mostrarContadores() {
@@ -699,12 +684,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.ocultarPanelesFinalPartida();
         this.cambiarVisibilidadFrame(this, false);
         this.cambiarVisibilidadFrame(this.frameJuego, true);
-        this.cambiarVisibilidadPanel(this.panelFondo, true);
-        this.cambiarVisibilidadPanel(this.panelJuego, true);
         this.frameJuego.setLocationRelativeTo(this.rootPane);
     }
 
     public void mostrarFinDoXogo() {
+        sonido.getMusica().stop();
+        sonido.reproducirMusicaGameOver();
         this.pararTimer();
         this.cambiarVisibilidadPanel(this.panelJuego, false);
         this.cambiarVisibilidadPanel(this.panelFondo, false);
@@ -713,7 +698,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void reiniciarPartida() {
         this.EliminarComponentesPanelJuego();
-        this.cliper.stop();
+        sonido.getMusica().stop();
         this.mostrarPanelesInicioPartida();
         this.iniciarPartida();
     }
@@ -746,7 +731,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             this.xogo.moverFichaAbaixo();
             this.aumentarScore();
             this.xogo.borrarLinasCompletas();
-            this.actualizarPanel();
         });
         timer.start();
     }
@@ -1040,20 +1024,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     /**
-     * @return the cliper
-     */
-    public Clip getCliper() {
-        return cliper;
-    }
-
-    /**
-     * @param aCliper the cliper to set
-     */
-    public void setCliper(Clip aCliper) {
-        cliper = aCliper;
-    }
-
-    /**
      * @return the contadorMusica
      */
     public int getContadorMusica() {
@@ -1065,20 +1035,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public void setContadorMusica(int contadorMusica) {
         this.contadorMusica = contadorMusica;
-    }
-
-    /**
-     * @return the clipTimePosition
-     */
-    public long getClipTimePosition() {
-        return clipTimePosition;
-    }
-
-    /**
-     * @param clipTimePosition the clipTimePosition to set
-     */
-    public void setClipTimePosition(long clipTimePosition) {
-        this.clipTimePosition = clipTimePosition;
     }
 
     /**
@@ -1351,14 +1307,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      * @return the retryGameOverButton
      */
     public javax.swing.JButton getRetryGameOverButton() {
-        return retryJuegoTotalScoresButton;
+        return retryGameOverButton;
     }
 
     /**
      * @param retryGameOverButton the retryGameOverButton to set
      */
     public void setRetryGameOverButton(javax.swing.JButton retryGameOverButton) {
-        this.retryJuegoTotalScoresButton = retryGameOverButton;
+        this.retryGameOverButton = retryGameOverButton;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
@@ -1399,7 +1355,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelScores;
     private javax.swing.JToggleButton pauseButton;
     private javax.swing.JButton playButtonMenu;
-    private javax.swing.JButton retryJuegoTotalScoresButton;
+    private javax.swing.JButton retryGameOverButton;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreTextLabel;
     private javax.swing.JTable scoresTable;

@@ -6,7 +6,6 @@ package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,11 +18,8 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 /**
  *
@@ -45,7 +41,7 @@ public class Xogo {
     private int level;
     private int contadorScore;
     private int numeroLineas;
-    
+    private Sonido sonido = new Sonido();
 
     //CONSTRUCTOR
     public Xogo(int level, boolean pausa, VentanaPrincipal ventanaPrincipal) {
@@ -59,7 +55,6 @@ public class Xogo {
         this.numeroLineas = 0;
         this.ventanaPrincipal = ventanaPrincipal;
         this.level = level;
-        reproducirMusicaPartida();
 
     }
 
@@ -92,7 +87,7 @@ public class Xogo {
         if (!this.comprobarFinalPartida()) {
             if (this.chocaFichaCoChan()) {
                 this.engadirFichaAoChan();
-                this.reproducirSonidoChocaChan();
+                sonido.reproducirSonidoChocaChan();
                 this.xenerarNovaFicha();
             } else {
                 this.fichaActual.moverAbaixo();
@@ -120,9 +115,9 @@ public class Xogo {
         return podeMover;
     }
 
-    public void moverFichaEsquerda() {
+    public void moverFichaEsquerda() { 
         boolean podeMover = true;
-
+        
         podeMover = comprobarCadradoEsquerda(podeMover);
         if (podeMover) {
             this.fichaActual.moverEsquerda();
@@ -142,7 +137,7 @@ public class Xogo {
     }
 
     public void RotarFicha() {
-         this.fichaActual.rotar();
+        this.fichaActual.rotar();
     }
 
     public void xenerarNovaFicha() {
@@ -180,8 +175,7 @@ public class Xogo {
             this.fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
-       
-//         this.fichaActual = new FichaT(this);
+         this.fichaActual = new FichaBarra(this);
         this.pintarFicha();
     }
 
@@ -263,7 +257,7 @@ public class Xogo {
         this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
         this.sumarScorePorLineaCompleta();
         this.comprobarCambioLevel();
-        this.reproducirSonidoBorrarLinea();
+        sonido.reproducirSonidoBorrarLinea();
     }
 
     private void moverCadradosChan(int linea) {
@@ -283,7 +277,7 @@ public class Xogo {
     }
 
     private void comprobarCambioLevel() {
-
+        
         if (this.getNumeroLineas() % 5 == 0) {
             cambiarDeLevel();
         }
@@ -299,6 +293,7 @@ public class Xogo {
 
     private void sumarNumeroLineas() {
         this.numeroLineas++;
+
     }
 
     public void incrementarContadorScore() {
@@ -336,12 +331,11 @@ public class Xogo {
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-            }
+            }  
         }
         if (gameOver) {
-            this.ventanaPrincipal.mostrarFinDoXogo();
-            this.reproducirMusicaGameOver();         
-        }
+                this.ventanaPrincipal.mostrarFinDoXogo();
+            }
         return gameOver;
     }
 
@@ -350,15 +344,19 @@ public class Xogo {
     }
 
     public void gestionarResultados() {
-        this.guardarResultados();
-        this.leerResultados();
-        this.ordenarJugadoresPorScore();
-        this.agregarDatosTabla();
-        this.ajustarTamañoTabla();
-    }
+            this.guardarResultados();
+            this.leerResultados();
+            this.ordenarJugadoresPorScore();
+            this.agregarDatosTabla();
+            this.ajustarTamañoTabla();
+            
+        }
 
+    
+    
+    
     private void guardarResultados() {
-        PrintWriter salida = null;
+        PrintWriter salida = null;      
         String jugadorScore = this.ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.contadorScore + "\n";
         try {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
@@ -423,23 +421,23 @@ public class Xogo {
         Iterator<Xogador> iteratorJugadores = this.xogadores.listIterator();
         while (iteratorJugadores.hasNext()) {
             Xogador jugadorActual = iteratorJugadores.next();
-            Object[] fila = this.crearFilaConDatosJugador(jugadorActual);
-            this.agregarFilaConDatosATabla(model, fila);
+            Object[] row = this.crearFilaConDatosJugador(jugadorActual);
+            this.agregarFilaConDatosATabla(model, row);
         }
     }
 
-    private void agregarFilaConDatosATabla(DefaultTableModel model, Object[] fila) {
-        model.addRow(fila);
+    private void agregarFilaConDatosATabla(DefaultTableModel model, Object[] row) {
+        model.addRow(row);
     }
 
     private Object[] crearFilaConDatosJugador(Xogador jugadorActual) {
-        Object[] fila = {jugadorActual.getNombre(), jugadorActual.getScore()};
-        return fila;
+        Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
+        return row;
     }
 
     private DefaultTableModel obtenerTableModel() {
         DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
-
+        
         return model;
     }
 
@@ -456,44 +454,8 @@ public class Xogo {
 
     }
 
-    private void reproducirSonido(String musicLocation) {
-        try {
-            File musicPath = new File(musicLocation);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                this.ventanaPrincipal.setCliper(AudioSystem.getClip());
-                this.ventanaPrincipal.getCliper().open(audioInput);
-                this.ventanaPrincipal.getCliper().start();
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void reproducirMusicaGameOver() {
-        String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
-        this.reproducirSonido(sonidoGameOverPath);
-    }
-
-    private void reproducirSonidoBorrarLinea() {
-        String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
-        this.reproducirSonido(sonidoLineaPath);
-    }
-
-    private void reproducirSonidoChocaChan() {
-        String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
-        this.reproducirSonido(sonidoChanPath);
-    }
-
-    private void reproducirMusicaPartida() {
-        String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
-        this.reproducirSonido(sonidoPartidaPath);
-    }
-
-    //SETTERs AND GETTERs
-       
+    
+    //SETTERs AND GETTERs 
     public boolean isPausa() {
         return pausa;
     }
@@ -630,6 +592,7 @@ public class Xogo {
     /**
      * @return the timerComprobarLineas
      */
+
     /**
      * @return the level
      */
