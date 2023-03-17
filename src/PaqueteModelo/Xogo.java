@@ -343,8 +343,6 @@ public class Xogo {
         }
         if (gameOver) {
                 this.ventanaPrincipal.mostrarFinDoXogo();
-                sonido.muteMusicaPartida();
-                sonido.reproducirMusicaGameOver();
             }
         return gameOver;
     }

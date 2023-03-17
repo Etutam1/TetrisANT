@@ -436,13 +436,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
 
         if (getPauseButton().isSelected()) {
-            sonido.setClipTimePosition(sonido.getMusicaPartida().getMicrosecondPosition());
-            sonido.getMusicaPartida().stop();
+            sonido.muteMusica();
             getTimer().stop();
             xogo.setPausa(true);
         } else {
-            sonido.getMusicaPartida().setMicrosecondPosition(sonido.getClipTimePosition());
-            sonido.getMusicaPartida().start();
+            sonido.unmuteMusica();
             getPauseButton().setFocusable(false);
             getTimer().start();
             xogo.setPausa(false);
@@ -572,8 +570,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void muteyDesmuteMusica() {
         this.contadorMusica++;
         if (this.contadorMusica == 1) {
+            sonido.muteMusica();
             mutearMusica();
         } else {
+            sonido.unmuteMusica();
             desmutearMusica();
         }
     }
@@ -582,10 +582,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.contadorMusica = 0;
         cambiarImagenBotonesDesmute();
         if(frameJuego.isVisible()){
-            sonido.unmuteMusicaPartida();
+            sonido.unmuteMusica();
         }
         else{
-            sonido.unmuteMusicaMenu();
+            sonido.unmuteMusica();
         }
 }
 
@@ -597,10 +597,10 @@ private void cambiarImagenBotonesDesmute() {
     private void mutearMusica() {
         cambiarImagenBotonMute();
         if(frameJuego.isVisible()){
-            sonido.muteMusicaPartida();
+            sonido.muteMusica();
         }
         else{
-            sonido.muteMusicaMenu();
+            sonido.muteMusica();
         } 
     }
 
@@ -656,31 +656,11 @@ private void cambiarImagenBotonesDesmute() {
         });
     }
 
-    private void reproducirMusicaMenu() {
-        
-        //añadir llamada a la función reproducirMusicaMenu de la clase Sonido
-        
-        String sonidoMenuPath = "src\\Resources\\Musica\\menu.wav";
-        try {
-            File musicPath = new File(sonidoMenuPath);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                sonido.setMusicaMenu(AudioSystem.getClip());
-                sonido.getMusicaMenu().open(audioInput);
-                sonido.getMusicaMenu().start();
-                sonido.getMusicaMenu().loop(Clip.LOOP_CONTINUOUSLY);
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     private void iniciarPartida() {
-        sonido.getMusicaMenu().stop();
+        sonido.getMusica().stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
+        sonido.reproducirMusicaPartida();
         this.mostrarContadores();
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
@@ -699,6 +679,8 @@ private void cambiarImagenBotonesDesmute() {
     }
 
     public void mostrarFinDoXogo() {
+        sonido.getMusica().stop();
+        sonido.reproducirMusicaGameOver();
         this.pararTimer();
         this.cambiarVisibilidadPanel(this.panelJuego, false);
         this.cambiarVisibilidadPanel(this.panelFondo, false);
@@ -707,7 +689,7 @@ private void cambiarImagenBotonesDesmute() {
 
     private void reiniciarPartida() {
         this.EliminarComponentesPanelJuego();
-        sonido.muteMusicaPartida();
+        sonido.getMusica().stop();
         this.mostrarPanelesInicioPartida();
         this.iniciarPartida();
     }

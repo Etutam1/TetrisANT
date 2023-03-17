@@ -25,3 +25,4 @@ replay_pid*
 /mavenproject1/target/
 /nbproject/private/
 /build/
+/dist/
