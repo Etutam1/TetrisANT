@@ -531,7 +531,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_gameOverOKButtonActionPerformed
 
     private void mostrarJDialogIntroducirNombre() throws HeadlessException {
-        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE PORFAVOR");
+        JOptionPane.showMessageDialog(null, "INTRODUCE TU NOMBRE POR FAVOR");
     }
 
     private void resetFieldTextNombreJugador() {
@@ -732,6 +732,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             this.xogo.moverFichaAbaixo();
             this.aumentarScore();
             this.xogo.borrarLinasCompletas();
+            this.actualizarPanel();
         });
         timer.start();
     }

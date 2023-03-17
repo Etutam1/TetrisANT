@@ -421,18 +421,18 @@ public class Xogo {
         Iterator<Xogador> iteratorJugadores = this.xogadores.listIterator();
         while (iteratorJugadores.hasNext()) {
             Xogador jugadorActual = iteratorJugadores.next();
-            Object[] row = this.crearFilaConDatosJugador(jugadorActual);
-            this.agregarFilaConDatosATabla(model, row);
+            Object[] fila = this.crearFilaConDatosJugador(jugadorActual);
+            this.agregarFilaConDatosATabla(model, fila);
         }
     }
 
-    private void agregarFilaConDatosATabla(DefaultTableModel model, Object[] row) {
-        model.addRow(row);
+    private void agregarFilaConDatosATabla(DefaultTableModel model, Object[] fila) {
+        model.addRow(fila);
     }
 
     private Object[] crearFilaConDatosJugador(Xogador jugadorActual) {
-        Object[] row = {jugadorActual.getNombre(), jugadorActual.getScore()};
-        return row;
+        Object[] fila = {jugadorActual.getNombre(), jugadorActual.getScore()};
+        return fila;
     }
 
     private DefaultTableModel obtenerTableModel() {

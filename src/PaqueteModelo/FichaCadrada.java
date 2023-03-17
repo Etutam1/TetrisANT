@@ -30,7 +30,7 @@ public class FichaCadrada extends Ficha {
     }
 
     @Override
-    public final void agregarCadradosArrayCadrados() {
+    public void agregarCadradosArrayCadrados() {
         getCadrados().add(getCadrado1());
         getCadrados().add(getCadrado2());
         getCadrados().add(getCadrado3());
