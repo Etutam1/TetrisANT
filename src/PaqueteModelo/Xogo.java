@@ -141,8 +141,8 @@ public class Xogo {
         return podeMover;
     }
 
-    public boolean RotarFicha() {
-        return this.fichaActual.rotar();
+    public void RotarFicha() {
+         this.fichaActual.rotar();
     }
 
     public void xenerarNovaFicha() {
@@ -181,7 +181,7 @@ public class Xogo {
             comprobante = numAleatorio;
         }
        
-        
+//         this.fichaActual = new FichaT(this);
         this.pintarFicha();
     }
 

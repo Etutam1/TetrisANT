@@ -16,7 +16,8 @@ public class FichaZInversa extends Ficha {
     private Cadrado cadrado2 = new Cadrado(cadrado1.getX() - getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.GREEN);
     private Cadrado cadrado3 = new Cadrado(cadrado2.getX(), cadrado2.getY() + getXogo().getLADO_CADRADO(), Color.GREEN);
     private Cadrado cadrado4 = new Cadrado(cadrado3.getX() - getXogo().getLADO_CADRADO(), cadrado3.getY(), Color.GREEN);
-    private int posicion=1;
+    private int posicion = 1;
+
     //CONSTRUCTOR
     public FichaZInversa(Xogo xogo) {
         super(xogo);
@@ -29,23 +30,19 @@ public class FichaZInversa extends Ficha {
 
         int cadradoFixo_X = getCadrado2().getX();
         int cadradoFixo_Y = getCadrado2().getY();
-        boolean cambioPosicion=false;
-        
+
         if (this.posicion == 0) {
             if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion1();
-                cambioPosicion=true;
-                this.posicion=1;
+                this.posicion = 1;
             }
-        }
-        else if (this.posicion == 1) {
+        } else if (this.posicion == 1) {
             if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion0();
-                cambioPosicion=true;
-                this.posicion=0;
+                this.posicion = 0;
             }
         }
-        return cambioPosicion;
+        return true;
     }
 
     private void rotarAPosicion0() {

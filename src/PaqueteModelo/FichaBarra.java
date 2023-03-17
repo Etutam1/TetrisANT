@@ -16,7 +16,7 @@ public class FichaBarra extends Ficha {
     private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + Xogo.getLADO_CADRADO(), cadrado1.getY(), Color.CYAN);
     private Cadrado cadrado3 = new Cadrado(cadrado2.getX() + Xogo.getLADO_CADRADO(), cadrado2.getY(), Color.CYAN);
     private Cadrado cadrado4 = new Cadrado(cadrado3.getX() + Xogo.getLADO_CADRADO(), cadrado3.getY(), Color.CYAN);
-    private int posicion=0;
+    private int posicion = 0;
 
     //CONSTRUCTOR
     public FichaBarra(Xogo xogo) {
@@ -32,25 +32,20 @@ public class FichaBarra extends Ficha {
 
         int cadradoFixo_X = getCadrado2().getX();
         int cadradoFixo_Y = getCadrado2().getY();
-        boolean cambioPosicion = false;
 
         if (this.posicion == 0) {
             if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion1(cadradoFixo_X, cadradoFixo_Y);
-                cambioPosicion = true;
                 posicion = 1;
             }
-        }
-        else if (this.posicion == 1) {
+        } else if (this.posicion == 1) {
 
             if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion0(cadradoFixo_X, cadradoFixo_Y);
-                cambioPosicion = true;
-                this.posicion=0;
+                this.posicion = 0;
             }
         }
-         
-        return cambioPosicion;
+        return true;
     }
 
     private boolean comprobarPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {

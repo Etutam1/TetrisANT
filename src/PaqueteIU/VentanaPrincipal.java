@@ -456,7 +456,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } else {
             getCliper().setMicrosecondPosition(getClipTimePosition());
             getCliper().start();
-//            getPauseButton().setFocusable(false);
+//            getPauseButton().setFable(false);
             getTimer().start();
             xogo.setPausa(false);
             
@@ -470,13 +470,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if (comprobarPulsacionTeclaA(evt)) {
                 this.xogo.moverFichaEsquerda();
             }
-            if (comprobarPulsacionTeclaD(evt)) {
+            else if (comprobarPulsacionTeclaD(evt)) {
                 this.xogo.moverFichaDereita();
             }
-            if (comprobarPulsacionTeclaS(evt)) {
+            else if (comprobarPulsacionTeclaS(evt)) {
                 this.xogo.moverFichaAbaixo();
             }
-            if (comprobarPulsacionTeclaW(evt)) {
+            else if (comprobarPulsacionTeclaW(evt)) {
                 this.xogo.RotarFicha();        
             }
         }
@@ -556,6 +556,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void retryJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryJuegoTotalScoresButtonActionPerformed
         reiniciarPartida();
+        this.frameJuego.requestFocus();
     }//GEN-LAST:event_retryJuegoTotalScoresButtonActionPerformed
 
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed
@@ -745,6 +746,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             this.xogo.moverFichaAbaixo();
             this.aumentarScore();
             this.xogo.borrarLinasCompletas();
+            this.actualizarPanel();
         });
         timer.start();
     }
