@@ -514,7 +514,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void volverAMenuPrincipal() {
         this.pauseButton.setSelected(false);
-        this.panelJuego.requestFocus();
+        cambiarImagenBotonesDesmute();
         this.EliminarComponentesPanelJuego();
         this.cambiarVisibilidadFrame(this.frameJuego, false);
         this.cambiarVisibilidadFrame(this, true);
@@ -636,6 +636,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void retryPanelPausaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryPanelPausaButtonActionPerformed
        this.pauseButton.setSelected(false);
+       cambiarImagenBotonesDesmute();
         reiniciarPartida();
         this.frameJuego.requestFocus();
     }//GEN-LAST:event_retryPanelPausaButtonActionPerformed
@@ -740,6 +741,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void iniciarPartida() {
+        this.panelJuego.requestFocus();
         sonido.getMusica().stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);

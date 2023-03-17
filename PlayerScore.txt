@@ -43,3 +43,5 @@ LALA-8
 Lol-10
 Lucas-4
 Lol-4
+Lucas-41
+LRL-5
