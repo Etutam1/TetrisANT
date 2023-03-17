@@ -5,6 +5,7 @@
 package PaqueteIU;
 
 import PaqueteModelo.Xogo;
+import PaqueteModelo.Sonido;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -40,9 +41,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     //ATRIBUTOS
     private Timer timer;
     private Xogo xogo;
-    private Clip cliper;
     private int contadorMusica = 0;
-    private long clipTimePosition;
+    private Sonido sonido = new Sonido();
 
     //CONSTRUCTOR
     public VentanaPrincipal() {
@@ -436,13 +436,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
 
         if (getPauseButton().isSelected()) {
-            setClipTimePosition(getCliper().getMicrosecondPosition());
-            getCliper().stop();
+            sonido.setClipTimePosition(sonido.getMusicaPartida().getMicrosecondPosition());
+            sonido.getMusicaPartida().stop();
             getTimer().stop();
             xogo.setPausa(true);
         } else {
-            getCliper().setMicrosecondPosition(getClipTimePosition());
-            getCliper().start();
+            sonido.getMusicaPartida().setMicrosecondPosition(sonido.getClipTimePosition());
+            sonido.getMusicaPartida().start();
             getPauseButton().setFocusable(false);
             getTimer().start();
             xogo.setPausa(false);
@@ -560,7 +560,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void exitJuegoGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitJuegoGameOverButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitJuegoGameOverButtonActionPerformed
-   
 
     private boolean comprobarFieldTextEBaleiro() {
         boolean eBaleiro = false;
@@ -581,9 +580,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void desmutearMusica() {
         this.contadorMusica = 0;
-        this.cliper.setMicrosecondPosition(getClipTimePosition());
         cambiarImagenBotonesDesmute();
-        this.cliper.start();
     }
 
     private void cambiarImagenBotonesDesmute() {
@@ -592,10 +589,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void mutearMusica() {
-
         cambiarImagenBotonMute();
-        setClipTimePosition(getCliper().getMicrosecondPosition());
-        this.cliper.stop();
     }
 
     private void cambiarImagenBotonMute() {
@@ -652,10 +646,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             File musicPath = new File(sonidoMenuPath);
             if (musicPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                setCliper(AudioSystem.getClip());
-                getCliper().open(audioInput);
-                getCliper().start();
-                getCliper().loop(Clip.LOOP_CONTINUOUSLY);
+                sonido.setMusicaMenu(AudioSystem.getClip());
+                sonido.getMusicaMenu().open(audioInput);
+                sonido.getMusicaMenu().start();
+                sonido.getMusicaMenu().loop(Clip.LOOP_CONTINUOUSLY);
             } else {
                 System.out.println("No se encontró el archivo");
             }
@@ -665,7 +659,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void iniciarPartida() {
-        this.cliper.stop();
+        sonido.getMusicaMenu().stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
         this.mostrarContadores();
@@ -694,7 +688,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void reiniciarPartida() {
         this.EliminarComponentesPanelJuego();
-        this.cliper.stop();
+        sonido.getMusicaPartida().stop();
         this.mostrarPanelesInicioPartida();
         this.iniciarPartida();
     }
@@ -1020,20 +1014,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     /**
-     * @return the cliper
-     */
-    public Clip getCliper() {
-        return cliper;
-    }
-
-    /**
-     * @param aCliper the cliper to set
-     */
-    public void setCliper(Clip aCliper) {
-        cliper = aCliper;
-    }
-
-    /**
      * @return the contadorMusica
      */
     public int getContadorMusica() {
@@ -1045,20 +1025,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public void setContadorMusica(int contadorMusica) {
         this.contadorMusica = contadorMusica;
-    }
-
-    /**
-     * @return the clipTimePosition
-     */
-    public long getClipTimePosition() {
-        return clipTimePosition;
-    }
-
-    /**
-     * @param clipTimePosition the clipTimePosition to set
-     */
-    public void setClipTimePosition(long clipTimePosition) {
-        this.clipTimePosition = clipTimePosition;
     }
 
     /**

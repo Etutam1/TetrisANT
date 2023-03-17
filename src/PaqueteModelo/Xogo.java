@@ -5,6 +5,7 @@
 package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
+import PaqueteModelo.Sonido;
 //import static PaqueteIU.VentanaPrincipal.cliper;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,7 @@ public class Xogo {
     private int level;
     private int contadorScore;
     private int numeroLineas;
+    private Sonido sonido = new Sonido();
 
     //CONSTRUCTOR
     public Xogo(int level, boolean pausa, VentanaPrincipal ventanaPrincipal) {
@@ -61,7 +63,6 @@ public class Xogo {
         this.numeroLineas = 0;
         this.ventanaPrincipal = ventanaPrincipal;
         this.level = level;
-        reproducirMusicaPartida();
 
     }
 
@@ -460,42 +461,6 @@ public class Xogo {
         dim.height = alturaFilas * (totalFilas + 1);
         this.ventanaPrincipal.getScoresTable().setPreferredScrollableViewportSize(dim);
 
-    }
-
-    private void reproducirSonido(String musicLocation) {
-        try {
-            File musicPath = new File(musicLocation);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                this.ventanaPrincipal.setCliper(AudioSystem.getClip());
-                this.ventanaPrincipal.getCliper().open(audioInput);
-                this.ventanaPrincipal.getCliper().start();
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void reproducirMusicaGameOver() {
-        String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
-        this.reproducirSonido(sonidoGameOverPath);
-    }
-
-    private void reproducirSonidoBorrarLinea() {
-        String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
-        this.reproducirSonido(sonidoLineaPath);
-    }
-
-    private void reproducirSonidoChocaChan() {
-        String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
-        this.reproducirSonido(sonidoChanPath);
-    }
-
-    private void reproducirMusicaPartida() {
-        String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
-        this.reproducirSonido(sonidoPartidaPath);
     }
 
     
