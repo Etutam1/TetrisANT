@@ -175,7 +175,7 @@ public class Xogo {
             this.fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
-         this.fichaActual = new FichaBarra(this);
+         
         this.pintarFicha();
     }
 
