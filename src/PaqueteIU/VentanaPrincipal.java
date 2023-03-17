@@ -461,6 +461,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.EliminarComponentesPanelJuego();
         this.cambiarVisibilidadFrame(this.frameJuego, false);
         this.cambiarVisibilidadFrame(this, true);
+        this.cambiarVisibilidadPanel(panelJuego, true);
+        this.cambiarVisibilidadPanel(panelFondo, true);
+        
 
     }
     private void frameJuegoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameJuegoKeyPressed
