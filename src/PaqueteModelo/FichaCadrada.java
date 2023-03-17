@@ -20,8 +20,7 @@ public class FichaCadrada extends Ficha {
     //CONSTRUCTOR
     public FichaCadrada(Xogo xogo) {
         super(xogo);
-      
-       agregarArrayCadrados();
+      this.agregarCadradosArrayCadrados();
     }
 
     //METODOS
@@ -29,13 +28,16 @@ public class FichaCadrada extends Ficha {
     public boolean rotar() {
         return false;
     }
-    
-    private void agregarArrayCadrados() {
+
+    @Override
+    public final void agregarCadradosArrayCadrados() {
         getCadrados().add(getCadrado1());
         getCadrados().add(getCadrado2());
         getCadrados().add(getCadrado3());
         getCadrados().add(getCadrado4());
     }
+    
+    
 
     /**
      * @return the cadrado1

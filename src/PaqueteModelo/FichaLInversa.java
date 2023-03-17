@@ -20,8 +20,7 @@ public class FichaLInversa extends Ficha {
     //CONSTRUCTOR
     public FichaLInversa(Xogo xogo) {
         super(xogo);
-
-       agregarArrayCadrados();
+        this.agregarCadradosArrayCadrados();
     }
 
     //METODOS
@@ -30,77 +29,97 @@ public class FichaLInversa extends Ficha {
 
         int cadradoFixo_X = getCadrado2().getX();
         int cadradoFixo_Y = getCadrado2().getY();
-        int eValido = 0;
-        
+        boolean cambioPosicion=false;
 
         if (getPosicion() > 3) {
             setPosicion(0);
         }
         if (getPosicion() == 0) {
-            if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y)) {
-                eValido++;
+            if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
+                rotarAPosicion1();
+                cambioPosicion= true;
             }
-            if (getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y)) {
-                eValido++;
-            }
-            if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y - Xogo.getLADO_CADRADO())) {
-                eValido++;
-            }
-            if (eValido == 3) {
-                getCadrado1().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
-                getCadrado3().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
-                getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
-            }
+
         } else if (getPosicion() == 1) {
-            if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO())) {
-                eValido++;
+            if (comprobarPosicion2(cadradoFixo_X, cadradoFixo_Y)) {
+                rotarAPosicion2();
+                cambioPosicion= true;
             }
-            if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO())) {
-                eValido++;
-            }
-            if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO())) {
-                eValido++;
-            }
-            if (eValido == 3) {
-                getCadrado1().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
-                getCadrado3().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
-                getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
-            }
+
         } else if (getPosicion() == 2) {
-            if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y)) {
-                eValido++;
-            }
-            if (getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y)) {
-                eValido++;
-            }
-            if (getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO())) {
-                eValido++;
-            }
-            if (eValido == 3) {
-                getCadrado1().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
-                getCadrado3().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
-                getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
+            if (comprobarPosicion3(cadradoFixo_X, cadradoFixo_Y)) {
+                rotarAPosicion3();
+                cambioPosicion= true;
             }
 
         } else if (getPosicion() == 3) {
-            if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO())) {
-                eValido++;
+            if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
+                rotarAPosicion0();
+                cambioPosicion=true;
             }
-            if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO())) {
-                eValido++;
-            }
-            if (getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y - Xogo.getLADO_CADRADO())) {
-                eValido++;
-            }
-            if (eValido == 3) {
-                getCadrado1().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
-                getCadrado3().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
-                getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
-            }
-        }
-        return true;
+        } 
+           
+        return cambioPosicion;
     }
-    private void agregarArrayCadrados() {
+
+    private void rotarAPosicion0() {
+        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
+        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
+        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
+    }
+
+    private boolean comprobarPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
+        boolean podeRotar = false;
+        if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO()) && getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO()) && getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y - Xogo.getLADO_CADRADO())) {
+            podeRotar = true;
+        }
+        return podeRotar;
+    }
+
+    private void rotarAPosicion3() {
+        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
+        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
+        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
+    }
+
+    private boolean comprobarPosicion3(int cadradoFixo_X, int cadradoFixo_Y) {
+        boolean podeRotar = false;
+        if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y) && getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y) && getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO())) {
+            podeRotar = true;
+        }
+        return podeRotar;
+    }
+
+    private void rotarAPosicion2() {
+        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
+        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
+        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
+    }
+
+    private boolean comprobarPosicion2(int cadradoFixo_X, int cadradoFixo_Y) {
+        boolean podeRotar = false;
+        if (getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO()) && getXogo().ePosicionValida(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO()) && getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO())) {
+            podeRotar = true;
+        }
+        return podeRotar;
+    }
+
+    private void rotarAPosicion1() {
+        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
+        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
+        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
+    }
+
+    private boolean comprobarPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
+        boolean podeRotar = false;
+        if (getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y) && getXogo().ePosicionValida(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y) && getXogo().ePosicionValida(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y - Xogo.getLADO_CADRADO())) {
+            podeRotar = true;
+        }
+        return podeRotar;
+    }
+
+    @Override
+    public void agregarCadradosArrayCadrados() {
         getCadrados().add(getCadrado1());
         getCadrados().add(getCadrado2());
         getCadrados().add(getCadrado3());

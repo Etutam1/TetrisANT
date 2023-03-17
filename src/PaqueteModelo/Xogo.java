@@ -5,9 +5,7 @@
 package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
-//import static PaqueteIU.VentanaPrincipal.cliper;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -24,9 +22,8 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+
 
 /**
  *
@@ -122,9 +119,9 @@ public class Xogo {
         return podeMover;
     }
 
-    public void moverFichaEsquerda() { 
+    public void moverFichaEsquerda() {
         boolean podeMover = true;
-        
+
         podeMover = comprobarCadradoEsquerda(podeMover);
         if (podeMover) {
             this.fichaActual.moverEsquerda();
@@ -143,8 +140,8 @@ public class Xogo {
         return podeMover;
     }
 
-    public void RotarFicha() {
-        this.fichaActual.rotar();
+    public boolean RotarFicha() {
+        return this.fichaActual.rotar();
     }
 
     public void xenerarNovaFicha() {
@@ -182,7 +179,7 @@ public class Xogo {
             this.fichaActual = new FichaLInversa(this);
             comprobante = numAleatorio;
         }
-         this.fichaActual = new FichaBarra(this);
+        
         this.pintarFicha();
     }
 
@@ -284,7 +281,7 @@ public class Xogo {
     }
 
     private void comprobarCambioLevel() {
-        
+
         if (this.getNumeroLineas() % 5 == 0) {
             cambiarDeLevel();
         }
@@ -338,12 +335,12 @@ public class Xogo {
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-            }  
+            }
         }
         if (gameOver) {
-                this.ventanaPrincipal.mostrarFinDoXogo();
-                this.reproducirMusicaGameOver();
-            }
+            this.ventanaPrincipal.mostrarFinDoXogo();
+            this.reproducirMusicaGameOver();
+        }
         return gameOver;
     }
 
@@ -352,19 +349,16 @@ public class Xogo {
     }
 
     public void gestionarResultados() {
-            this.guardarResultados();
-            this.leerResultados();
-            this.ordenarJugadoresPorScore();
-            this.agregarDatosTabla();
-            this.ajustarTamañoTabla();
-            
-        }
+        this.guardarResultados();
+        this.leerResultados();
+        this.ordenarJugadoresPorScore();
+        this.agregarDatosTabla();
+        this.ajustarTamañoTabla();
 
-    
-    
-    
+    }
+
     private void guardarResultados() {
-        PrintWriter salida = null;      
+        PrintWriter salida = null;
         String jugadorScore = this.ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.contadorScore + "\n";
         try {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
@@ -445,7 +439,7 @@ public class Xogo {
 
     private DefaultTableModel obtenerTableModel() {
         DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
-        
+
         return model;
     }
 
@@ -498,7 +492,6 @@ public class Xogo {
         this.reproducirSonido(sonidoPartidaPath);
     }
 
-    
     //SETTERs AND GETTERs 
     public boolean isPausa() {
         return pausa;
@@ -636,7 +629,6 @@ public class Xogo {
     /**
      * @return the timerComprobarLineas
      */
-
     /**
      * @return the level
      */

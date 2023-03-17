@@ -6,7 +6,6 @@ package PaqueteIU;
 
 import PaqueteModelo.Xogo;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -27,9 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+
 
 /**
  *
@@ -463,7 +460,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 this.xogo.moverFichaAbaixo();
             }
             if (comprobarPulsacionTeclaW(evt)) {
-                this.xogo.RotarFicha();
+                if(this.xogo.RotarFicha())
                 this.cambiarPosicionFicha();
             }
         }

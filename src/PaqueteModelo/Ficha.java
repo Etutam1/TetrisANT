@@ -4,7 +4,7 @@
  */
 package PaqueteModelo;
 
-import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -110,6 +110,6 @@ public abstract class Ficha {
 
     public abstract boolean rotar();
     
-    
+    public abstract void agregarCadradosArrayCadrados();
     
 }
