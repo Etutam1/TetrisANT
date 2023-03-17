@@ -7,14 +7,9 @@ package PaqueteIU;
 import PaqueteModelo.Xogo;
 import PaqueteModelo.Sonido;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,9 +23,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -94,6 +86,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         scoresTituloLabel = new javax.swing.JLabel();
         retryGameOverButton = new javax.swing.JButton();
         exitJuegoTotalScoresButton = new javax.swing.JButton();
+        menuJuegoTotalScoresButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         scoresTable = new javax.swing.JTable();
         panelMenu = new javax.swing.JPanel();
@@ -269,6 +262,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelGameOver.add(jugadorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 120, 30));
 
         gameOverOKButton.setText("OK");
+        gameOverOKButton.setFocusable(false);
         gameOverOKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gameOverOKButtonActionPerformed(evt);
@@ -298,12 +292,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelScores.add(scoresTituloLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 350, 91));
 
         retryGameOverButton.setText("RETRY");
+        retryGameOverButton.setFocusable(false);
         retryGameOverButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 retryGameOverButtonActionPerformed(evt);
             }
         });
-        panelScores.add(retryGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 690, 100, 40));
+        panelScores.add(retryGameOverButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 690, 100, 40));
 
         exitJuegoTotalScoresButton.setText("EXIT");
         exitJuegoTotalScoresButton.setFocusable(false);
@@ -313,6 +308,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         panelScores.add(exitJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 690, 100, 40));
+
+        menuJuegoTotalScoresButton.setText("MENU");
+        menuJuegoTotalScoresButton.setFocusable(false);
+        menuJuegoTotalScoresButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuJuegoTotalScoresButtonActionPerformed(evt);
+            }
+        });
+        panelScores.add(menuJuegoTotalScoresButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 690, 100, 40));
 
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setOpaque(false);
@@ -338,6 +342,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         scoresTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        scoresTable.setFocusable(false);
         scoresTable.setOpaque(false);
         scoresTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
         scoresTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -360,12 +365,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelMenu.setFocusable(false);
         panelMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         exitButtonMenu.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         exitButtonMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/EXIT_STOPPED.png"))); // NOI18N
         exitButtonMenu.setBorderPainted(false);
         exitButtonMenu.setContentAreaFilled(false);
+        exitButtonMenu.setFocusable(false);
         exitButtonMenu.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/EXIT.gif"))); // NOI18N
         exitButtonMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -377,6 +384,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         playButtonMenu.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         playButtonMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/PLAY_STOPPED.png"))); // NOI18N
         playButtonMenu.setContentAreaFilled(false);
+        playButtonMenu.setFocusable(false);
         playButtonMenu.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/PLAY.gif"))); // NOI18N
         playButtonMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -391,6 +399,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         levelsButton.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         levelsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/Levels-1.png.png"))); // NOI18N
         levelsButton.setContentAreaFilled(false);
+        levelsButton.setFocusable(false);
         levelsButton.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/Levels.gif"))); // NOI18N
         levelsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -447,6 +456,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pauseButtonActionPerformed
 
+    private void menuJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {
+
+        this.EliminarComponentesPanelJuego();
+        this.cambiarVisibilidadFrame(this.frameJuego, false);
+        this.cambiarVisibilidadFrame(this, true);
+
+    }
     private void frameJuegoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameJuegoKeyPressed
 
         if (!this.xogo.isPausa()) {
@@ -577,27 +593,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void desmutearMusica() {
         this.contadorMusica = 0;
         cambiarImagenBotonesDesmute();
-        if(frameJuego.isVisible()){
+        if (frameJuego.isVisible()) {
+            sonido.unmuteMusica();
+        } else {
             sonido.unmuteMusica();
         }
-        else{
-            sonido.unmuteMusica();
-        }
-}
+    }
 
-private void cambiarImagenBotonesDesmute() {
+    private void cambiarImagenBotonesDesmute() {
         this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
         this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
     }
 
     private void mutearMusica() {
         cambiarImagenBotonMute();
-        if(frameJuego.isVisible()){
+        if (frameJuego.isVisible()) {
+            sonido.muteMusica();
+        } else {
             sonido.muteMusica();
         }
-        else{
-            sonido.muteMusica();
-        } 
     }
 
     private void cambiarImagenBotonMute() {
@@ -620,27 +634,23 @@ private void cambiarImagenBotonesDesmute() {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1330,6 +1340,7 @@ private void cambiarImagenBotonesDesmute() {
     private javax.swing.JButton levelsButton;
     private javax.swing.JLabel lineasTextLabel;
     private javax.swing.JRadioButton mediumRadioB;
+    private javax.swing.JButton menuJuegoTotalScoresButton;
     private javax.swing.JTextField nombreJugadorLabel;
     private javax.swing.JRadioButton noobRadioB;
     private javax.swing.JButton okButtonLevel;
