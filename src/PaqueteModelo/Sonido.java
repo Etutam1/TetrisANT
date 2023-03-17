@@ -21,6 +21,31 @@ public class Sonido {
     private Clip sonido;
     private long clipTimePosition;
 
+    public void reproducirMusicaMenu() {
+        String sonidoMusicaPath = "src\\Resources\\Musica\\menu.wav";
+        this.reproducirMusicaMenu(sonidoMusicaPath);
+    }
+
+    public void reproducirMusicaGameOver() {
+        String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
+        this.reproducirGameOver(sonidoGameOverPath);
+    }
+
+    public void reproducirSonidoBorrarLinea() {
+        String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
+        this.reproducirSonido(sonidoLineaPath);
+    }
+
+    public void reproducirSonidoChocaChan() {
+        String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
+        this.reproducirSonido(sonidoChanPath);
+    }
+
+    public void reproducirMusicaPartida() {
+        String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
+        this.reproducirMusicaPartida(sonidoPartidaPath);
+    }
+
     private void reproducirSonido(String musicLocation) {
         try {
             File musicPath = new File(musicLocation);
@@ -81,44 +106,24 @@ public class Sonido {
         }
     }
 
-    private void muteMusicaMenu() {
+    public void muteMusicaMenu() {
         setClipTimePosition(musicaMenu.getMicrosecondPosition());
         musicaMenu.stop();
     }
 
-    private void unmuteMusicaMenu() {
+    public void unmuteMusicaMenu() {
         musicaMenu.setMicrosecondPosition(getClipTimePosition());
         musicaMenu.start();
     }
 
-    private void muteMusicaPartida() {
+    public void muteMusicaPartida() {
         setClipTimePosition(musicaPartida.getMicrosecondPosition());
         musicaPartida.stop();
     }
 
-    private void unmuteMusicaPartida() {
+    public void unmuteMusicaPartida() {
         musicaPartida.setMicrosecondPosition(getClipTimePosition());
         musicaPartida.start();
-    }
-
-    private void reproducirMusicaGameOver() {
-        String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
-        this.reproducirGameOver(sonidoGameOverPath);
-    }
-
-    private void reproducirSonidoBorrarLinea() {
-        String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
-        this.reproducirSonido(sonidoLineaPath);
-    }
-
-    private void reproducirSonidoChocaChan() {
-        String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
-        this.reproducirSonido(sonidoChanPath);
-    }
-
-    private void reproducirMusicaPartida() {
-        String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
-        this.reproducirMusicaPartida(sonidoPartidaPath);
     }
 
     public Clip getMusicaMenu() {
@@ -151,6 +156,14 @@ public class Sonido {
 
     public void setClipTimePosition(long clipTimePosition) {
         this.clipTimePosition = clipTimePosition;
+    }
+
+    public Clip getSonidoGameOver() {
+        return sonidoGameOver;
+    }
+
+    public void setSonidoGameOver(Clip sonidoGameOver) {
+        this.sonidoGameOver = sonidoGameOver;
     }
 
 }

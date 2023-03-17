@@ -95,7 +95,7 @@ public class Xogo {
         if (!this.comprobarFinalPartida()) {
             if (this.chocaFichaCoChan()) {
                 this.engadirFichaAoChan();
-                this.reproducirSonidoChocaChan();
+                sonido.reproducirSonidoChocaChan();
                 this.xenerarNovaFicha();
             } else {
                 this.fichaActual.moverAbaixo();
@@ -265,7 +265,7 @@ public class Xogo {
         this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
         this.sumarScorePorLineaCompleta();
         this.comprobarCambioLevel();
-        this.reproducirSonidoBorrarLinea();
+        sonido.reproducirSonidoBorrarLinea();
     }
 
     private void moverCadradosChan(int linea) {
@@ -343,7 +343,8 @@ public class Xogo {
         }
         if (gameOver) {
                 this.ventanaPrincipal.mostrarFinDoXogo();
-                this.reproducirMusicaGameOver();
+                sonido.muteMusicaPartida();
+                sonido.reproducirMusicaGameOver();
             }
         return gameOver;
     }

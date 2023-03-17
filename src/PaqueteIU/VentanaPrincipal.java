@@ -49,7 +49,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         initComponents();
         this.setLocationRelativeTo(null);
-        this.reproducirMusicaMenu();
+        sonido.reproducirMusicaMenu();
     }
 
     /**
@@ -581,15 +581,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void desmutearMusica() {
         this.contadorMusica = 0;
         cambiarImagenBotonesDesmute();
-    }
+        if(frameJuego.isVisible()){
+            sonido.unmuteMusicaPartida();
+        }
+        else{
+            sonido.unmuteMusicaMenu();
+        }
+}
 
-    private void cambiarImagenBotonesDesmute() {
+private void cambiarImagenBotonesDesmute() {
         this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
         this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
     }
 
     private void mutearMusica() {
         cambiarImagenBotonMute();
+        if(frameJuego.isVisible()){
+            sonido.muteMusicaPartida();
+        }
+        else{
+            sonido.muteMusicaMenu();
+        } 
     }
 
     private void cambiarImagenBotonMute() {
@@ -612,23 +624,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-                }
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
 
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
 
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -641,6 +657,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void reproducirMusicaMenu() {
+        
+        //añadir llamada a la función reproducirMusicaMenu de la clase Sonido
+        
         String sonidoMenuPath = "src\\Resources\\Musica\\menu.wav";
         try {
             File musicPath = new File(sonidoMenuPath);
@@ -688,7 +707,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void reiniciarPartida() {
         this.EliminarComponentesPanelJuego();
-        sonido.getMusicaPartida().stop();
+        sonido.muteMusicaPartida();
         this.mostrarPanelesInicioPartida();
         this.iniciarPartida();
     }
