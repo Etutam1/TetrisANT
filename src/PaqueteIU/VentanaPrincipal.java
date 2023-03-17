@@ -439,7 +439,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_levelsButtonActionPerformed
 
     private void exitButtonMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMenuMouseClicked
-        this.dispose();
+         System.exit(0);
     }//GEN-LAST:event_exitButtonMenuMouseClicked
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
@@ -463,6 +463,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.cambiarVisibilidadFrame(this, true);
         this.cambiarVisibilidadPanel(panelJuego, true);
         this.cambiarVisibilidadPanel(panelFondo, true);
+        sonido.reproducirMusicaMenu();
         
 
     }
