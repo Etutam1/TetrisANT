@@ -823,6 +823,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    
+    //GETTERS Y SETTERS
     public JPanel getPanelJuego() {
         return panelJuego;
     }
