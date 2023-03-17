@@ -462,14 +462,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
             if (comprobarPulsacionTeclaW(evt)) {
                 this.xogo.RotarFicha();
-                this.cambiarPosicionFicha();
             }
         }
     }//GEN-LAST:event_frameJuegoKeyPressed
-
-    private void cambiarPosicionFicha() {
-        this.xogo.getFichaActual().setPosicion(this.xogo.getFichaActual().getPosicion() + 1);
-    }
 
     private boolean comprobarPulsacionTeclaD(KeyEvent evt) {
         boolean teclaPulsada = false;
@@ -545,6 +540,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void retryGameOverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryGameOverButtonActionPerformed
         reiniciarPartida();
+        this.frameJuego.requestFocus();
     }//GEN-LAST:event_retryGameOverButtonActionPerformed
 
     private void okButtonLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonLevelActionPerformed

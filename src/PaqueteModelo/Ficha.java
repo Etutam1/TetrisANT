@@ -4,7 +4,7 @@
  */
 package PaqueteModelo;
 
-import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,7 +17,7 @@ public abstract class Ficha {
     //ATRIBUTOS
     private ArrayList<Cadrado> cadrados = new ArrayList<>();
     private Xogo xogo;
-    private int posicion = 0;
+   
 
     //CONSTRUCTOR
     public Ficha(Xogo xogo) {
@@ -34,14 +34,6 @@ public abstract class Ficha {
 
     
 ////    //SETTER AND GETTER
-    public void setPosicion(int posicion) {
-        this.posicion = posicion;
-    }
-
-    public int getPosicion() {
-        return posicion;
-    }
-
     public ArrayList<Cadrado> getCadrados() {
         return cadrados;
     }
@@ -110,6 +102,6 @@ public abstract class Ficha {
 
     public abstract boolean rotar();
     
-    
+    public abstract void agregarCadradosArrayCadrados();
     
 }
