@@ -4,6 +4,7 @@
  */
 package PaqueteIU;
 
+import PaqueteModelo.Cadrado;
 import PaqueteModelo.Xogo;
 import PaqueteModelo.Sonido;
 import java.awt.Color;
@@ -808,7 +809,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.timer = new Timer(setDelaySegunLevelInicial(), (ActionEvent e) -> {
             this.xogo.moverFichaAbaixo();
             this.aumentarScore();
-            this.xogo.borrarLinasCompletas();
+            this.xogo.borrarLineasCompletas();
             this.actualizarPanel();
         });
         timer.start();
@@ -843,6 +844,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void borrarCadrado(JLabel lblCadrado) {
         this.panelJuego.remove(lblCadrado);
+        
+    }
+
+    private void borrarCadradoEliminadoDeCadradosChan(Cadrado cadrado) {
+        
     }
 
     private void EliminarComponentesPanelJuego() {

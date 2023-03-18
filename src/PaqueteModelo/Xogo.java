@@ -84,7 +84,6 @@ public class Xogo {
         return posicionValida;
     }
 
-    
     public void moverFichaAbaixo() {
         if (!this.comprobarFinalPartida()) {
             if (this.chocaFichaCoChan()) {
@@ -211,12 +210,13 @@ public class Xogo {
         this.cadradosChan.addAll(this.fichaActual.getCadrados());
     }
 
-    public void borrarLinasCompletas() throws ConcurrentModificationException {
+    public void borrarLineasCompletas() throws ConcurrentModificationException {
         int ultimaLinea = this.MAX_Y - Xogo.LADO_CADRADO;
         int primeraLinea = this.MIN_Y;
+        boolean borraLinea = false;
         ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
-        for (int y = ultimaLinea; y >= primeraLinea; y -= Xogo.LADO_CADRADO) {
+        for (int y = ultimaLinea; y >= primeraLinea; y-=Xogo.LADO_CADRADO) {
             Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
             int contadorCadrados = 0;
             System.out.println("y: " + y);
@@ -237,54 +237,44 @@ public class Xogo {
         Iterator iteratorYs = coordsYLineas.iterator();
         while (iteratorYs.hasNext()) {
             int linea = (int) iteratorYs.next();
-            this.borrarLina(linea);
-            this.moverCadradosChan(linea);
+            if (this.borrarLina(linea)) {
+                this.moverCadradosChan(linea);
+                borraLinea = true;
+            }
+
+        }
+
+        if (borraLinea) {
+            this.sumarNumeroLineas();
+            this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
+            this.comprobarCambioLevel();
+            this.sumarScorePorLineaCompleta();
+            sonido.reproducirSonidoBorrarLinea();
         }
 
     }
 
-//    public void borrarLina(int linea) {
-//       
-//        ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-//        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
-//
-//        while (iteratorChan2.hasNext()) {
-//            Cadrado cadradoABorrar = iteratorChan2.next();
-//            if (cadradoABorrar.getLblCadrado().getY() == linea) {
-//                cadradosBorrar.add(cadradoABorrar);
-//                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
-//            }
-//        }
-//        this.cadradosChan.removeAll(cadradosBorrar);
-//        this.sumarNumeroLineas();
-//        this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
-//        this.comprobarCambioLevel();
-//        this.sumarScorePorLineaCompleta();
-//        sonido.reproducirSonidoBorrarLinea();
-//    }
-    public void borrarLina(int linea) {
+    public boolean borrarLina(int linea) {
+
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-        Iterator<Cadrado> iteratorChan = this.cadradosChan.iterator();
-        while (iteratorChan.hasNext()) {
-            Cadrado cadrado = iteratorChan.next();
-            if (cadrado.getLblCadrado().getY() == linea) {
-                cadradosBorrar.add(cadrado);
-            }
-        }
-        for (Cadrado cadradoABorrar : cadradosBorrar) {
+    Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
+
+    while (iteratorChan2.hasNext()) {
+        Cadrado cadradoABorrar = iteratorChan2.next();
+        if (cadradoABorrar.getLblCadrado().getY() == linea) {
+            System.out.println("Se agregará a cadradosBorrar: x=" + cadradoABorrar.getX() + ", y=" + cadradoABorrar.getY());
+            cadradosBorrar.add(cadradoABorrar);
             this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
-            this.cadradosChan.remove(cadradoABorrar);
         }
-        this.sumarNumeroLineas();
-        this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
-        this.comprobarCambioLevel();
-        this.sumarScorePorLineaCompleta();
-        sonido.reproducirSonidoBorrarLinea();
+    }
+    this.cadradosChan.removeAll(cadradosBorrar);
+    System.out.println("CADRADOS EN CHAN" + this.cadradosChan.size());
+    return true;
     }
 
     private void moverCadradosChan(int linea) {
 
-        Iterator<Cadrado> iteratorChan3 = getCadradosChan().iterator();
+        Iterator<Cadrado> iteratorChan3 = this.cadradosChan.iterator();
         while (iteratorChan3.hasNext()) {
 
             Cadrado cadradoABaixar = iteratorChan3.next();
@@ -337,7 +327,6 @@ public class Xogo {
         } else if (this.level > 10) {
             contadorScore += 2000;
         }
-
     }
 
     private boolean comprobarFinalPartida() {
