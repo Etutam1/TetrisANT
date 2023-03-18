@@ -29,30 +29,34 @@ public class FichaT extends Ficha {
     @Override
     public boolean rotar() {
 
-        int cadradoFixo_X = getCadrado2().getX();
-        int cadradoFixo_Y = getCadrado2().getY();
+        int cadradoFixo_X = this.cadrado2.getX();
+        int cadradoFixo_Y = this.cadrado2.getY();
 
         if (this.posicion == 0) {
             if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion1();
+                actualizarCoordsLblCoCadrado();
                 this.posicion = 1;
             }
 
         } else if (this.posicion == 1) {
             if (comprobarPosicion2(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion2();
+                actualizarCoordsLblCoCadrado();
                 this.posicion = 2;
             }
 
         } else if (this.posicion == 2) {
             if (comprobarPosicion3(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion3();
+                actualizarCoordsLblCoCadrado();
                 this.posicion = 3;
             }
 
         } else if (this.posicion == 3) {
             if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
                 rotarAPosicion0();
+                actualizarCoordsLblCoCadrado();
                 this.posicion = 0;
             }
         }
@@ -60,9 +64,9 @@ public class FichaT extends Ficha {
     }
 
     private void rotarAPosicion0() {
-        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
-        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
-        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
+        this.cadrado1.getLblCadrado().setLocation(this.cadrado2.getX(), this.cadrado2.getY() - Xogo.getLADO_CADRADO());
+        this.cadrado3.getLblCadrado().setLocation(this.cadrado2.getX(), this.cadrado2.getY() + Xogo.getLADO_CADRADO());
+        this.cadrado4.getLblCadrado().setLocation(this.cadrado2.getX() - Xogo.getLADO_CADRADO(), this.cadrado2.getY());
     }
 
     private boolean comprobarPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
@@ -74,9 +78,9 @@ public class FichaT extends Ficha {
     }
 
     private void rotarAPosicion3() {
-        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
-        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
-        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
+        this.cadrado1.getLblCadrado().setLocation(this.cadrado2.getX() - Xogo.getLADO_CADRADO(), this.cadrado2.getY());
+        this.cadrado3.getLblCadrado().setLocation(this.cadrado2.getX() + Xogo.getLADO_CADRADO(), this.cadrado2.getY());
+        this.cadrado4.getLblCadrado().setLocation(this.cadrado2.getX(), this.cadrado2.getY() + Xogo.getLADO_CADRADO());
     }
 
     private boolean comprobarPosicion3(int cadradoFixo_X, int cadradoFixo_Y) {
@@ -88,9 +92,9 @@ public class FichaT extends Ficha {
     }
 
     private void rotarAPosicion2() {
-        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
-        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() + Xogo.getLADO_CADRADO());
-        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
+        this.cadrado1.getLblCadrado().setLocation(this.cadrado2.getX(), this.cadrado2.getY() - Xogo.getLADO_CADRADO());
+        this.cadrado3.getLblCadrado().setLocation(this.cadrado2.getX(), this.cadrado2.getY() + Xogo.getLADO_CADRADO());
+        this.cadrado4.getLblCadrado().setLocation(this.cadrado2.getX() + Xogo.getLADO_CADRADO(), this.cadrado2.getY());
     }
 
     private boolean comprobarPosicion2(int cadradoFixo_X, int cadradoFixo_Y) {
@@ -102,9 +106,9 @@ public class FichaT extends Ficha {
     }
 
     private void rotarAPosicion1() {
-        getCadrado1().getLblCadrado().setLocation(getCadrado2().getX() - Xogo.getLADO_CADRADO(), getCadrado2().getY());
-        getCadrado3().getLblCadrado().setLocation(getCadrado2().getX() + Xogo.getLADO_CADRADO(), getCadrado2().getY());
-        getCadrado4().getLblCadrado().setLocation(getCadrado2().getX(), getCadrado2().getY() - Xogo.getLADO_CADRADO());
+        this.cadrado1.getLblCadrado().setLocation(this.cadrado2.getX() - Xogo.getLADO_CADRADO(), this.cadrado2.getY());
+        this.cadrado3.getLblCadrado().setLocation(this.cadrado2.getX() + Xogo.getLADO_CADRADO(), this.cadrado2.getY());
+        this.cadrado4.getLblCadrado().setLocation(this.cadrado2.getX(), this.cadrado2.getY() - Xogo.getLADO_CADRADO());
     }
 
     private boolean comprobarPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
@@ -117,10 +121,17 @@ public class FichaT extends Ficha {
 
     @Override
     public void agregarCadradosArrayCadrados() {
-        getCadrados().add(getCadrado1());
-        getCadrados().add(getCadrado2());
-        getCadrados().add(getCadrado3());
-        getCadrados().add(getCadrado4());
+        getCadrados().add(this.cadrado1);
+        getCadrados().add(this.cadrado2);
+        getCadrados().add(this.cadrado3);
+        getCadrados().add(this.cadrado4);
+    }
+    
+     private void actualizarCoordsLblCoCadrado() {
+        this.actualizarCoordsCadrado(cadrado1,  this.cadrado1.getLblCadrado().getX(), this.cadrado1.getLblCadrado().getY());
+        this.actualizarCoordsCadrado(cadrado2, this.cadrado2.getLblCadrado().getX(), this.cadrado2.getLblCadrado().getY());
+        this.actualizarCoordsCadrado(cadrado3, this.cadrado3.getLblCadrado().getX(), this.cadrado3.getLblCadrado().getY());
+        this.actualizarCoordsCadrado(cadrado4, this.cadrado4.getLblCadrado().getX(), this.cadrado4.getLblCadrado().getY());
     }
 
     /**

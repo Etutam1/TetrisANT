@@ -31,10 +31,10 @@ public class FichaCadrada extends Ficha {
 
     @Override
     public void agregarCadradosArrayCadrados() {
-        getCadrados().add(getCadrado1());
-        getCadrados().add(getCadrado2());
-        getCadrados().add(getCadrado3());
-        getCadrados().add(getCadrado4());
+        getCadrados().add(this.cadrado1);
+        getCadrados().add(this.cadrado2);
+        getCadrados().add(this.cadrado3);
+        getCadrados().add(this.cadrado4);
     }
     
     
@@ -42,7 +42,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado1
      */
-    public Cadrado getCadrado1() {
+    public Cadrado getCadrado1(){
         return cadrado1;
     }
 
@@ -56,7 +56,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado2
      */
-    public Cadrado getCadrado2() {
+    public Cadrado getCadrado2(){
         return cadrado2;
     }
 
@@ -70,7 +70,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado3
      */
-    public Cadrado getCadrado3() {
+    public Cadrado getCadrado3(){
         return cadrado3;
     }
 
@@ -84,7 +84,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado4
      */
-    public Cadrado getCadrado4() {
+    public Cadrado getCadrado4(){
         return cadrado4;
     }
 

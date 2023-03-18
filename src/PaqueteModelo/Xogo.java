@@ -84,6 +84,7 @@ public class Xogo {
         return posicionValida;
     }
 
+    
     public void moverFichaAbaixo() {
         if (!this.comprobarFinalPartida()) {
             if (this.chocaFichaCoChan()) {
@@ -169,8 +170,7 @@ public class Xogo {
             case 7:
                 return new FichaLInversa(this);
             default:
-                throw new IllegalArgumentException("Número de ficha inválido: " + numFicha);
-
+                throw new IllegalArgumentException("Número de ficha inválido: " + numFicha); //SI RECIBE UN NUMERO INVALIDO LANZA LA EXCEPCION
         }
     }
 
@@ -178,7 +178,7 @@ public class Xogo {
         int numAleatorio;
         do {
             numAleatorio = (int) (Math.random() * 7 + 1);
-        } while (this.comprobante == numAleatorio); // // REPITE HASTA QUE EL NUMERO ALEATORIO SEA DIFERENTE AL ANTERIOR
+        } while (this.comprobante == numAleatorio); // REPITE HASTA QUE EL NUMERO ALEATORIO SEA DIFERENTE AL ANTERIOR
         return numAleatorio;
     }
 
@@ -243,23 +243,42 @@ public class Xogo {
 
     }
 
+//    public void borrarLina(int linea) {
+//       
+//        ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
+//        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
+//
+//        while (iteratorChan2.hasNext()) {
+//            Cadrado cadradoABorrar = iteratorChan2.next();
+//            if (cadradoABorrar.getLblCadrado().getY() == linea) {
+//                cadradosBorrar.add(cadradoABorrar);
+//                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+//            }
+//        }
+//        this.cadradosChan.removeAll(cadradosBorrar);
+//        this.sumarNumeroLineas();
+//        this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
+//        this.comprobarCambioLevel();
+//        this.sumarScorePorLineaCompleta();
+//        sonido.reproducirSonidoBorrarLinea();
+//    }
     public void borrarLina(int linea) {
-        // PENDIENTE DE REVISAR Y LIMPIAR 
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
-
-        while (iteratorChan2.hasNext()) {
-            Cadrado cadradoABorrar = iteratorChan2.next();
-            if (cadradoABorrar.getLblCadrado().getY() == linea) {
-                cadradosBorrar.add(cadradoABorrar);
-                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+        Iterator<Cadrado> iteratorChan = this.cadradosChan.iterator();
+        while (iteratorChan.hasNext()) {
+            Cadrado cadrado = iteratorChan.next();
+            if (cadrado.getLblCadrado().getY() == linea) {
+                cadradosBorrar.add(cadrado);
             }
         }
-        this.cadradosChan.removeAll(cadradosBorrar);
+        for (Cadrado cadradoABorrar : cadradosBorrar) {
+            this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+            this.cadradosChan.remove(cadradoABorrar);
+        }
         this.sumarNumeroLineas();
         this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
-        this.sumarScorePorLineaCompleta();
         this.comprobarCambioLevel();
+        this.sumarScorePorLineaCompleta();
         sonido.reproducirSonidoBorrarLinea();
     }
 
@@ -307,20 +326,15 @@ public class Xogo {
 
         if (this.level == 0 || this.level == 1) {
             contadorScore += 100;
-        }
-        if (this.level == 2 || this.level == 3) {
+        } else if (this.level == 2 || this.level == 3) {
             contadorScore += 300;
-        }
-        if (this.level == 4 || this.level == 5) {
+        } else if (this.level == 4 || this.level == 5) {
             contadorScore += 500;
-        }
-        if (this.level == 6 || this.level == 7) {
+        } else if (this.level == 6 || this.level == 7) {
             contadorScore += 700;
-        }
-        if (this.level == 8 || this.level == 9 || this.level == 10) {
+        } else if (this.level == 8 || this.level == 9 || this.level == 10) {
             contadorScore += 1000;
-        }
-        if (this.level > 10) {
+        } else if (this.level > 10) {
             contadorScore += 2000;
         }
 
@@ -352,7 +366,6 @@ public class Xogo {
         this.ordenarJugadoresPorScore();
         this.agregarDatosTabla();
         this.ajustarTamañoTabla();
-
     }
 
     private void guardarResultados() {
