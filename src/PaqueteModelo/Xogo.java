@@ -41,6 +41,7 @@ public class Xogo {
     private int level;
     private int contadorScore;
     private int numeroLineas;
+    private int comprobante = 0;
     private Sonido sonido = new Sonido();
 
     //CONSTRUCTOR
@@ -115,9 +116,9 @@ public class Xogo {
         return podeMover;
     }
 
-    public void moverFichaEsquerda() { 
+    public void moverFichaEsquerda() {
         boolean podeMover = true;
-        
+
         podeMover = comprobarCadradoEsquerda(podeMover);
         if (podeMover) {
             this.fichaActual.moverEsquerda();
@@ -141,42 +142,44 @@ public class Xogo {
     }
 
     public void xenerarNovaFicha() {
-        int comprobante = 0;
-        int numAleatorio = (int) (Math.random() * 7 + 1);
-
-        if (comprobante == numAleatorio) {
-            numAleatorio = (int) (Math.random() * 7 + 1);
+        int numAleatorio = crearNumeroAleatorioDistinto();
+        try {
+            this.fichaActual = crearFicha(numAleatorio);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        if (numAleatorio == 1) {
-            this.fichaActual = new FichaCadrada(this);
-            comprobante = numAleatorio;
-        }
-        if (numAleatorio == 2) {
-            this.fichaActual = new FichaBarra(this);
-            comprobante = numAleatorio;
-        }
-        if (numAleatorio == 3) {
-            this.fichaActual = new FichaZ(this);
-            comprobante = numAleatorio;
-        }
-        if (numAleatorio == 4) {
-            this.fichaActual = new FichaZInversa(this);
-            comprobante = numAleatorio;
-        }
-        if (numAleatorio == 5) {
-            this.fichaActual = new FichaT(this);
-            comprobante = numAleatorio;
-        }
-        if (numAleatorio == 6) {
-            this.fichaActual = new FichaL(this);
-            comprobante = numAleatorio;
-        }
-        if (numAleatorio == 7) {
-            this.fichaActual = new FichaLInversa(this);
-            comprobante = numAleatorio;
-        }
-         
+        this.comprobante = numAleatorio; // ACTUALIZA EL COMPROBANTE
         this.pintarFicha();
+    }
+
+    private Ficha crearFicha(int numFicha) throws IllegalArgumentException {
+        switch (numFicha) {
+            case 1:
+                return new FichaCadrada(this);
+            case 2:
+                return new FichaBarra(this);
+            case 3:
+                return new FichaZ(this);
+            case 4:
+                return new FichaZInversa(this);
+            case 5:
+                return new FichaT(this);
+            case 6:
+                return new FichaL(this);
+            case 7:
+                return new FichaLInversa(this);
+            default:
+                throw new IllegalArgumentException("Número de ficha inválido: " + numFicha);
+
+        }
+    }
+
+    private int crearNumeroAleatorioDistinto() {
+        int numAleatorio;
+        do {
+            numAleatorio = (int) (Math.random() * 7 + 1);
+        } while (this.comprobante == numAleatorio); // // REPITE HASTA QUE EL NUMERO ALEATORIO SEA DIFERENTE AL ANTERIOR
+        return numAleatorio;
     }
 
     public void pintarFicha() {
@@ -277,7 +280,7 @@ public class Xogo {
     }
 
     private void comprobarCambioLevel() {
-        
+
         if (this.getNumeroLineas() % 5 == 0) {
             cambiarDeLevel();
         }
@@ -331,11 +334,11 @@ public class Xogo {
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
                 gameOver = true;
-            }  
+            }
         }
         if (gameOver) {
-                this.ventanaPrincipal.mostrarFinDoXogo();
-            }
+            this.ventanaPrincipal.mostrarFinDoXogo();
+        }
         return gameOver;
     }
 
@@ -344,19 +347,16 @@ public class Xogo {
     }
 
     public void gestionarResultados() {
-            this.guardarResultados();
-            this.leerResultados();
-            this.ordenarJugadoresPorScore();
-            this.agregarDatosTabla();
-            this.ajustarTamañoTabla();
-            
-        }
+        this.guardarResultados();
+        this.leerResultados();
+        this.ordenarJugadoresPorScore();
+        this.agregarDatosTabla();
+        this.ajustarTamañoTabla();
 
-    
-    
-    
+    }
+
     private void guardarResultados() {
-        PrintWriter salida = null;      
+        PrintWriter salida = null;
         String jugadorScore = this.ventanaPrincipal.getNombreJugadorLabel().getText() + "-" + this.contadorScore + "\n";
         try {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
@@ -437,7 +437,7 @@ public class Xogo {
 
     private DefaultTableModel obtenerTableModel() {
         DefaultTableModel model = (DefaultTableModel) this.ventanaPrincipal.getScoresTable().getModel();
-        
+
         return model;
     }
 
@@ -454,8 +454,23 @@ public class Xogo {
 
     }
 
-    
-    //SETTERs AND GETTERs 
+    public int getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(int comprobante) {
+        this.comprobante = comprobante;
+    }
+
+    public Sonido getSonido() {
+        return sonido;
+    }
+
+    //SETTERs AND GETTERs
+    public void setSonido(Sonido sonido) {
+        this.sonido = sonido;
+    }
+
     public boolean isPausa() {
         return pausa;
     }
@@ -592,7 +607,6 @@ public class Xogo {
     /**
      * @return the timerComprobarLineas
      */
-
     /**
      * @return the level
      */
