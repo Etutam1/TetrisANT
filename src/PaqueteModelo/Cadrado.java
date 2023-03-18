@@ -29,14 +29,12 @@ public class Cadrado {
     }
     
     private void setPropertiesLblCadrado(int x , int y , Color color){
-        getLblCadrado().setBackground(getCorRecheo());
-        getLblCadrado().setForeground(new java.awt.Color(204, 0, 0));
-        getLblCadrado().setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getLblCadrado().setMaximumSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
-        getLblCadrado().setMinimumSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
-        getLblCadrado().setOpaque(true);
-        getLblCadrado().setPreferredSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
-        getLblCadrado().setBounds(x, y, Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO());
+        this.lblCadrado.setBackground(getCorRecheo());
+        this.lblCadrado.setForeground(new java.awt.Color(204, 0, 0));
+        this.lblCadrado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        this.lblCadrado.setOpaque(true);
+        this.lblCadrado.setPreferredSize(new java.awt.Dimension(Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO()));
+        this.lblCadrado.setBounds(x, y, Xogo.getLADO_CADRADO(), Xogo.getLADO_CADRADO());
     }
 
     //SETTERs AND GETTERs
