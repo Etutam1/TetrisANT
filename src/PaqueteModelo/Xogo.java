@@ -308,9 +308,7 @@ public class Xogo {
 
     }
 
-    public void incrementarContadorScore() {
-        this.contadorScore++;
-    }
+  
 
     private void sumarScorePorLineaCompleta() {
 
