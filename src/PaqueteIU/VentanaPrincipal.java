@@ -273,7 +273,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 pauseButtonActionPerformed(evt);
             }
         });
-        panelFondo.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 660, 90, 90));
+        panelFondo.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 590, 90, 80));
 
         botonSonidoJuego.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
         botonSonidoJuego.setFocusable(false);
@@ -637,8 +637,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void retryPanelPausaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryPanelPausaButtonActionPerformed
        this.pauseButton.setSelected(false);
        cambiarImagenBotonesDesmute();
-        reiniciarPartida();
-        this.frameJuego.requestFocus();
+       reiniciarPartida();
+       this.frameJuego.requestFocus();
     }//GEN-LAST:event_retryPanelPausaButtonActionPerformed
 
     private void exitPanelPausaButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitPanelPausaButtonMouseClicked
@@ -666,6 +666,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             sonido.unmuteMusica();
             desmutearMusica();
         }
+        
     }
 
     private void desmutearMusica() {
@@ -689,7 +690,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             sonido.muteMusica();
         } else {
             sonido.muteMusica();
-        }
+        } 
+        
     }
 
     private void cambiarImagenBotonMute() {
@@ -741,7 +743,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void iniciarPartida() {
-        this.panelJuego.requestFocus();
         sonido.getMusica().stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
