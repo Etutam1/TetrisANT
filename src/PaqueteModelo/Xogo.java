@@ -249,7 +249,7 @@ public class Xogo {
             this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
             this.comprobarCambioLevel();
             this.sumarScorePorLineaCompleta();
-            sonido.reproducirSonidoBorrarLinea();
+            this.sonido.reproducirSonidoBorrarLinea();
         }
 
     }
