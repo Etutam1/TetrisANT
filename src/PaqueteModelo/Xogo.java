@@ -216,7 +216,7 @@ public class Xogo {
         boolean borraLinea = false;
         ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
-        for (int y = ultimaLinea; y >= primeraLinea; y-=Xogo.LADO_CADRADO) {
+        for (int y = ultimaLinea; y >= primeraLinea; y -= Xogo.LADO_CADRADO) {
             Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
             int contadorCadrados = 0;
             System.out.println("y: " + y);
@@ -257,19 +257,19 @@ public class Xogo {
     public boolean borrarLina(int linea) {
 
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-    Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
+        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
 
-    while (iteratorChan2.hasNext()) {
-        Cadrado cadradoABorrar = iteratorChan2.next();
-        if (cadradoABorrar.getLblCadrado().getY() == linea) {
-            System.out.println("Se agregará a cadradosBorrar: x=" + cadradoABorrar.getX() + ", y=" + cadradoABorrar.getY());
-            cadradosBorrar.add(cadradoABorrar);
-            this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+        while (iteratorChan2.hasNext()) {
+            Cadrado cadradoABorrar = iteratorChan2.next();
+            if (cadradoABorrar.getLblCadrado().getY() == linea) {
+                System.out.println("Se agregará a cadradosBorrar: x=" + cadradoABorrar.getX() + ", y=" + cadradoABorrar.getY());
+                cadradosBorrar.add(cadradoABorrar);
+                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+            }
         }
-    }
-    this.cadradosChan.removeAll(cadradosBorrar);
-    System.out.println("CADRADOS EN CHAN" + this.cadradosChan.size());
-    return true;
+        this.cadradosChan.removeAll(cadradosBorrar);
+        System.out.println("CADRADOS EN CHAN" + this.cadradosChan.size());
+        return true;
     }
 
     private void moverCadradosChan(int linea) {
@@ -307,8 +307,6 @@ public class Xogo {
         this.numeroLineas++;
 
     }
-
-  
 
     private void sumarScorePorLineaCompleta() {
 
