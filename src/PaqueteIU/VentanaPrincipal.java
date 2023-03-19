@@ -488,7 +488,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_levelsButtonActionPerformed
 
     private void exitButtonMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMenuMouseClicked
-         System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_exitButtonMenuMouseClicked
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
@@ -498,9 +498,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             getTimer().stop();
             xogo.setPausa(true);
             this.cambiarVisibilidadPanel(this.panelPausa, true);
-            
+
         } else {
-            sonido.unmuteMusica();
+            if (contadorMusica == 0) {
+                sonido.unmuteMusica();
+            }
             getPauseButton().setFocusable(false);
             getTimer().start();
             xogo.setPausa(false);
@@ -509,19 +511,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_pauseButtonActionPerformed
 
     private void menuJuegoTotalScoresButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        volverAMenuPrincipal();     
-        
+        volverAMenuPrincipal();
+
     }
 
     private void volverAMenuPrincipal() {
         this.pauseButton.setSelected(false);
-        cambiarImagenBotonesDesmute();
+        cambiarImagenBotones();
         this.EliminarComponentesPanelJuego();
         this.cambiarVisibilidadFrame(this.frameJuego, false);
         this.cambiarVisibilidadFrame(this, true);
         this.cambiarVisibilidadPanel(panelJuego, true);
         this.cambiarVisibilidadPanel(panelFondo, true);
-        sonido.reproducirMusicaMenu();
+        if (contadorMusica != 1) {
+            sonido.reproducirMusicaMenu();
+        }
     }
     private void frameJuegoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameJuegoKeyPressed
 
@@ -632,14 +636,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_exitJuegoGameOverButtonActionPerformed
 
     private void panelPausaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_panelPausaPropertyChange
-        
+
     }//GEN-LAST:event_panelPausaPropertyChange
 
     private void retryPanelPausaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retryPanelPausaButtonActionPerformed
-       this.pauseButton.setSelected(false);
-       cambiarImagenBotonesDesmute();
-       reiniciarPartida();
-       this.frameJuego.requestFocus();
+        this.pauseButton.setSelected(false);
+        cambiarImagenBotones();
+        reiniciarPartida();
+        this.frameJuego.requestFocus();
     }//GEN-LAST:event_retryPanelPausaButtonActionPerformed
 
     private void exitPanelPausaButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitPanelPausaButtonMouseClicked
@@ -647,7 +651,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_exitPanelPausaButtonMouseClicked
 
     private void menuPanelPausaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPanelPausaButtonActionPerformed
-        volverAMenuPrincipal(); 
+        volverAMenuPrincipal();
     }//GEN-LAST:event_menuPanelPausaButtonActionPerformed
 
     private boolean comprobarFieldTextEBaleiro() {
@@ -667,12 +671,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             sonido.unmuteMusica();
             desmutearMusica();
         }
-        
+
     }
 
     private void desmutearMusica() {
         this.contadorMusica = 0;
-        cambiarImagenBotonesDesmute();
+        cambiarImagenBotones();
         if (frameJuego.isVisible()) {
             sonido.unmuteMusica();
         } else {
@@ -680,24 +684,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void cambiarImagenBotonesDesmute() {
-        this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
-        this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+    private void cambiarImagenBotones() {
+        if (contadorMusica == 0) {
+            this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+            this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+        } else {
+            this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+            this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+        }
     }
 
     private void mutearMusica() {
-        cambiarImagenBotonMute();
+        cambiarImagenBotones();
         if (frameJuego.isVisible()) {
             sonido.muteMusica();
         } else {
             sonido.muteMusica();
-        } 
-        
-    }
+        }
 
-    private void cambiarImagenBotonMute() {
-        this.botonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
-        this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
     }
 
     /**
@@ -747,7 +751,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         sonido.getMusica().stop();
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
-        sonido.reproducirMusicaPartida();
+        if (contadorMusica == 0) {
+            sonido.reproducirMusicaPartida();
+        }
         this.mostrarContadores();
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
@@ -844,11 +850,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void borrarCadrado(JLabel lblCadrado) {
         this.panelJuego.remove(lblCadrado);
-        
+
     }
 
     private void borrarCadradoEliminadoDeCadradosChan(Cadrado cadrado) {
-        
+
     }
 
     private void EliminarComponentesPanelJuego() {
