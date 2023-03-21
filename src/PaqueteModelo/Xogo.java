@@ -274,12 +274,25 @@ public class Xogo {
 
     private void moverCadradosChan(int linea) {
 
+//        Iterator<Cadrado> iteratorChan3 = this.cadradosChan.iterator();
+//        while (iteratorChan3.hasNext()) {
+//
+//            Cadrado cadradoABaixar = iteratorChan3.next();
+//            if (cadradoABaixar.getY() < linea) {
+//                cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
+//            }
+//        }
+ //#ERROR: SOLO BAJABA LA LABEL, pero como en borrar linea, desciendes las posiciones del array donde tienes guardadas
+       //las Y ya no es real.
         Iterator<Cadrado> iteratorChan3 = this.cadradosChan.iterator();
         while (iteratorChan3.hasNext()) {
 
             Cadrado cadradoABaixar = iteratorChan3.next();
             if (cadradoABaixar.getY() < linea) {
+                
                 cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
+           System.out.println(" Cuadrado x: " + cadradoABaixar.getX()+  " Cuadrado y:"+cadradoABaixar.getY());
+           System.out.println(" label x: " + cadradoABaixar.getLblCadrado().getLocation());
             }
         }
     }
@@ -361,7 +374,7 @@ public class Xogo {
             salida.write(jugadorScore);
 
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO GUARDAR LOS RESULTADOS");
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
         } finally {
 
             if (salida != null) {
@@ -383,7 +396,7 @@ public class Xogo {
                 this.agregarJugador(player);
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO LEER LOS RESULTADOS");
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
         } finally {
             if (entrada != null) {
                 scanner.close();

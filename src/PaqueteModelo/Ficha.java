@@ -75,6 +75,7 @@ public abstract class Ficha {
 
             cadrado1.getLblCadrado().setLocation(cadrado1.getLblCadrado().getX(), cadrado1.getLblCadrado().getY() + Xogo.getLADO_CADRADO());
             actualizarCoordsCadrado(cadrado1, cadrado1.getLblCadrado().getX(), cadrado1.getLblCadrado().getY());
+            
         }
         return true;
     }
