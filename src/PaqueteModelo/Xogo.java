@@ -91,7 +91,6 @@ public class Xogo {
             if (this.chocaFichaCoChan()) {
                 this.engadirFichaAoChan();
                 sonido.reproducirSonidoChocaChan();
-//                this.borrarLineasCompletas();
                 this.xenerarNovaFicha();
             } else {
                 this.fichaActual.moverAbaixo();
