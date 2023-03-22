@@ -44,19 +44,21 @@ public class Xogo {
     private int numeroLineas;
     private int comprobante = 0;
     private Sonido sonido = new Sonido();
+    private boolean finXogo;
 
     //CONSTRUCTOR
     public Xogo(int level, boolean pausa, VentanaPrincipal ventanaPrincipal) {
-
-        this.MAX_X = 400;
-        this.MIN_X = 0;
-        this.MAX_Y = 800;
-        this.MIN_Y = 0;
+        
+        this.ventanaPrincipal = ventanaPrincipal;
+        this.MAX_X = this.ventanaPrincipal.getPanelJuego().getWidth();
+        this.MIN_X = this.ventanaPrincipal.getPanelJuego().getWidth() - this.ventanaPrincipal.getPanelJuego().getWidth();
+        this.MAX_Y = this.ventanaPrincipal.getPanelJuego().getHeight();
+        this.MIN_Y = this.ventanaPrincipal.getPanelJuego().getHeight() - this.ventanaPrincipal.getPanelJuego().getHeight();
         this.pausa = pausa;
         this.contadorScore = 0;
         this.numeroLineas = 0;
-        this.ventanaPrincipal = ventanaPrincipal;
         this.level = level;
+        this.finXogo=false;
 
     }
 
@@ -94,6 +96,8 @@ public class Xogo {
             } else {
                 this.fichaActual.moverAbaixo();
             }
+        } else {
+            this.ventanaPrincipal.mostrarFinDoXogo();
         }
     }
 
@@ -154,7 +158,7 @@ public class Xogo {
     }
 
     private Ficha crearFicha(int numFicha) throws IllegalArgumentException {
-        switch (numFicha) {
+        switch (2) {
             case 1:
                 return new FichaCadrada(this);
             case 2:
@@ -190,13 +194,9 @@ public class Xogo {
         }
     }
 
-    public boolean chocaFichaCoChan() {
+    
+   public boolean chocaFichaCoChan() {
         boolean tocaChan = false;
-        tocaChan = comprobarFichaAbaixo(tocaChan);
-        return tocaChan;
-    }
-
-    private boolean comprobarFichaAbaixo(boolean tocaChan) {
         Iterator<Cadrado> iterator4 = this.fichaActual.getCadrados().iterator();
         while (iterator4.hasNext()) {
             Cadrado cadradoActual = iterator4.next();
@@ -235,6 +235,7 @@ public class Xogo {
                 }
             }
         }
+        System.out.println("LINEAS Y"+coordsYLineas.size());
         Iterator iteratorYs = coordsYLineas.iterator();
         while (iteratorYs.hasNext()) {
             int linea = (int) iteratorYs.next();
@@ -244,7 +245,6 @@ public class Xogo {
             }
 
         }
-
         if (borraLinea) {
             this.sumarNumeroLineas();
             this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
@@ -274,15 +274,24 @@ public class Xogo {
     }
 
     private void moverCadradosChan(int linea) {
-
         Iterator<Cadrado> iteratorChan3 = this.cadradosChan.iterator();
         while (iteratorChan3.hasNext()) {
 
             Cadrado cadradoABaixar = iteratorChan3.next();
             if (cadradoABaixar.getY() < linea) {
+
                 cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
+                actualizarCoordsCadrado(cadradoABaixar);
+
+                System.out.println(" Cuadrado x: " + cadradoABaixar.getX() + " Cuadrado y:" + cadradoABaixar.getY());
+                System.out.println(" label x: " + cadradoABaixar.getLblCadrado().getLocation());
             }
         }
+    }
+
+    public void actualizarCoordsCadrado(Cadrado cadradoABaixar) {
+        cadradoABaixar.setX(cadradoABaixar.getLblCadrado().getX());
+        cadradoABaixar.setY(cadradoABaixar.getLblCadrado().getY());
     }
 
     private void aumentarLevel() {
@@ -327,19 +336,20 @@ public class Xogo {
     }
 
     private boolean comprobarFinalPartida() {
-        boolean gameOver = false;
+//        boolean gameOver = false;
+       
         Iterator<Cadrado> iteratorChan4 = this.cadradosChan.listIterator();
-        while (iteratorChan4.hasNext() && !gameOver) {
+        while (iteratorChan4.hasNext() && !this.finXogo) {
             Cadrado cadradoChan = iteratorChan4.next();
 
             if (cadradoChan.getLblCadrado().getY() == 0) {
-                gameOver = true;
+                this.finXogo = true;
             }
         }
-        if (gameOver) {
-            this.ventanaPrincipal.mostrarFinDoXogo();
-        }
-        return gameOver;
+//        if (finXogo) {
+            
+//        }
+        return finXogo;
     }
 
     private void actualizarDelay(int delay) {
@@ -391,7 +401,7 @@ public class Xogo {
             salida.write(jugadorScore);
 
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO GUARDAR LOS RESULTADOS");
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
         } finally {
 
             if (salida != null) {
@@ -413,7 +423,7 @@ public class Xogo {
                 this.agregarJugador(player);
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "NO SE HAN PODIDO LEER LOS RESULTADOS");
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
         } finally {
             if (entrada != null) {
                 scanner.close();
@@ -495,6 +505,16 @@ public class Xogo {
     }
 
     //SETTERs AND GETTERs
+
+    public boolean isFinXogo() {
+        return finXogo;
+    }
+
+    public void setFinXogo(boolean finXogo) {
+        this.finXogo = finXogo;
+    }
+    
+    
     public void setSonido(Sonido sonido) {
         this.sonido = sonido;
     }

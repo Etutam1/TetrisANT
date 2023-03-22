@@ -12,15 +12,15 @@ import java.awt.Color;
  */
 public class FichaCadrada extends Ficha {
 
-    private Cadrado cadrado1 = new Cadrado(getXogo().getMAX_X()/2, getXogo().getMIN_Y(), Color.YELLOW);
-    private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.YELLOW);
-    private Cadrado cadrado3 = new Cadrado(cadrado1.getX(), cadrado1.getY() + getXogo().getLADO_CADRADO(), Color.YELLOW);
-    private Cadrado cadrado4 = new Cadrado(cadrado3.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY() + getXogo().getLADO_CADRADO(), Color.YELLOW);
-
+    
     //CONSTRUCTOR
     public FichaCadrada(Xogo xogo) {
         super(xogo);
-      this.agregarCadradosArrayCadrados();
+        super.cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.YELLOW);
+        super.cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.YELLOW);
+        super.cadrado3 = new Cadrado(cadrado1.getX(), cadrado1.getY() + getXogo().getLADO_CADRADO(), Color.YELLOW);
+        super.cadrado4 = new Cadrado(cadrado3.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY() + getXogo().getLADO_CADRADO(), Color.YELLOW); 
+        super.agregarCadradosAArrayCadrados(cadrado1, cadrado2, cadrado3, cadrado4);
     }
 
     //METODOS
@@ -29,20 +29,11 @@ public class FichaCadrada extends Ficha {
         return false;
     }
 
-    @Override
-    public void agregarCadradosArrayCadrados() {
-        getCadrados().add(this.cadrado1);
-        getCadrados().add(this.cadrado2);
-        getCadrados().add(this.cadrado3);
-        getCadrados().add(this.cadrado4);
-    }
-    
-    
 
     /**
      * @return the cadrado1
      */
-    public Cadrado getCadrado1(){
+    public Cadrado getCadrado1() {
         return cadrado1;
     }
 
@@ -56,7 +47,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado2
      */
-    public Cadrado getCadrado2(){
+    public Cadrado getCadrado2() {
         return cadrado2;
     }
 
@@ -70,7 +61,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado3
      */
-    public Cadrado getCadrado3(){
+    public Cadrado getCadrado3() {
         return cadrado3;
     }
 
@@ -84,7 +75,7 @@ public class FichaCadrada extends Ficha {
     /**
      * @return the cadrado4
      */
-    public Cadrado getCadrado4(){
+    public Cadrado getCadrado4() {
         return cadrado4;
     }
 
@@ -94,7 +85,5 @@ public class FichaCadrada extends Ficha {
     public void setCadrado4(Cadrado cadrado4) {
         this.cadrado4 = cadrado4;
     }
-    
-    
 
 }

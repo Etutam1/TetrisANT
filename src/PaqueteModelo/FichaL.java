@@ -12,17 +12,19 @@ import java.awt.Color;
  */
 public class FichaL extends Ficha {
 
-    private Cadrado cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.ORANGE);
-    private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.ORANGE);
-    private Cadrado cadrado3 = new Cadrado(cadrado2.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY(), Color.ORANGE);
-    private Cadrado cadrado4 = new Cadrado(cadrado3.getX(), cadrado3.getY() - getXogo().getLADO_CADRADO(), Color.ORANGE);
+   
     private int posicion = 1;
 
     //CONSTRUCTOR
     public FichaL(Xogo xogo) {
-        super(xogo);
-        this.agregarCadradosArrayCadrados();
+     super(xogo);
+     super.cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.ORANGE);
+     super.cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.ORANGE);
+     super.cadrado3 = new Cadrado(cadrado2.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY(), Color.ORANGE);
+     super.cadrado4 = new Cadrado(cadrado3.getX(), cadrado3.getY() - getXogo().getLADO_CADRADO(), Color.ORANGE);
+     super.agregarCadradosAArrayCadrados(cadrado1, cadrado2, cadrado3, cadrado4);
     }
+    
 
     //METODOS
     @Override
@@ -126,14 +128,6 @@ public class FichaL extends Ficha {
         this.actualizarCoordsCadrado(cadrado4, this.cadrado4.getLblCadrado().getX(), this.cadrado4.getLblCadrado().getY());
     }
 
-
-    @Override
-    public void agregarCadradosArrayCadrados() {
-        getCadrados().add(this.cadrado1);
-        getCadrados().add(this.cadrado2);
-        getCadrados().add(this.cadrado3);
-        getCadrados().add(this.cadrado4);
-    }
 
     /**
      * @return the cadrado1

@@ -12,19 +12,21 @@ import java.awt.Color;
  */
 public class FichaBarra extends Ficha {
 
-    private Cadrado cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.CYAN);
-    private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + Xogo.getLADO_CADRADO(), cadrado1.getY(), Color.CYAN);
-    private Cadrado cadrado3 = new Cadrado(cadrado2.getX() + Xogo.getLADO_CADRADO(), cadrado2.getY(), Color.CYAN);
-    private Cadrado cadrado4 = new Cadrado(cadrado3.getX() + Xogo.getLADO_CADRADO(), cadrado3.getY(), Color.CYAN);
+    
     private int posicion = 0;
 
     //CONSTRUCTOR
+
     public FichaBarra(Xogo xogo) {
         super(xogo);
-
-        this.agregarCadradosArrayCadrados();
-
+        super.cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.CYAN);
+        super.cadrado2 = new Cadrado(cadrado1.getX() + Xogo.getLADO_CADRADO(), cadrado1.getY(), Color.CYAN);
+        super.cadrado3 = new Cadrado(cadrado2.getX() + Xogo.getLADO_CADRADO(), cadrado2.getY(), Color.CYAN);
+        super.cadrado4 = new Cadrado(cadrado3.getX() + Xogo.getLADO_CADRADO(), cadrado3.getY(), Color.CYAN);
+        super.agregarCadradosAArrayCadrados(cadrado1, cadrado2, cadrado3, cadrado4);
+        
     }
+    
 
     //METODOS
     @Override
@@ -83,14 +85,6 @@ public class FichaBarra extends Ficha {
         this.cadrado4.getLblCadrado().setLocation(cadradoFixo_X + 2 * Xogo.getLADO_CADRADO(), cadradoFixo_Y);
         
          
-    }
-
-    @Override
-    public void agregarCadradosArrayCadrados() {
-        getCadrados().add(this.cadrado1);
-        getCadrados().add(this.cadrado2);
-        getCadrados().add(this.cadrado3);
-        getCadrados().add(this.cadrado4);
     }
     
     private void actualizarCoordsLblCoCadrado() {
