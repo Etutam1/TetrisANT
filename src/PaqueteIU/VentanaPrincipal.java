@@ -265,14 +265,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelFondo.add(levelTextLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 390, 90, 70));
 
         pauseButton.setFont(new java.awt.Font("Monospaced", 1, 48)); // NOI18N
-        pauseButton.setText("||");
+        pauseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/PAUSE.gif"))); // NOI18N
+        pauseButton.setBorderPainted(false);
+        pauseButton.setContentAreaFilled(false);
         pauseButton.setFocusable(false);
         pauseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pauseButtonActionPerformed(evt);
             }
         });
-        panelFondo.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 590, 90, 80));
+        panelFondo.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 620, 180, 80));
 
         toggleButonSonidoJuego.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
         toggleButonSonidoJuego.setBorderPainted(false);
