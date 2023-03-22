@@ -442,8 +442,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelMenu.add(playButtonMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 151, 107));
 
-        labelTituloTetris.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/The_Tetris_Company_logo.png"))); // NOI18N
-        panelMenu.add(labelTituloTetris, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 380, -1));
+        labelTituloTetris.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/tetris.png"))); // NOI18N
+        panelMenu.add(labelTituloTetris, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 350, -1));
 
         levelsButton.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         levelsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/Levels-1.png.png"))); // NOI18N

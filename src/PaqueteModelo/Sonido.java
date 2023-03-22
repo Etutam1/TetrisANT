@@ -5,6 +5,7 @@
 package PaqueteModelo;
 
 import java.io.File;
+import java.util.HashMap;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -18,8 +19,11 @@ public class Sonido {
     private Clip musica;
     private Clip sonido;
     private long clipTimePosition;
-
+    private HashMap<String, String> rutasSons = new HashMap<>();
+     
+    
     public void reproducirMusicaMenu() {
+        
         String sonidoMusicaPath = "src\\Resources\\Musica\\menu.wav";
         this.reproducirMusica(sonidoMusicaPath);
     }

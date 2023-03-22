@@ -833,12 +833,12 @@
         <Component class="javax.swing.JLabel" name="labelTituloTetris">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Resources/Imagenes/The_Tetris_Company_logo.png"/>
+              <Image iconType="3" name="/Resources/Imagenes/tetris.png"/>
             </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="10" width="380" height="-1"/>
+              <AbsoluteConstraints x="30" y="0" width="350" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
