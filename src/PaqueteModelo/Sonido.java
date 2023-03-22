@@ -5,6 +5,7 @@
 package PaqueteModelo;
 
 import java.io.File;
+import java.util.HashMap;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -17,53 +18,22 @@ import javax.sound.sampled.FloatControl;
 public class Sonido {
 
     private Clip musica;
-    private Clip sonido;
     private long clipTimePosition;
+    private HashMap<String, String> hashMapSonidos = new HashMap();
 
-    public void reproducirMusicaMenu() {
-        String sonidoMusicaPath = "src\\Resources\\Musica\\menu.wav";
-        this.reproducirMusica(sonidoMusicaPath);
+    public Sonido() {
+        this.hashMapSonidos.put("menu", "src\\Resources\\Musica\\menu.wav");
+        this.hashMapSonidos.put("partida", "src\\Resources\\Musica\\juego.wav");
+        this.hashMapSonidos.put("gameOver", "src\\Resources\\Musica\\gameover.wav");
+        this.hashMapSonidos.put("borrar", "src\\Resources\\Musica\\poom.wav");
+        this.hashMapSonidos.put("chocar", "src\\Resources\\Musica\\pop.wav");
+        this.hashMapSonidos.put("cadradoAleatorio", "src\\Resources\\Musica\\bubble.wav");
     }
 
-    public void reproducirMusicaGameOver() {
-        String sonidoGameOverPath = "src\\Resources\\Musica\\gameover.wav";
-        this.reproducirSonido(sonidoGameOverPath);
-    }
-
-    public void reproducirSonidoBorrarLinea() {
-        String sonidoLineaPath = "src\\\\Resources\\\\Musica\\\\poom.wav";
-        this.reproducirSonido(sonidoLineaPath);
-    }
-
-    public void reproducirSonidoChocaChan() {
-        String sonidoChanPath = "src\\\\Resources\\\\Musica\\\\pop.wav";
-        this.reproducirSonido(sonidoChanPath);
-    }
-
-    public void reproducirMusicaPartida() {
-        String sonidoPartidaPath = "src\\Resources\\Musica\\juego.wav";
-        this.reproducirMusica(sonidoPartidaPath);
-    }
-
-    private void reproducirSonido(String musicLocation) {
+    public void reproducirMusica(String claveHashmap) {
         try {
-            File musicPath = new File(musicLocation);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                sonido = AudioSystem.getClip();
-                sonido.open(audioInput);
-                sonido.start();
-            } else {
-                System.out.println("No se encontró el archivo");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void reproducirMusica(String musicLocation) {
-        try {
-            File musicPath = new File(musicLocation);
+            String ruta = this.hashMapSonidos.get(claveHashmap);
+            File musicPath = new File(ruta);
             if (musicPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
                 musica = AudioSystem.getClip();
@@ -97,20 +67,20 @@ public class Sonido {
         this.musica = musica;
     }
 
-    public Clip getSonido() {
-        return sonido;
-    }
-
-    public void setSonido(Clip sonido) {
-        this.sonido = sonido;
-    }
-
     public long getClipTimePosition() {
         return clipTimePosition;
     }
 
     public void setClipTimePosition(long clipTimePosition) {
         this.clipTimePosition = clipTimePosition;
+    }
+
+    public HashMap<String, String> getHashMapSonidos() {
+        return hashMapSonidos;
+    }
+
+    public void setHashMapSonidos(HashMap<String, String> hashMapSonidos) {
+        this.hashMapSonidos = hashMapSonidos;
     }
 
 }

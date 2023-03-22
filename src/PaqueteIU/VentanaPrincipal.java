@@ -41,7 +41,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         initComponents();
         this.setLocationRelativeTo(null);
-        sonido.reproducirMusicaMenu();
+        sonido.reproducirMusica("menu");
     }
 
     /**
@@ -99,7 +99,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         playButtonMenu = new javax.swing.JButton();
         labelTituloTetris = new javax.swing.JLabel();
         levelsButton = new javax.swing.JButton();
-        botonSonidoMenu = new javax.swing.JButton();
+        toggleButtonMenu = new javax.swing.JToggleButton();
         fondoLabel = new javax.swing.JLabel();
 
         frameLevels.setUndecorated(true);
@@ -278,6 +278,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         toggleButonSonidoJuego.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
         toggleButonSonidoJuego.setBorderPainted(false);
         toggleButonSonidoJuego.setContentAreaFilled(false);
+        toggleButonSonidoJuego.setFocusable(false);
         toggleButonSonidoJuego.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toggleButonSonidoJuegoActionPerformed(evt);
@@ -457,14 +458,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelMenu.add(levelsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 151, 107));
 
-        botonSonidoMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
-        botonSonidoMenu.setFocusable(false);
-        botonSonidoMenu.addActionListener(new java.awt.event.ActionListener() {
+        toggleButtonMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/sound.png"))); // NOI18N
+        toggleButtonMenu.setBorderPainted(false);
+        toggleButtonMenu.setContentAreaFilled(false);
+        toggleButtonMenu.setFocusable(false);
+        toggleButtonMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonSonidoMenuActionPerformed(evt);
+                toggleButtonMenuActionPerformed(evt);
             }
         });
-        panelMenu.add(botonSonidoMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 60, 60));
+        panelMenu.add(toggleButtonMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 60, 60));
 
         fondoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Imagenes/fondo.jpg"))); // NOI18N
         fondoLabel.setToolTipText("");
@@ -478,6 +481,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void playButtonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonMenuActionPerformed
 
         this.iniciarPartida();
+
 
     }//GEN-LAST:event_playButtonMenuActionPerformed
 
@@ -523,7 +527,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.cambiarVisibilidadFrame(this, true);
         this.cambiarVisibilidadPanel(panelJuego, true);
         this.cambiarVisibilidadPanel(panelFondo, true);
-        sonido.reproducirMusicaMenu();
+        sonido.reproducirMusica("menu");
+        comprobarMusica();
     }
     private void frameJuegoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameJuegoKeyPressed
 
@@ -596,10 +601,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getNombreJugadorLabel().setText("");
     }
 
-    private void botonSonidoMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSonidoMenuActionPerformed
-        comprobarMusica();
-    }//GEN-LAST:event_botonSonidoMenuActionPerformed
-
     private void scoresTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_scoresTablePropertyChange
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
         headerRenderer.setBackground(Color.BLACK);
@@ -651,6 +652,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         comprobarMusica();
     }//GEN-LAST:event_toggleButonSonidoJuegoActionPerformed
 
+    private void toggleButtonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleButtonMenuActionPerformed
+        comprobarMusica();
+    }//GEN-LAST:event_toggleButtonMenuActionPerformed
+
     private boolean comprobarFieldTextEBaleiro() {
         boolean eBaleiro = false;
         if (this.getNombreJugadorLabel().getText().isBlank()) {
@@ -677,13 +682,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         sonido.unmuteMusica();
     }
 
+    private void agregarCuadradoAleatorio() {
+        xogo.subirChan();
+        xogo.engadirCadradoDificultade();
+    }
+
     private void cambiarImagenBotonesSonido() {
         if (!sonido.getMusica().isRunning()) {
             this.toggleButonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
-            this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
+            this.toggleButtonMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\sound.png")));
         } else {
             this.toggleButonSonidoJuego.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
-            this.botonSonidoMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
+            this.toggleButtonMenu.setIcon(new ImageIcon(("src\\Resources\\Imagenes\\mute.png")));
         }
     }
 
@@ -735,8 +745,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.gestionarVisivilidadPaneles();
         this.xogo = new Xogo(comprobarLevelInicialElegido(), false, this);
         if (!sonido.getMusica().isRunning()) {
-            sonido.reproducirMusicaPartida();
+            sonido.reproducirMusica("partida");
         }
+        this.cambiarImagenBotonesSonido();
         this.mostrarContadores();
         this.xogo.xenerarNovaFicha();
         this.iniciarTimer();
@@ -757,7 +768,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void mostrarFinDoXogo() {
         sonido.getMusica().stop();
-        sonido.reproducirMusicaGameOver();
+        sonido.reproducirMusica("gameover");
         this.pararTimer();
         this.cambiarVisibilidadPanel(this.panelJuego, false);
         this.cambiarVisibilidadPanel(this.panelFondo, false);
@@ -800,6 +811,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             this.aumentarScore();
             this.xogo.borrarLineasCompletas();
             this.actualizarPanel();
+            if (this.xogo.getContadorScore() % 30 == 0) {
+                this.agregarCuadradoAleatorio();
+            }
         });
         timer.start();
     }
@@ -1107,21 +1121,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void setToggleButonSonidoJuego(JToggleButton toggleButonSonidoJuego) {
         this.toggleButonSonidoJuego = toggleButonSonidoJuego;
     }
-
-    /**
-     * @return the botonSonidoMenu
-     */
-    public javax.swing.JButton getBotonSonidoMenu() {
-        return botonSonidoMenu;
-    }
-
-    /**
-     * @param botonSonidoMenu the botonSonidoMenu to set
-     */
-    public void setBotonSonidoMenu(javax.swing.JButton botonSonidoMenu) {
-        this.botonSonidoMenu = botonSonidoMenu;
-    }
-
     /**
      * @return the buttonGroup1
      */
@@ -1375,7 +1374,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LineasLabel;
-    private javax.swing.JButton botonSonidoMenu;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton easyRadioB;
     private javax.swing.JButton exitButtonMenu;
@@ -1422,6 +1420,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable scoresTable;
     private javax.swing.JLabel scoresTituloLabel;
     private javax.swing.JToggleButton toggleButonSonidoJuego;
+    private javax.swing.JToggleButton toggleButtonMenu;
     // End of variables declaration//GEN-END:variables
 
 }

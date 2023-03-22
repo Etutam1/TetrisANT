@@ -5,6 +5,7 @@
 package PaqueteModelo;
 
 import PaqueteIU.VentanaPrincipal;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -88,7 +89,7 @@ public class Xogo {
         if (!this.comprobarFinalPartida()) {
             if (this.chocaFichaCoChan()) {
                 this.engadirFichaAoChan();
-                sonido.reproducirSonidoChocaChan();
+                sonido.reproducirMusica("chocar");
                 this.xenerarNovaFicha();
             } else {
                 this.fichaActual.moverAbaixo();
@@ -216,7 +217,7 @@ public class Xogo {
         boolean borraLinea = false;
         ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
-        for (int y = ultimaLinea; y >= primeraLinea; y-=Xogo.LADO_CADRADO) {
+        for (int y = ultimaLinea; y >= primeraLinea; y -= Xogo.LADO_CADRADO) {
             Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
             int contadorCadrados = 0;
             System.out.println("y: " + y);
@@ -249,7 +250,7 @@ public class Xogo {
             this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
             this.comprobarCambioLevel();
             this.sumarScorePorLineaCompleta();
-            sonido.reproducirSonidoBorrarLinea();
+            sonido.reproducirMusica("borrar");
         }
 
     }
@@ -257,19 +258,19 @@ public class Xogo {
     public boolean borrarLina(int linea) {
 
         ArrayList<Cadrado> cadradosBorrar = new ArrayList<>();
-    Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
+        Iterator<Cadrado> iteratorChan2 = this.cadradosChan.listIterator();
 
-    while (iteratorChan2.hasNext()) {
-        Cadrado cadradoABorrar = iteratorChan2.next();
-        if (cadradoABorrar.getLblCadrado().getY() == linea) {
-            System.out.println("Se agregará a cadradosBorrar: x=" + cadradoABorrar.getX() + ", y=" + cadradoABorrar.getY());
-            cadradosBorrar.add(cadradoABorrar);
-            this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+        while (iteratorChan2.hasNext()) {
+            Cadrado cadradoABorrar = iteratorChan2.next();
+            if (cadradoABorrar.getLblCadrado().getY() == linea) {
+                System.out.println("Se agregará a cadradosBorrar: x=" + cadradoABorrar.getX() + ", y=" + cadradoABorrar.getY());
+                cadradosBorrar.add(cadradoABorrar);
+                this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
+            }
         }
-    }
-    this.cadradosChan.removeAll(cadradosBorrar);
-    System.out.println("CADRADOS EN CHAN" + this.cadradosChan.size());
-    return true;
+        this.cadradosChan.removeAll(cadradosBorrar);
+        System.out.println("CADRADOS EN CHAN" + this.cadradosChan.size());
+        return true;
     }
 
     private void moverCadradosChan(int linea) {
@@ -308,8 +309,6 @@ public class Xogo {
 
     }
 
-  
-
     private void sumarScorePorLineaCompleta() {
 
         if (this.level == 0 || this.level == 1) {
@@ -345,6 +344,35 @@ public class Xogo {
 
     private void actualizarDelay(int delay) {
         this.ventanaPrincipal.getTimer().setDelay(delay);
+    }
+
+    public void engadirCadradoDificultade() {
+        int ultimaLinea = this.getMAX_Y() - LADO_CADRADO;
+        Cadrado cadradoDificultade = new Cadrado(this.generarPosicionXAleatoria(), ultimaLinea, Color.GRAY);
+        this.ventanaPrincipal.pintarCadrado(cadradoDificultade.getLblCadrado());
+        sonido.reproducirMusica("cadradoAleatorio");
+        this.cadradosChan.add(cadradoDificultade);
+    }
+
+    private int generarPosicionXAleatoria() {
+        int[] posiblesX = {0, 40, 80, 120, 160, 200, 240, 280, 320, 360};
+        int numAleatorio = (int) (Math.random() * 9 + 1);
+        int posicionAleatoria = posiblesX[numAleatorio];
+        return posicionAleatoria;
+    }
+
+    public void subirChan() {
+        Iterator<Cadrado> iteratorChan = cadradosChan.iterator();
+        while (iteratorChan.hasNext()) {
+            Cadrado cadradoSubir = iteratorChan.next();
+            cadradoSubir.getLblCadrado().setLocation(cadradoSubir.getLblCadrado().getX(), cadradoSubir.getLblCadrado().getY() - LADO_CADRADO);
+            actualizarCadradoCoLabel2(cadradoSubir);
+        }
+    }
+
+    private void actualizarCadradoCoLabel2(Cadrado cadradoSubir) {
+        cadradoSubir.setX(cadradoSubir.getLblCadrado().getX());
+        cadradoSubir.setY(cadradoSubir.getLblCadrado().getY() - LADO_CADRADO);
     }
 
     public void gestionarResultados() {
