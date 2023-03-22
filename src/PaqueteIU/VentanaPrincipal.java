@@ -4,7 +4,6 @@
  */
 package PaqueteIU;
 
-import PaqueteModelo.Cadrado;
 import PaqueteModelo.Xogo;
 import PaqueteModelo.Sonido;
 import java.awt.Color;
@@ -476,9 +475,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void playButtonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonMenuActionPerformed
-
         this.iniciarPartida();
-
     }//GEN-LAST:event_playButtonMenuActionPerformed
 
     private void levelsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelsButtonActionPerformed
@@ -529,7 +526,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
     private void frameJuegoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameJuegoKeyPressed
 
-        if (!this.xogo.isPausa()) {
+        if (!this.xogo.isPausa() && !this.xogo.isFinXogo() ) {
 
             if (comprobarPulsacionTeclaA(evt)) {
                 this.xogo.moverFichaEsquerda();
@@ -853,13 +850,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }
 
-    private void borrarCadradoEliminadoDeCadradosChan(Cadrado cadrado) {
-
-    }
 
     private void EliminarComponentesPanelJuego() {
         this.panelJuego.removeAll();
-
     }
 
     private int comprobarLevelInicialElegido() {

@@ -12,17 +12,16 @@ import java.awt.Color;
  */
 public class FichaZ extends Ficha {
 
-    private Cadrado cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.RED);
-    private Cadrado cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.RED);
-    private Cadrado cadrado3 = new Cadrado(cadrado2.getX(), cadrado2.getY() + getXogo().getLADO_CADRADO(), Color.RED);
-    private Cadrado cadrado4 = new Cadrado(cadrado3.getX() + getXogo().getLADO_CADRADO(), cadrado3.getY(), Color.RED);
     private int posicion = 1;
 
     //CONSTRUCTOR
     public FichaZ(Xogo xogo) {
         super(xogo);
-
-        this.agregarCadradosArrayCadrados();
+        super.cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.MAGENTA);
+        super.cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.MAGENTA);
+        super.cadrado3 = new Cadrado(cadrado2.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY(), Color.MAGENTA);
+        super.cadrado4 = new Cadrado(cadrado2.getX(), cadrado2.getY() - getXogo().getLADO_CADRADO(), Color.MAGENTA);
+        super.agregarCadradosAArrayCadrados(cadrado1, cadrado2, cadrado3, cadrado4);
     }
 
     //METODOS
@@ -76,16 +75,9 @@ public class FichaZ extends Ficha {
         return podeRotar;
     }
 
-    @Override
-    public void agregarCadradosArrayCadrados() {
-        getCadrados().add(this.cadrado1);
-        getCadrados().add(this.cadrado2);
-        getCadrados().add(this.cadrado3);
-        getCadrados().add(this.cadrado4);
-    }
-    
-     private void actualizarCoordsLblCoCadrado() {
-        this.actualizarCoordsCadrado(cadrado1,  this.cadrado1.getLblCadrado().getX(), this.cadrado1.getLblCadrado().getY());
+
+    private void actualizarCoordsLblCoCadrado() {
+        this.actualizarCoordsCadrado(cadrado1, this.cadrado1.getLblCadrado().getX(), this.cadrado1.getLblCadrado().getY());
         this.actualizarCoordsCadrado(cadrado2, this.cadrado2.getLblCadrado().getX(), this.cadrado2.getLblCadrado().getY());
         this.actualizarCoordsCadrado(cadrado3, this.cadrado3.getLblCadrado().getX(), this.cadrado3.getLblCadrado().getY());
         this.actualizarCoordsCadrado(cadrado4, this.cadrado4.getLblCadrado().getX(), this.cadrado4.getLblCadrado().getY());
