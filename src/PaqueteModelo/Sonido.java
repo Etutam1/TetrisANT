@@ -8,6 +8,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 /**
  *
@@ -68,6 +69,8 @@ public class Sonido {
                 musica = AudioSystem.getClip();
                 musica.open(audioInput);
                 musica.start();
+                FloatControl volume = (FloatControl) musica.getControl(FloatControl.Type.MASTER_GAIN);
+                volume.setValue(-1 * 20);
             } else {
                 System.out.println("No se encontró el archivo");
             }
