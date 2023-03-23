@@ -7,6 +7,7 @@ package PaqueteModelo;
 import PaqueteIU.VentanaPrincipal;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -45,10 +47,11 @@ public class Xogo {
     private int comprobante = 0;
     private Sonido sonido = new Sonido();
     private boolean finXogo;
+    private ReportException report = new ReportException();
 
     //CONSTRUCTOR
     public Xogo(int level, boolean pausa, VentanaPrincipal ventanaPrincipal) {
-        
+
         this.ventanaPrincipal = ventanaPrincipal;
         this.MAX_X = this.ventanaPrincipal.getPanelJuego().getWidth();
         this.MIN_X = this.ventanaPrincipal.getPanelJuego().getWidth() - this.ventanaPrincipal.getPanelJuego().getWidth();
@@ -58,7 +61,7 @@ public class Xogo {
         this.contadorScore = 0;
         this.numeroLineas = 0;
         this.level = level;
-        this.finXogo=false;
+        this.finXogo = false;
 
     }
 
@@ -123,7 +126,6 @@ public class Xogo {
 
     public void moverFichaEsquerda() {
         boolean podeMover = true;
-
         podeMover = comprobarCadradoEsquerda(podeMover);
         if (podeMover) {
             this.fichaActual.moverEsquerda();
@@ -158,7 +160,7 @@ public class Xogo {
     }
 
     private Ficha crearFicha(int numFicha) throws IllegalArgumentException {
-        switch (2) {
+        switch (numFicha) {
             case 1:
                 return new FichaCadrada(this);
             case 2:
@@ -194,8 +196,7 @@ public class Xogo {
         }
     }
 
-    
-   public boolean chocaFichaCoChan() {
+    public boolean chocaFichaCoChan() {
         boolean tocaChan = false;
         Iterator<Cadrado> iterator4 = this.fichaActual.getCadrados().iterator();
         while (iterator4.hasNext()) {
@@ -235,7 +236,7 @@ public class Xogo {
                 }
             }
         }
-        System.out.println("LINEAS Y"+coordsYLineas.size());
+        System.out.println("LINEAS Y" + coordsYLineas.size());
         Iterator iteratorYs = coordsYLineas.iterator();
         while (iteratorYs.hasNext()) {
             int linea = (int) iteratorYs.next();
@@ -289,9 +290,9 @@ public class Xogo {
         }
     }
 
-    public void actualizarCoordsCadrado(Cadrado cadradoABaixar) {
-        cadradoABaixar.setX(cadradoABaixar.getLblCadrado().getX());
-        cadradoABaixar.setY(cadradoABaixar.getLblCadrado().getY());
+    private void actualizarCoordsCadrado(Cadrado cadrado) {
+        cadrado.setX(cadrado.getLblCadrado().getX());
+        cadrado.setY(cadrado.getLblCadrado().getY());
     }
 
     private void aumentarLevel() {
@@ -307,10 +308,10 @@ public class Xogo {
 
     private void cambiarDeLevel() {
         int delayActual = this.ventanaPrincipal.getTimer().getDelay();
-        double incrementoDelay = 0.75;
+        double decrementoDelay = 0.75;
         this.aumentarLevel();
         this.ventanaPrincipal.mostrarLevel(this.level);
-        this.actualizarDelay((int) (delayActual * incrementoDelay));
+        this.actualizarDelay((int) (delayActual * decrementoDelay));
     }
 
     private void sumarNumeroLineas() {
@@ -336,8 +337,6 @@ public class Xogo {
     }
 
     private boolean comprobarFinalPartida() {
-//        boolean gameOver = false;
-       
         Iterator<Cadrado> iteratorChan4 = this.cadradosChan.listIterator();
         while (iteratorChan4.hasNext() && !this.finXogo) {
             Cadrado cadradoChan = iteratorChan4.next();
@@ -346,9 +345,7 @@ public class Xogo {
                 this.finXogo = true;
             }
         }
-//        if (finXogo) {
-            
-//        }
+
         return finXogo;
     }
 
@@ -356,33 +353,38 @@ public class Xogo {
         this.ventanaPrincipal.getTimer().setDelay(delay);
     }
 
-    public void engadirCadradoDificultade() {
+    private void crearCadradoAleatorio() {
+
+        Cadrado cadradoAleatorio = xenerarCadradoPosicionAleatoria();
+        this.ventanaPrincipal.pintarCadrado(cadradoAleatorio.getLblCadrado());
+        this.cadradosChan.add(cadradoAleatorio);
+    }
+
+    private Cadrado xenerarCadradoPosicionAleatoria() {
         int ultimaLinea = this.getMAX_Y() - LADO_CADRADO;
-        Cadrado cadradoDificultade = new Cadrado(this.generarPosicionXAleatoria(), ultimaLinea, Color.GRAY);
-        this.ventanaPrincipal.pintarCadrado(cadradoDificultade.getLblCadrado());
-        sonido.reproducirMusica("cadradoAleatorio");
-        this.cadradosChan.add(cadradoDificultade);
+        Cadrado cadradoDificultade = new Cadrado(this.xenerarPosicionXAleatoria(), ultimaLinea, Color.GRAY);
+        return cadradoDificultade;
     }
 
-    private int generarPosicionXAleatoria() {
-        int[] posiblesX = {0, 40, 80, 120, 160, 200, 240, 280, 320, 360};
+    private int xenerarPosicionXAleatoria() {
+        int[] posiblesCoordX = {0, 40, 80, 120, 160, 200, 240, 280, 320, 360};
         int numAleatorio = (int) (Math.random() * 9 + 1);
-        int posicionAleatoria = posiblesX[numAleatorio];
-        return posicionAleatoria;
+        return posiblesCoordX[numAleatorio];
     }
 
-    public void subirChan() {
+    private void subirChan() {
         Iterator<Cadrado> iteratorChan = cadradosChan.iterator();
         while (iteratorChan.hasNext()) {
             Cadrado cadradoSubir = iteratorChan.next();
             cadradoSubir.getLblCadrado().setLocation(cadradoSubir.getLblCadrado().getX(), cadradoSubir.getLblCadrado().getY() - LADO_CADRADO);
-            actualizarCadradoCoLabel2(cadradoSubir);
+            this.actualizarCoordsCadrado(cadradoSubir);
         }
     }
 
-    private void actualizarCadradoCoLabel2(Cadrado cadradoSubir) {
-        cadradoSubir.setX(cadradoSubir.getLblCadrado().getX());
-        cadradoSubir.setY(cadradoSubir.getLblCadrado().getY() - LADO_CADRADO);
+    public void agregarCadradoAleatorio() {
+        this.subirChan();
+        this.crearCadradoAleatorio();
+        this.sonido.reproducirMusica("cadradoAleatorio");
     }
 
     public void gestionarResultados() {
@@ -400,7 +402,11 @@ public class Xogo {
             salida = new PrintWriter(new FileWriter("PlayerScore.txt", true));
             salida.write(jugadorScore);
 
-        } catch (IOException ex) {
+        } catch (FileNotFoundException ex1) {
+            this.report.reportarException(ex1);
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+        } catch (IOException ex2) {
+            this.report.reportarException(ex2);
             JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
         } finally {
 
@@ -422,15 +428,19 @@ public class Xogo {
                 Xogador player = new Xogador(linea);
                 this.agregarJugador(player);
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException ex1) {
+            this.report.reportarException(ex1);
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+        } catch (IOException ex2) {
+            this.report.reportarException(ex2);
             JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
         } finally {
             if (entrada != null) {
                 scanner.close();
                 try {
                     entrada.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex3) {
+                    this.report.reportarException(ex3);
                 }
             }
         }
@@ -505,7 +515,6 @@ public class Xogo {
     }
 
     //SETTERs AND GETTERs
-
     public boolean isFinXogo() {
         return finXogo;
     }
@@ -513,8 +522,7 @@ public class Xogo {
     public void setFinXogo(boolean finXogo) {
         this.finXogo = finXogo;
     }
-    
-    
+
     public void setSonido(Sonido sonido) {
         this.sonido = sonido;
     }
