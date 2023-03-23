@@ -566,11 +566,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     this.xogo.RotarFicha();
                 }
             }
-        } catch(IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             this.report.reportarException(ex);
-        } catch(ClassCastException ex1){
-             this.report.reportarException(ex1);
-            
+        } catch (ClassCastException ex1) {
+            this.report.reportarException(ex1);
+
         }
     }//GEN-LAST:event_frameJuegoKeyPressed
 
@@ -825,16 +825,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void iniciarTimer() {
-        this.timer = new Timer(setDelaySegunLevelInicial(), (ActionEvent e) -> {
-            this.xogo.moverFichaAbaixo();
-            this.aumentarScore();
-            this.xogo.borrarLineasCompletas();
-            this.actualizarPanel();
-            if (this.xogo.getContadorScore() % 30 == 0 && this.xogo.getLevel() > 3) {
-                this.xogo.agregarCadradoAleatorio();
-            }
-        });
-        timer.start();
+        try {
+            this.timer = new Timer(setDelaySegunLevelInicial(), (ActionEvent e) -> {
+                this.xogo.moverFichaAbaixo();
+                this.aumentarScore();
+                this.xogo.borrarLineasCompletas();
+                this.actualizarPanel();
+                if (this.xogo.getContadorScore() % 30 == 0 && this.xogo.getLevel() > 3) {
+                    this.xogo.agregarCadradoAleatorio();
+                }
+            });
+            timer.start();
+        } catch (IllegalArgumentException ex1) {
+            this.report.reportarException(ex1);
+        } catch (IllegalStateException ex2) {
+            this.report.reportarException(ex2);
+        } catch (NullPointerException ex3) {
+            this.report.reportarException(ex3);
+        }
     }
 
     private void aumentarScore() {

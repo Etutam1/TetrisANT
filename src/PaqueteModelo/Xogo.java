@@ -105,14 +105,14 @@ public class Xogo {
     }
 
     public void moverFichaDereita() {
-        boolean podeMover = true;
-        podeMover = comprobarCadradoDereita(podeMover);
-        if (podeMover) {
+
+        if (comprobarCadradoDereita()) {
             this.fichaActual.moverDereita();
         }
     }
 
-    private boolean comprobarCadradoDereita(boolean podeMover) {
+    private boolean comprobarCadradoDereita() {
+        boolean podeMover = true;
         Iterator<Cadrado> iterator = this.fichaActual.getCadrados().iterator();
         while (iterator.hasNext()) {
             Cadrado actual = iterator.next();
@@ -125,14 +125,14 @@ public class Xogo {
     }
 
     public void moverFichaEsquerda() {
-        boolean podeMover = true;
-        podeMover = comprobarCadradoEsquerda(podeMover);
-        if (podeMover) {
+
+        if (comprobarCadradoEsquerda()) {
             this.fichaActual.moverEsquerda();
         }
     }
 
-    private boolean comprobarCadradoEsquerda(boolean podeMover) {
+    private boolean comprobarCadradoEsquerda() {
+        boolean podeMover = true;
         Iterator<Cadrado> iterator2 = this.fichaActual.getCadrados().iterator();
         while (iterator2.hasNext()) {
             Cadrado actual = iterator2.next();
@@ -153,7 +153,7 @@ public class Xogo {
         try {
             this.fichaActual = crearFicha(numAleatorio);
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            this.report.reportarException(ex);
         }
         this.comprobante = numAleatorio; // ACTUALIZA EL COMPROBANTE
         this.pintarFicha();
@@ -362,8 +362,8 @@ public class Xogo {
 
     private Cadrado xenerarCadradoPosicionAleatoria() {
         int ultimaLinea = this.getMAX_Y() - LADO_CADRADO;
-        Cadrado cadradoDificultade = new Cadrado(this.xenerarPosicionXAleatoria(), ultimaLinea, Color.GRAY);
-        return cadradoDificultade;
+        Cadrado cadradoAleatorio = new Cadrado(this.xenerarPosicionXAleatoria(), ultimaLinea, Color.GRAY);
+        return cadradoAleatorio;
     }
 
     private int xenerarPosicionXAleatoria() {
