@@ -12,35 +12,35 @@ import java.awt.Color;
  */
 public class FichaZ extends Ficha {
 
+    
     private int posicion = 1;
 
     //CONSTRUCTOR
     public FichaZ(Xogo xogo) {
         super(xogo);
-        super.cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.MAGENTA);
-        super.cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.MAGENTA);
-        super.cadrado3 = new Cadrado(cadrado2.getX() + getXogo().getLADO_CADRADO(), cadrado2.getY(), Color.MAGENTA);
-        super.cadrado4 = new Cadrado(cadrado2.getX(), cadrado2.getY() - getXogo().getLADO_CADRADO(), Color.MAGENTA);
+        super.cadrado1 = new Cadrado(getXogo().getMAX_X() / 2, getXogo().getMIN_Y(), Color.RED);
+        super.cadrado2 = new Cadrado(cadrado1.getX() + getXogo().getLADO_CADRADO(), cadrado1.getY(), Color.RED);
+        super.cadrado3 = new Cadrado(cadrado2.getX(), cadrado2.getY() + getXogo().getLADO_CADRADO(), Color.RED);
+        super.cadrado4 = new Cadrado(cadrado3.getX() + getXogo().getLADO_CADRADO(), cadrado3.getY(), Color.RED);
         super.agregarCadradosAArrayCadrados(cadrado1, cadrado2, cadrado3, cadrado4);
+        
     }
 
     //METODOS
     @Override
     public boolean rotar() {
 
-        int cadradoFixo_X = this.cadrado2.getX();
-        int cadradoFixo_Y = this.cadrado2.getY();
+        int cadradoFixo_X = getCadrado2().getX();
+        int cadradoFixo_Y = getCadrado2().getY();
 
         if (this.posicion == 0) {
-            if (this.comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
-                this.rotarAPosicion1(cadradoFixo_X, cadradoFixo_Y);
-                this.actualizarCoordsLblCoCadrado();
+            if (comprobarPosicion1(cadradoFixo_X, cadradoFixo_Y)) {
+                rotarAPosicion1(cadradoFixo_X, cadradoFixo_Y);
                 this.posicion = 1;
             }
         } else if (this.posicion == 1) {
-            if (this.comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
-                this.rotarAPosicion0(cadradoFixo_X, cadradoFixo_Y);
-                this.actualizarCoordsLblCoCadrado();
+            if (comprobarPosicion0(cadradoFixo_X, cadradoFixo_Y)) {
+                rotarAPosicion0(cadradoFixo_X, cadradoFixo_Y);
                 this.posicion = 0;
             }
         }
@@ -48,9 +48,9 @@ public class FichaZ extends Ficha {
     }
 
     private void rotarAPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
-        this.cadrado1.getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO());
-        this.cadrado3.getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y);
-        this.cadrado4.getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO());
+        getCadrado1().getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y - Xogo.getLADO_CADRADO());
+        getCadrado3().getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y);
+        getCadrado4().getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO());
     }
 
     private boolean comprobarPosicion0(int cadradoFixo_X, int cadradoFixo_Y) {
@@ -62,9 +62,9 @@ public class FichaZ extends Ficha {
     }
 
     private void rotarAPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
-        this.cadrado1.getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y);
-        this.cadrado3.getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO());
-        this.cadrado4.getLblCadrado().setLocation(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO());
+        getCadrado1().getLblCadrado().setLocation(cadradoFixo_X - Xogo.getLADO_CADRADO(), cadradoFixo_Y);
+        getCadrado3().getLblCadrado().setLocation(cadradoFixo_X, cadradoFixo_Y + Xogo.getLADO_CADRADO());
+        getCadrado4().getLblCadrado().setLocation(cadradoFixo_X + Xogo.getLADO_CADRADO(), cadradoFixo_Y + Xogo.getLADO_CADRADO());
     }
 
     private boolean comprobarPosicion1(int cadradoFixo_X, int cadradoFixo_Y) {
@@ -75,13 +75,7 @@ public class FichaZ extends Ficha {
         return podeRotar;
     }
 
-
-    private void actualizarCoordsLblCoCadrado() {
-        this.actualizarCoordsCadrado(cadrado1, this.cadrado1.getLblCadrado().getX(), this.cadrado1.getLblCadrado().getY());
-        this.actualizarCoordsCadrado(cadrado2, this.cadrado2.getLblCadrado().getX(), this.cadrado2.getLblCadrado().getY());
-        this.actualizarCoordsCadrado(cadrado3, this.cadrado3.getLblCadrado().getX(), this.cadrado3.getLblCadrado().getY());
-        this.actualizarCoordsCadrado(cadrado4, this.cadrado4.getLblCadrado().getX(), this.cadrado4.getLblCadrado().getY());
-    }
+    
 
     /**
      * @return the cadrado1
