@@ -28,9 +28,9 @@ public class ReportException {
             salida.write("Se ha producido la excepcion" + exception.toString() + "en la fecha " + new Date().toString() + "debido a " + exception.getCause().toString() + "\n");
 
         } catch (FileNotFoundException ex2) {
-            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO ENCONTRAR EL ARCHIVO DE EXCEPTIONS");
+            JOptionPane.showMessageDialog(null, "NO SE HA PODIDO REPORTAR UN PROBLEMA");
         } catch (IOException ex) {
-             JOptionPane.showMessageDialog(null, "NO SE HA PODIDO ACCEDER AL ARCHIVO DE EXCEPTIONS");
+             JOptionPane.showMessageDialog(null, "NO SE HA PODIDO REPORTAR UN PROBLEMA");
         } finally {
 
             if (salida != null) {

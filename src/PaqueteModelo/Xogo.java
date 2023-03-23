@@ -16,11 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -218,34 +215,13 @@ public class Xogo {
         boolean borraLinea = false;
         ArrayList<Integer> coordsYLineas = new ArrayList<>();
 
-        for (int y = ultimaLinea; y >= primeraLinea; y -= Xogo.LADO_CADRADO) {
-            Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
-            int contadorCadrados = 0;
-            System.out.println("y: " + y);
+        ComprobarLineasCompletas(ultimaLinea, primeraLinea, coordsYLineas);
+        borraLinea = borrarLineasArrayYs(coordsYLineas, borraLinea);
+        gestionarBorradoLinea(borraLinea);
 
-            while (iteratorChan.hasNext()) {
-                Cadrado cadradoChan = iteratorChan.next();
+    }
 
-                if (cadradoChan.getLblCadrado().getY() == y) {
-                    contadorCadrados++;
-                    System.out.println("contadorCadrados: " + contadorCadrados);
-
-                    if (contadorCadrados == 10) {
-                        coordsYLineas.add(y);
-                    }
-                }
-            }
-        }
-        System.out.println("LINEAS Y" + coordsYLineas.size());
-        Iterator iteratorYs = coordsYLineas.iterator();
-        while (iteratorYs.hasNext()) {
-            int linea = (int) iteratorYs.next();
-            if (this.borrarLina(linea)) {
-                this.moverCadradosChan(linea);
-                borraLinea = true;
-            }
-
-        }
+    public void gestionarBorradoLinea(boolean borraLinea) {
         if (borraLinea) {
             this.sumarNumeroLineas();
             this.ventanaPrincipal.mostrarNumeroLineas(this.numeroLineas);
@@ -253,7 +229,38 @@ public class Xogo {
             this.sumarScorePorLineaCompleta();
             sonido.reproducirMusica("borrar");
         }
+    }
 
+    public boolean borrarLineasArrayYs(ArrayList<Integer> coordsYLineas, boolean borraLinea) {
+        Iterator iteratorYs = coordsYLineas.iterator();
+        while (iteratorYs.hasNext()) {
+            int linea = (int) iteratorYs.next();
+            if (this.borrarLina(linea)) {
+                this.moverCadradosChan(linea);
+                borraLinea = true;
+            }
+            
+        }
+        return borraLinea;
+    }
+
+    public void ComprobarLineasCompletas(int ultimaLinea, int primeraLinea, ArrayList<Integer> coordsYLineas) {
+        for (int y = ultimaLinea; y >= primeraLinea; y -= Xogo.LADO_CADRADO) {
+            Iterator<Cadrado> iteratorChan = this.cadradosChan.listIterator();
+            int contadorCadrados = 0;
+            
+            while (iteratorChan.hasNext()) {
+                Cadrado cadradoChan = iteratorChan.next();
+                
+                if (cadradoChan.getLblCadrado().getY() == y) {
+                    contadorCadrados++;
+                    
+                    if (contadorCadrados == 10) {
+                        coordsYLineas.add(y);
+                    }
+                }
+            }
+        }
     }
 
     public boolean borrarLina(int linea) {
@@ -264,13 +271,13 @@ public class Xogo {
         while (iteratorChan2.hasNext()) {
             Cadrado cadradoABorrar = iteratorChan2.next();
             if (cadradoABorrar.getLblCadrado().getY() == linea) {
-                System.out.println("Se agregará a cadradosBorrar: x=" + cadradoABorrar.getX() + ", y=" + cadradoABorrar.getY());
+                
                 cadradosBorrar.add(cadradoABorrar);
                 this.ventanaPrincipal.borrarCadrado(cadradoABorrar.getLblCadrado());
             }
         }
         this.cadradosChan.removeAll(cadradosBorrar);
-        System.out.println("CADRADOS EN CHAN" + this.cadradosChan.size());
+        
         return true;
     }
 
@@ -284,8 +291,7 @@ public class Xogo {
                 cadradoABaixar.getLblCadrado().setLocation(cadradoABaixar.getLblCadrado().getX(), cadradoABaixar.getLblCadrado().getY() + Xogo.LADO_CADRADO);
                 actualizarCoordsCadrado(cadradoABaixar);
 
-                System.out.println(" Cuadrado x: " + cadradoABaixar.getX() + " Cuadrado y:" + cadradoABaixar.getY());
-                System.out.println(" label x: " + cadradoABaixar.getLblCadrado().getLocation());
+                
             }
         }
     }
