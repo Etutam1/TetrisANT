@@ -5,11 +5,17 @@
 package PaqueteModelo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -20,6 +26,7 @@ public class Sonido {
     private Clip musica;
     private long clipTimePosition;
     private HashMap<String, String> hashMapSonidos = new HashMap();
+    private ReportException report = new ReportException();
 
     public Sonido() {
         this.hashMapSonidos.put("menu", "src\\Resources\\Musica\\menu.wav");
@@ -41,12 +48,24 @@ public class Sonido {
                 musica.start();
                 FloatControl volume = (FloatControl) musica.getControl(FloatControl.Type.MASTER_GAIN);
                 volume.setValue(-1 * 20);
-            } else {
-                System.out.println("No se encontró el archivo");
+
+                if (claveHashmap == "menu" || claveHashmap == "partida") {
+                    musica.loop(Clip.LOOP_CONTINUOUSLY);
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (FileNotFoundException ex1) {
+            this.report.reportarException(ex1);
+        } catch (UnsupportedAudioFileException ex2) {
+            this.report.reportarException(ex2);
+        } catch (LineUnavailableException ex3) {
+            this.report.reportarException(ex3);
+        } catch (IOException ex4) {
+            this.report.reportarException(ex4);
         }
+    }
+
+    public void pararMusica() {
+        this.musica.stop();
     }
 
     public void muteMusica() {
